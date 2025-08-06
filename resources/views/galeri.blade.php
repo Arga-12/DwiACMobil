@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:heading>
-        Beranda
+        Galeri
     </x-slot:heading>
-    <p>Selamat datang di halaman beranda!</p>
+    <p>Selamat datang di halaman pelanggan</p>
 </x-layout>
