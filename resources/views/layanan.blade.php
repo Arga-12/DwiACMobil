@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :showHeader="true" :showHero="false" title="Layanan - Dwi AC Mobil">
     <x-slot:heading>
         Layanan
     </x-slot:heading>

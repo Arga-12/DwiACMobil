@@ -1,0 +1,79 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&family=Montserrat+Alternates:wght@500;800&display=swap');
+
+/* Custom Font Classes */
+.font-montserrat-64 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.font-montserrat-alt-48 {
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.font-montserrat-alt-36 {
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+/* Responsive Font Sizes */
+@media (max-width: 768px) {
+    .font-montserrat-64 {
+        font-size: 48px;
+    }
+    
+    .font-montserrat-alt-48 {
+        font-size: 36px;
+    }
+    
+    .font-montserrat-alt-36 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .font-montserrat-64 {
+        font-size: 36px;
+    }
+    
+    .font-montserrat-alt-48 {
+        font-size: 28px;
+    }
+    
+    .font-montserrat-alt-36 {
+        font-size: 24px;
+    }
+}
+  
+  /* Paragraph Templates */
+  .bigparagraf {
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-weight: 500; /* Medium */
+      font-size: 20px;
+      line-height: 1.6;
+  }
+  
+  .defparagrah {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400; /* Regular */
+      font-size: 13px;
+      line-height: 1.6;
+  }
+
+  /* Responsive sizes for paragraph templates */
+  @media (max-width: 768px) {
+      .bigparagraf { font-size: 18px; }
+      .defparagrah { font-size: 12px; }
+  }
+  
+  @media (max-width: 480px) {
+      .bigparagraf { font-size: 16px; }
+      .defparagrah { font-size: 12px; }
+  }
