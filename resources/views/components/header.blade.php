@@ -1,5 +1,5 @@
 {{-- Header component: stripped HTML skeleton to avoid duplication with layout --}}
-<header class="fixed inset-x-0 top-0 z-50 bg-gradient-to-b from-[#0F044C] to-[#FFFFFF00]">
+<header class="fixed inset-x-0 top-0 z-50 {{ Route::currentRouteName() === 'layanan' ? 'bg-[#0F044C]' : 'bg-gradient-to-b from-[#0F044C] to-[#FFFFFF00]' }}">
   <nav class="relative flex items-center justify-between px-8 lg:px-6 xl:px-10 py-5">
     <!-- Logo -->
     <div class="flex items-center">
