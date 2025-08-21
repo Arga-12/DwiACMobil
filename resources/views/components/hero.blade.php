@@ -33,7 +33,7 @@
       : \Illuminate\Support\Arr::random($smallSubtexts);
   @endphp
 
-  <div class="relative mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8 pt-24 sm:pt-32 pb-12 md:pb-16">
     <div class="max-w-4xl lg:max-w-5xl">
       <!-- Optional badge -->
       <div class="inline-flex items-center px-5 py-2 bg-[#787A91] h-[40px] rounded-full backdrop-blur-sm text-white mb-6 bigparagraf">
@@ -51,12 +51,12 @@
       </p>
 
       <!-- CTA Buttons -->
-      <div class="mt-10 flex items-center gap-x-6">
-        <a href="#" class="w-[275px] h-[70px] inline-flex items-center justify-center bg-[#0F044C] text-white font-semibold tracking-wide hover:bg-[#0F044C]/90 transition">
+      <div class="mt-10 flex flex-wrap items-center gap-3 sm:gap-4 md:gap-6">
+        <a href="#" class="w-full sm:w-[240px] md:w-[275px] h-12 sm:h-14 md:h-[70px] inline-flex items-center justify-center bg-[#0F044C] text-white font-semibold tracking-wide hover:bg-[#0F044C]/90 transition">
           <span class="bigparagraf">Antri & Serviskan!</span>
-          <img src="/images/panah-miringkeatas.svg" alt="" aria-hidden="true" class="ml-3 h-5 w-5" />
+          <img src="/images/arrows_button/panah-miringkeatas.svg" alt="" aria-hidden="true" class="ml-3 h-5 w-5" />
         </a>
-        <a href="#" class="w-[275px] h-[70px] inline-flex items-center justify-center border border-white/50 bg-white/20 text-white font-semibold hover:bg-white/10 transition">
+        <a href="#" class="w-full sm:w-[240px] md:w-[275px] h-12 sm:h-14 md:h-[70px] inline-flex items-center justify-center border border-white/50 bg-white/20 text-white font-semibold hover:bg-white/10 transition">
           <span class="bigparagraf">Jelajahi layanan kami</span>
         </a>
       </div>
