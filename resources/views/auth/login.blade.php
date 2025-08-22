@@ -75,12 +75,20 @@
                 </div>
 
                 <!-- Bottom Section -->
-                <div class="text-center">
-                    <p class="text-gray-600 mb-6">Belum memiliki Akun?</p>
-                    <a href="/register" 
-                        class="inline-block w-full px-6 h-[70px] bg-[#0F044C] text-white font-medium hover:bg-[#0F044C]/90 transition-colors flex items-center justify-center">
-                        Daftar Akun
-                    </a>
+                <div class="flex space-x-4 items-end">
+                    <div class="flex-1">
+                        <p class="text-gray-600 mb-2 text-left">Belum memiliki Akun?</p>
+                        <a href="/register" 
+                            class="w-full px-6 h-[70px] border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors flex items-center justify-center">
+                            Daftar
+                        </a>
+                    </div>
+                    <div class="flex-1">
+                        <button type="submit" 
+                            class="w-full px-6 h-[70px] bg-[#0F044C] text-white font-medium hover:bg-[#0F044C]/90 transition-colors flex items-center justify-center">
+                            Login
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
