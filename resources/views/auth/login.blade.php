@@ -13,7 +13,7 @@
         <!-- Panel Kiri - Background Image dengan Gradient Overlay -->
         <div class="hidden lg:flex lg:w-1/2 relative">
             <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/ac-background.png');"></div>
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/ac-background.png') }}');"></div>
             <!-- Gradient Overlay -->
             <div class="absolute inset-0 bg-gradient-to-l from-[#0F044C]/15 to-[#0F044C]"></div>
             <!-- Content -->
@@ -42,12 +42,13 @@
             </div>
 
             <!-- Form -->
-            <form class="space-y-6" action="#" method="POST">
+            <form class="space-y-6" action="{{ route('login.post') }}" method="POST">
+                @csrf
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
                         Email
                     </label>
-                    <input id="email" name="email" type="email" required 
+                    <input id="email" name="email" type="email" required value="{{ old('email') }}"
                         class="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
                 </div>
 
@@ -61,7 +62,7 @@
 
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input id="remember-me" name="remember-me" type="checkbox" 
+                        <input id="remember-me" name="remember" type="checkbox" 
                             class="h-4 w-4 text-[#0F044C] focus:ring-[#0F044C] border-gray-300 rounded">
                         <label for="remember-me" class="ml-2 block text-sm text-gray-700">
                             Ingat saya
@@ -72,12 +73,24 @@
                             Lupa password?
                         </a>
                     </div>
+                    @if($errors->any())
+                    <div class="text-red-600 text-sm">
+                       {{ $errors->first() }}
+                    </div>
+                    @endif
+                </div>
+
+                <!-- Divider -->
+                <div class="relative my-8">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
                 </div>
 
                 <!-- Bottom Section -->
                 <div class="flex space-x-4 items-end">
-                    <div class="flex-1">
-                        <p class="text-gray-600 mb-2 text-left">Belum memiliki Akun?</p>
+                    <div class="flex-1 mt-3">
+                        <p class="text-gray-600 text-center">Belum memiliki Akun?</p>
                         <a href="/register" 
                             class="w-full px-6 h-[70px] border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors flex items-center justify-center">
                             Daftar

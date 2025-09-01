@@ -4,7 +4,7 @@
 			<!-- Column 1: Brand + Address -->
 			<div>
 				<a href="/">
-				<img src="/images/logo.png" alt="Dwi AC Mobil" class="mb-5 h-10 w-auto sm:h-12 lg:h-14" />
+				<img src="{{ asset('images/logo.png') }}" alt="Dwi AC Mobil" class="mb-5 h-10 w-auto sm:h-12 lg:h-14" />
 				</a>
 				<ul class="space-y-3 bigparagraf text-white/90">
 					<li>JL.In Aja Dulu No. 6, Malang</li>

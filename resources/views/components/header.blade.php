@@ -4,7 +4,7 @@
     <!-- Logo -->
     <div class="flex items-center">
       <a href="/" class="flex items-center space-x-2">
-        <img src="/images/logo.png" alt="Dwi AC Mobil Logo" class="h-10 w-auto sm:h-12 lg:h-14">
+        <img src="{{ asset('images/logo.png') }}" alt="Dwi AC Mobil Logo" class="h-10 w-auto sm:h-12 lg:h-14">
       </a>
     </div>
     
@@ -29,7 +29,7 @@
     
     <!-- Daftar Akun & User Icon -->
     <div class="flex items-center space-x-4">
-      <a href="#" class="hidden lg:inline-block bg-white/20 text-white text-lg font-medium px-6 py-2 rounded-xl shadow hover:bg-white/30 transition">Daftar Akun</a>
+      <a href="/register" class="hidden lg:inline-block bg-white/20 text-white text-lg font-medium px-6 py-2 rounded-xl shadow hover:bg-white/30 transition">Daftar Akun</a>
       <span class="inline-flex items-center justify-center h-10 w-10 rounded-full border-2 border-white">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" class="h-7 w-7">
           <circle cx="12" cy="8" r="4" stroke-width="2"/>
@@ -140,7 +140,7 @@
           <div class="flex items-center justify-between">
             <a href="/" class="-m-1.5 p-1.5">
               <span class="sr-only">Dwi AC Mobil</span>
-              <img src="/images/logo.png" alt="Dwi AC Mobil Logo" class="h-8 w-auto" />
+              <img src="{{ asset('images/logo.png') }}" alt="Dwi AC Mobil Logo" class="h-8 w-auto" />
             </a>
             <button type="button" command="close" commandfor="mobile-menu" class="-m-2.5 rounded-md p-2.5 text-gray-700">
               <span class="sr-only">Close menu</span>

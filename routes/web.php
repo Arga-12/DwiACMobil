@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ExampleController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('beranda');
@@ -11,14 +11,15 @@ Route::get('/layanan', function () {
     return view('layanan');
 })->name('layanan');
 
-// Authentication Routes (Frontend Only)
-Route::get('/login', function () {
-    return view('auth.login');
-});
+// existing routes...
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
-Route::get('/register', function () {
-    return view('auth.register');
-});
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+// logout
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Dashboard Routes
 Route::get('/dashboard', function () {

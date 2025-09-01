@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between w-full px-3 sm:px-4 md:px-6 lg:px-8">
         <!-- Logo -->
         <div class="flex items-center space-x-2 sm:space-x-3 md:space-x-4 lg:space-x-4">
-            <img src="/images/logo.png" alt="Dwi AC Mobil Logo" class="h-6 w-auto sm:h-8 md:h-10 lg:h-14">
+            <img src="{{ asset('images/logo.png') }}" alt="Dwi AC Mobil Logo" class="h-6 w-auto sm:h-8 md:h-10 lg:h-14">
         </div>
         
         <!-- Welcome Message - centered -->
@@ -13,7 +13,7 @@
         
         <!-- Spacer untuk balance layout -->
         <div class="invisible">
-            <img src="/images/logo.png" alt="Spacer" class="h-6 w-auto sm:h-8 md:h-10 lg:h-14">
+            <img src="{{ asset('images/logo.png') }}" alt="Spacer" class="h-6 w-auto sm:h-8 md:h-10 lg:h-14">
         </div>
     </div>
-</header> 
+</header>

@@ -1,6 +1,6 @@
 <section class="relative isolate overflow-hidden pt-28 lg:pt-30">
   <!-- Background image -->
-  <div class="absolute inset-0 bg-cover bg-center brightness-90" style="background-image: url('/images/hero-background.png');"></div>
+  <div class="absolute inset-0 bg-cover bg-center brightness-90" style="background-image: url('{{ asset('images/hero-background.png') }}');"></div>
   <!-- Darken overlay (adjust opacity: /30 /40 /50 /60) -->
   <div class="absolute inset-0 bg-black/40"></div>
   <!-- Gradient overlay: from left #0F044C (100%) to transparent (0%) -->

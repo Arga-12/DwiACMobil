@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Antrian - Dwi AC Mobil</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/css/custom-fonts.css">
-</head>
-<body class="bg-gray-50">
     <x-user.dashboard-layout>
         <!-- Header Section -->
         <div class="mb-6 sm:mb-8 md:mb-10 lg:mb-12">
@@ -15,20 +5,8 @@
             <p class="text-gray-600 defparagraf">Booking mobil Anda dengan mengambil tanggal yang tersedia pada kalender di sebelah kanan.</p>
         </div>
 
-        <!-- Add Booking Button -->
-        <div class="flex justify-center mb-8" id="addBookingSection">
-            <button onclick="showBookingForm()" class="bg-[#0F044C] hover:bg-[#141E61] transition-colors duration-200 rounded-full p-4 shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"/>
-                </svg>
-            </button>
-            <div class="ml-4 flex items-center">
-                <span class="text-lg font-medium defparagraf text-[#0F044C]">Tambahkan Antrian Anda!</span>
-            </div>
-        </div>
-
-        <!-- Booking Form (Hidden Initially) -->
-        <div id="bookingForm" class="hidden">
+        <!-- Booking Form -->
+        <div id="bookingForm">
             <div class="bg-white border-2 border-[#0F044C] shadow-sm p-6 mb-6">
                 <form class="space-y-6">
                     <!-- Date and Time Selection -->
@@ -118,9 +96,6 @@
 
                     <!-- Action Buttons -->
                     <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="hideBookingForm()" class="px-6 py-2 bg-white border-2 border-[#787A91] text-[#787A91] hover:bg-[#EEEEEE] transition-colors defparagraf">
-                            Batal
-                        </button>
                         <button type="submit" class="px-6 py-2 bg-[#0F044C] text-white hover:bg-[#141E61] transition-colors defparagraf">
                             Kirim Booking
                         </button>
@@ -129,17 +104,110 @@
             </div>
         </div>
 
+        <!-- Include Booking Receipt Modal Component -->
+        <x-user.booking-receipt-modal />
+
         <script>
-            function showBookingForm() {
-                document.getElementById('addBookingSection').classList.add('hidden');
-                document.getElementById('bookingForm').classList.remove('hidden');
+            // Store current booking data globally
+            let currentBookingData = {};
+
+            function acceptPrice() {
+                // Show receipt modal with confirmed status
+                const bookingData = getCurrentBookingData();
+                bookingData.status = 'confirmed';
+                showReceiptModal(bookingData);
+                
+                // In real app, this would send acceptance to backend
+                console.log('Price accepted by user');
             }
 
-            function hideBookingForm() {
-                document.getElementById('addBookingSection').classList.remove('hidden');
-                document.getElementById('bookingForm').classList.add('hidden');
+            function declinePrice() {
+                // Show receipt modal with cancelled status
+                const bookingData = getCurrentBookingData();
+                bookingData.status = 'cancelled';
+                showReceiptModal(bookingData);
+                
+                // In real app, this would send decline to backend
+                console.log('Price declined by user');
             }
+
+            // Store current booking data globally
+            let currentBookingData = {};
+
+            function getCurrentBookingData() {
+                return currentBookingData;
+            }
+
+            // Simulate mechanic sending price (for demo purposes)
+            function simulatePriceConfirmation() {
+                setTimeout(() => {
+                    // Close receipt modal first
+                    closeReceiptModal();
+                    
+                    // Update booking data with pricing information
+                    const bookingData = getCurrentBookingData();
+                    bookingData.pricing = {
+                        serviceCost: 'Rp 150.000',
+                        sparepartCost: 'Rp 75.000',
+                        deliveryCost: 'Rp 25.000',
+                        totalCost: 'Rp 250.000'
+                    };
+                    bookingData.mechanicNote = 'Filter AC perlu diganti dan freon sudah habis. Estimasi waktu pengerjaan 2-3 jam.';
+                    bookingData.status = 'price_confirmation';
+                    
+                    // Show receipt modal with price confirmation
+                    showReceiptModal(bookingData);
+                }, 5000); // Simulate 5 second delay
+            }
+
+
+            // Handle form submission
+            document.querySelector('#bookingForm form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(this);
+                const date = this.querySelector('input[type="date"]').value;
+                const time = this.querySelector('select').value;
+                const car = this.querySelectorAll('select')[1].value;
+                const address = this.querySelector('textarea').value;
+                const notes = this.querySelectorAll('textarea')[1].value;
+                
+                // Get selected services
+                const selectedServices = [];
+                this.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+                    selectedServices.push(checkbox.nextElementSibling.textContent);
+                });
+
+                // Generate booking ID (in real app, this would come from backend)
+                const bookingId = 'BWK-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+                
+                // Get car text from selected option
+                const carSelect = this.querySelectorAll('select')[1];
+                const carText = carSelect.options[carSelect.selectedIndex].text;
+                
+                // Store booking data globally
+                currentBookingData = {
+                    id: bookingId,
+                    date: date ? new Date(date).toLocaleDateString('id-ID') : '-',
+                    time: time || '-',
+                    car: car ? carText : '-',
+                    services: selectedServices,
+                    address: address,
+                    notes: notes,
+                    status: 'waiting',
+                    isNewBooking: true
+                };
+                
+                // Show receipt modal with waiting status
+                showReceiptModal(currentBookingData);
+                
+                // Reset form and hide booking form
+                this.reset();
+                hideBookingForm();
+                
+                // Start price confirmation simulation
+                simulatePriceConfirmation();
+            });
         </script>
     </x-user.dashboard-layout>
-</body>
-</html>

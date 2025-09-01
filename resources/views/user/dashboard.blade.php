@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Dwi AC Mobil</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/css/custom-fonts.css">
-</head>
-<body class="bg-gray-50">
-    <x-user.dashboard-layout>
-        <!-- Dashboard Content -->
-        <div class="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
+<x-user.dashboard-layout>
+    <!-- Dashboard Content -->
+    <div class="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
             <!-- Header Section -->
             <div class="mb-6 sm:mb-8 md:mb-10 lg:mb-12">
                 <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-alt-48 text-gray-900 mb-2">Dashboard</h1>
@@ -68,7 +58,7 @@
                                 <div class="w-full h-px bg-black"></div>
                                 
                                 <!-- Detail Struk Button -->
-                                <button class="w-full px-3 py-1.5 bg-white border border-black defparagraf text-xs text-gray-700 hover:bg-gray-50 transition-colors">
+                                <button onclick="showCurrentBookingDetail()" class="w-full px-3 py-1.5 bg-white border border-black defparagraf text-xs text-gray-700 hover:bg-gray-50 transition-colors">
                                     Detail Struk
                                 </button>
                             </div>
@@ -86,31 +76,12 @@
                 </div>
             </div>
 
-            <!-- RINGKASAN LAYANAN Section -->
+            <!-- RINGKASAN AKTIVITAS Section -->
             <div class="space-y-4">
-                <h2 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-alt-48 text-gray-900 font-semibold">RINGKASAN LAYANAN</h2>
+                <h2 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-alt-48 text-gray-900 font-semibold">RINGKASAN AKTIVITAS</h2>
                 
                 <!-- Summary Cards Layout -->
                 <div class="space-y-4 sm:space-y-5">
-                    <!-- First Row: Service Berikutnya (Full Width) -->
-                    <div class="bg-gradient-to-r from-[#0F044C] to-[#141E61] border-2 border-[#0F044C] shadow-lg h-[120px] relative overflow-hidden">
-                        <div class="absolute top-2 right-2">
-                        </div>
-                        <div class="flex items-center h-full px-4">
-                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-[#0F044C]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <polyline points="12,6 12,12 16,14"/>
-                                </svg>
-                            </div>
-                            <div class="ml-4 flex-1">
-                                <p class="text-lg font-bold defparagraf text-white">15 Des 2025</p>
-                                <p class="text-sm defparagraf text-[#EEEEEE]">Service Berikutnya</p>
-                                <p class="text-xs defparagraf text-[#EEEEEE] mt-1">Mazda MX-5 • Cuci AC</p>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Second Row: Total Service and Total Pengeluaran -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                         <!-- Total Services Card -->
@@ -195,7 +166,31 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </x-user.dashboard-layout>
-</body>
-</html> 
+    </div>
+
+    <!-- Include Booking Receipt Modal Component -->
+    <x-user.booking-receipt-modal />
+
+    <script>
+        function showCurrentBookingDetail() {
+            const bookingData = {
+                id: 'BWK-2024-001',
+                date: '11/09/2025',
+                time: '09:15',
+                car: 'Mazda MX-5 Miata Na (2020)',
+                services: ['Isi Freon'],
+                address: '',
+                notes: 'AC tidak dingin, perlu pengecekan sistem pendingin',
+                status: 'confirmed',
+                pricing: {
+                    serviceCost: 'Rp 100.000',
+                    sparepartCost: 'Rp 50.000',
+                    deliveryCost: 'Rp 0',
+                    totalCost: 'Rp 150.000'
+                }
+            };
+            
+            showReceiptModal(bookingData);
+        }
+    </script>
+</x-user.dashboard-layout> 
