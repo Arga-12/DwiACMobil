@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,12 +22,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-    Blade::componentNamespace('App\\View\\Components', 'app');
-    Blade::componentNamespace('App\\View\\Components\\User', 'user');
+        Blade::componentNamespace('App\\View\\Components', 'app');
+        Blade::componentNamespace('App\\View\\Components\\User', 'user');
 
-    // Kalau foldermu ada di resources/views/user/components
-    $this->loadViewComponentsAs('user', [
-        \app\view\Components\User\DashboardLayout::class,
-    ]);
+        // Kalau foldermu ada di resources/views/user/components
+        $this->loadViewComponentsAs('user', [
+            \app\view\Components\User\DashboardLayout::class,
+        ]);
+
+        // Define admin gate untuk montir
+        Gate::define('admin', function ($user) {
+            // Cek apakah user dari guard montir
+            if (Auth::guard('montir')->check()) {
+                $montir = Auth::guard('montir')->user();
+                return $montir instanceof \App\Models\Montir && $montir->isAdmin();
+            }
+            return false;
+        });
     }
 }

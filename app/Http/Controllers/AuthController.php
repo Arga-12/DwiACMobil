@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pelanggan;
+use App\Models\Montir;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,16 @@ class AuthController extends Controller
     // Tampilkan form login
     public function showLogin()
     {
-        if (Auth::check()) return redirect()->route('dashboard');
+        // Cek apakah sudah login sebagai pelanggan
+        if (Auth::guard('web')->check()) {
+            return redirect()->route('dashboard');
+        }
+        
+        // Cek apakah sudah login sebagai montir/admin
+        if (Auth::guard('montir')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+        
         return view('auth.login');
     }
 
@@ -27,8 +37,14 @@ class AuthController extends Controller
 
         $remember = $request->has('remember');
 
-        // Guard default (web) menggunakan provider yang sudah kita atur di config/auth.php
-        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $remember)) {
+        // Coba login sebagai montir/admin dulu menggunakan guard montir
+        if (Auth::guard('montir')->attempt(['email' => $data['email'], 'password' => $data['password']], $remember)) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
+        // Jika gagal, coba login sebagai pelanggan menggunakan guard web
+        if (Auth::guard('web')->attempt(['email' => $data['email'], 'password' => $data['password']], $remember)) {
             $request->session()->regenerate();
             return redirect()->intended(route('dashboard'));
         }
@@ -72,9 +88,24 @@ class AuthController extends Controller
     // Logout
     public function logout(Request $request)
     {
-        Auth::logout();
+        // Debug: Log current authentication state
+        \Log::info('Logout attempt', [
+            'web_authenticated' => Auth::guard('web')->check(),
+            'montir_authenticated' => Auth::guard('montir')->check(),
+            'session_id' => $request->session()->getId()
+        ]);
+        
+        // Logout dari semua guards
+        Auth::guard('web')->logout();
+        Auth::guard('montir')->logout();
+        
+        // Clear session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('beranda');
+        
+        \Log::info('Logout completed, redirecting to beranda');
+        
+        // Redirect ke beranda dengan URL absolut
+        return redirect('/');
     }
 }

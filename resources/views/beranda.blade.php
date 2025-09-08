@@ -7,11 +7,11 @@
                 <h2 class="font-montserrat-alt-48 text-black mb-6 md:mb-8">KAMI HADIR DENGAN LAYANAN SERVIS AC MOBIL TERBAIK</h2>
                 @php
                     $services = [
-                        ['title' => 'Isi Freon', 'desc' => 'Mengisi ulang freon pada sistem AC mobil yang kurang atau habis agar AC kembali dingin dan bekerja optimal.', 'img' => asset('images/layanan-1.jpg')],
-                        ['title' => 'Cuci Evaporator', 'desc' => 'Membersihkan evaporator dari kotoran dan jamur agar udara lebih bersih dan dingin.', 'img' => asset('images/layanan-2.jpg')],
-                        ['title' => 'Ganti Filter', 'desc' => 'Penggantian filter kabin AC untuk menjaga kualitas sirkulasi udara dan kenyamanan.', 'img' => asset('images/layanan-3.jpg')],
-                        ['title' => 'Cek Kebocoran', 'desc' => 'Pemeriksaan menyeluruh untuk mendeteksi kebocoran sistem AC mobil.', 'img' => asset('images/layanan-1.jpg')],
-                        ['title' => 'Service Berkala', 'desc' => 'Perawatan rutin untuk menjaga performa AC tetap optimal.', 'img' => asset('images/layanan-2.jpg')],
+                        ['title' => 'Isi Freon', 'desc' => 'Mengisi ulang freon pada sistem AC mobil yang kurang atau habis agar AC kembali dingin dan bekerja optimal.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
+                        ['title' => 'Cuci Evaporator', 'desc' => 'Membersihkan evaporator dari kotoran dan jamur agar udara lebih bersih dan dingin.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
+                        ['title' => 'Ganti Filter', 'desc' => 'Penggantian filter kabin AC untuk menjaga kualitas sirkulasi udara dan kenyamanan.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
+                        ['title' => 'Cek Kebocoran', 'desc' => 'Pemeriksaan menyeluruh untuk mendeteksi kebocoran sistem AC mobil.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
+                        ['title' => 'Service Berkala', 'desc' => 'Perawatan rutin untuk menjaga performa AC tetap optimal.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
                     ];
                 @endphp
 
@@ -21,7 +21,7 @@
                     <div id="service-scroller" class="overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                         <div class="flex gap-8 w-max min-w-full">
                             @foreach($services as $service)
-                            <article class="w-[500px] h-[300px] max-w-full bg-white overflow-hidden grid grid-cols-[232px_268px] shrink-0" style="outline: 1px solid rgba(0,0,0,0.15); outline-offset: -1px;">
+                            <article class="w-[500px] h-[300px] max-w-full bg-white overflow-hidden grid grid-cols-[232px_268px] shrink-0 border border-black/15">
                                 <img src="{{ $service['img'] }}" alt="{{ $service['title'] }}" class="w-[232px] h-[300px] object-cover" />
                                 <div class="w-[268px] h-[300px] p-6 flex flex-col">
                                     <h3 class="font-montserrat-alt-36 mb-3">{{ $service['title'] }}</h3>
@@ -42,11 +42,12 @@
                         </button>
 
                         <div class="mx-auto flex flex-wrap items-center gap-3 sm:gap-4 md:gap-6">
-                            <a href="#" class="w-full sm:w-[240px] md:w-[275px] h-12 sm:h-14 md:h-[70px] inline-flex items-center justify-center bg-[#0F044C] text-white font-semibold tracking-wide hover:bg-[#0F044C]/90 transition">
-                                <span class="bigparagraf">Antri & Serviskan!</span>
-                                <img src="/images/arrows_button/panah-miringkeatas.svg" alt="" aria-hidden="true" class="ml-3 h-5 w-5" />
-                            </a>
-                            <a href="#" class="w-full sm:w-[240px] md:w-[275px] h-12 sm:h-14 md:h-[70px] inline-flex items-center justify-center border bg-black/30 text-white font-semibold hover:bg-black/50 transition">
+                            <a href="{{ auth()->check() ? route('booking') : route('login') }}"
+                                class="w-full sm:w-[240px] md:w-[275px] h-12 sm:h-14 md:h-[70px] inline-flex items-center justify-center bg-[#0F044C] text-white font-semibold tracking-wide hover:bg-[#0F044C]/90 transition">
+                                 <span class="bigparagraf">Antri & Serviskan!</span>
+                                 <img src="/images/arrows_button/panah-miringkeatas.svg" alt="" aria-hidden="true" class="ml-3 h-5 w-5" />
+                             </a>                             
+                            <a href="/layanan" class="w-full sm:w-[240px] md:w-[275px] h-12 sm:h-14 md:h-[70px] inline-flex items-center justify-center border bg-black/30 text-white font-semibold hover:bg-black/50 transition">
                                 <span class="bigparagraf">Jelajahi layanan kami</span>
                             </a>
                         </div>
@@ -204,13 +205,21 @@
                 <!-- Bottom Content -->
                 <div class="mt-10 flex items-center justify-between">
                     <div class="max-w-xl">
-                        <p class="bigparagraf text-black">Antrikan mobil Anda dengan mengambil tanggal yang tersedia pada kalender di sebelah kanan.</p>
+                        <p class="bigparagraf text-black">
+                            @auth
+                                Antrikan mobil Anda dengan mengambil tanggal yang tersedia pada kalender di sebelah kanan.
+                            @else
+                                Silakan <a href="{{ route('login') }}" class="text-[#0F044C] font-semibold hover:underline">login</a> atau <a href="{{ route('register') }}" class="text-[#0F044C] font-semibold hover:underline">daftar</a> untuk melakukan booking antrian.
+                            @endauth
+                        </p>
                     </div>
                     <div class="px-7">
-                    <a href="#" class="w-[275px] h-[70px] inline-flex items-center justify-center bg-[#0F044C] text-white font-semibold tracking-wide hover:bg-[#0F044C]/90 transition">
+                        <a href="{{ auth()->check() ? route('booking') : route('login') }}" 
+                       class="w-full sm:w-64 h-14 md:h-16 bg-[#0F044C] text-white font-semibold 
+                              flex items-center justify-center hover:bg-[#0F044C]/90 transition">
                         <span class="bigparagraf">Antri & Serviskan!</span>
-                        <img src="/images/arrows_button/panah-miringkeatas.svg" alt="" aria-hidden="true" class="ml-3 h-5 w-5" />
-                    </a>
+                            <img src="/images/arrows_button/panah-miringkeatas.svg" alt="" aria-hidden="true" class="ml-3 h-5 w-5" />
+                        </a>
                     </div>
                 </div>
             </div>

@@ -25,6 +25,7 @@ class Pelanggan extends Authenticatable
         'no_wa',
         'alamat',
         'is_active',
+        'profile_photo',
     ];
 
     // jangan kembalikan password ke JSON

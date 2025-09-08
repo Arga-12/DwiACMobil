@@ -16,6 +16,7 @@ class CreatePelangganTable extends Migration
                 $table->string('password');
                 $table->string('no_wa', 30)->nullable();
                 $table->text('alamat')->nullable();
+                $table->string('profile_photo')->nullable();
                 $table->boolean('is_active')->default(true);
                 $table->timestamps();
             });

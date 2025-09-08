@@ -4,12 +4,19 @@
         <!-- User Profile -->
         <div class="text-center mb-4 sm:mb-5 md:mb-6 lg:mb-8">
             <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 mt-[70px] bg-gray-300 rounded-full mx-auto mb-2 sm:mb-3 md:mb-3 lg:mb-4 overflow-hidden">
-                <img src="{{ asset('images/user/yui.jpg') }}" 
+                @php
+                    $user = Auth::user();
+                    $profileImage = $user->profile_photo && file_exists(public_path($user->profile_photo)) 
+                        ? $user->profile_photo 
+                        : 'images/user/yui.jpg';
+                @endphp
+                <img src="{{ asset($profileImage) }}" 
                      alt="User Icon"
-                     class="w-full h-full object-cover" />
+                     class="w-full h-full object-cover"
+                     onerror="this.src='{{ asset('images/user/yui.jpg') }}'" />
             </div>                        
-            <h3 class="text-gray-900 bigparagraf text-xs sm:text-sm md:text-sm lg:text-base">Hirasawa Yui</h3>
-            <p class="text-gray-600 defparagraf text-xs sm:text-xs md:text-xs lg:text-sm whitespace-nowrap">Bergabung pada 01 September 2025</p>
+            <h3 class="text-gray-900 bigparagraf text-xs sm:text-sm md:text-sm lg:text-base">{{ Auth::user()->nama }}</h3>
+            <p class="text-gray-600 defparagraf text-xs sm:text-xs md:text-xs lg:text-sm whitespace-nowrap">Bergabung pada {{ Auth::user()->created_at->format('d F Y') }}</p>
         </div>
 
         <!-- Navigation Menu -->
@@ -47,18 +54,35 @@
                     <g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 19v-9a6 6 0 0 1 6-6v0a6 6 0 0 1 6 6v9M6 19h12M6 19H4m14 0h2m-9 3h2"/><circle cx="12" cy="3" r="1"/></g>
                 </svg>
                 <span class="bigparagraf text-xs sm:text-sm md:text-sm lg:text-base">Notifikasi</span>
+                @php
+                    $notificationCount = (Auth::user()->id_pelanggan % 5) + 1; // Dynamic notification count
+                @endphp
+                @if($notificationCount > 0)
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">{{ $notificationCount }}</span>
+                @endif
             </a>
         </nav>
 
-        <!-- Logout Button -->
-        <div class="mt-auto pt-4 sm:pt-5 md:pt-6 lg:pt-8">
+        <!-- Bottom Buttons -->
+        <div class="mt-auto pt-4 space-y-2">
+            <!-- Keluar Dashboard Button -->
+            <a href="{{ route('beranda') }}" 
+            class="flex items-center space-x-2 w-full px-4 py-2 text-black bg-[#EEEEEE] hover:bg-gray-200 transition-colors">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9.75V21h6v-6h6v6h6V9.75M9 21V9.75m6 0V21m0-11.25L12 3 9 9.75"/>
+                </svg>
+                <span class="bigparagraf text-sm sm:text-base">Keluar Dashboard</span>
+            </a>
+
+            <!-- Logout Button -->
             <form action="{{ route('logout') }}" method="POST" class="w-full">
                 @csrf
-                <button type="submit" class="w-full flex items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-2 sm:px-3 md:px-3 lg:px-4 py-2 lg:py-3 text-red-600 bg-[#EEEEEE] border-2 border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 transition-colors">
-                    <svg class="w-4 h-4 sm:w-4 sm:h-4 md:w-4 md:h-4 lg:w-5 lg:h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/>
+                <button type="submit" 
+                        class="flex items-center space-x-2 w-full px-4 py-2 text-black bg-[#EEEEEE] hover:bg-gray-200 transition-colors">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"/>
                     </svg>
-                    <span class="bigparagraf text-xs sm:text-sm md:text-sm lg:text-base">Logout</span>
+                    <span class="bigparagraf text-sm sm:text-base">Logout</span>
                 </button>
             </form>
         </div>

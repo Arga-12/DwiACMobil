@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'montir' => [
+            'driver' => 'session',
+            'provider' => 'montirs',
+        ],
     ],
 
     /*
@@ -64,7 +68,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Pelanggan::class,
         ],
-        // ...
+        'montirs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Montir::class,
+        ],
     ],
 
     /*
