@@ -65,32 +65,52 @@ class AdminController extends Controller
     
     private function getQueueData()
     {
-        // Simulated queue data
+        // Simulated queue data expanded with additional statuses
         return [
             [
                 'id' => 'BWK-001',
                 'customer_name' => 'John Doe',
                 'service' => 'Isi Freon',
                 'car' => 'Toyota Avanza',
-                'time' => '09:00',
-                'status' => 'waiting'
+                'plate' => 'B 1234 ABC',
+                'time' => '09:00-10:00',
+                'date' => '2025-09-15',
+                'status' => 'waiting', // waiting to be handled
+                'price' => 150000,
             ],
             [
                 'id' => 'BWK-002',
                 'customer_name' => 'Jane Smith',
                 'service' => 'Ganti Oli',
                 'car' => 'Honda Civic',
-                'time' => '10:30',
-                'status' => 'in_progress'
+                'plate' => 'D 5678 XYZ',
+                'time' => '10:30-11:30',
+                'date' => '2025-09-15',
+                'status' => 'in_progress', // currently being serviced
+                'price' => 100000,
             ],
             [
                 'id' => 'BWK-003',
                 'customer_name' => 'Ahmad Santoso',
                 'service' => 'Service AC',
                 'car' => 'Mazda MX-5',
-                'time' => '11:00',
-                'status' => 'waiting'
-            ]
+                'plate' => 'H 3456 KLM',
+                'time' => '11:00-12:00',
+                'date' => '2025-09-15',
+                'status' => 'need_confirmation', // requires price confirmation to customer
+                'price' => 450000,
+            ],
+            [
+                'id' => 'BWK-004',
+                'customer_name' => 'Siti Aminah',
+                'service' => 'Cuci Evaporator',
+                'car' => 'Suzuki Ertiga',
+                'plate' => 'E 9988 HJK',
+                'time' => '13:00-14:00',
+                'date' => '2025-09-15',
+                'status' => 'completed', // service completed
+                'price' => 120000,
+            ],
         ];
     }
     

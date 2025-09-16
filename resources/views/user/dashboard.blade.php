@@ -3,13 +3,13 @@
     <div class="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
             <!-- Header Section -->
             <div class="mb-6 sm:mb-8 md:mb-10 lg:mb-12">
-                <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-alt-48 text-gray-900 mb-2">Dashboard</h1>
+                <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-48 uppercase text-gray-900 mb-2">Dashboard</h1>
                 <p class="text-gray-600 defparagraf">Kelola layanan AC mobil Anda di sini.</p>
             </div>
 
             <!-- ANTRIAN ANDA SAAT INI Section -->
             <div class="space-y-4">
-                <h2 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-alt-48 text-gray-900 font-semibold">ANTRIAN ANDA SAAT INI</h2>
+                <h2 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-48 text-gray-900 font-semibold">ANTRIAN ANDA SAAT INI</h2>
                 
                 <!-- Queue Card and Status Container -->
                 <div class="flex">
@@ -78,7 +78,7 @@
 
             <!-- RINGKASAN AKTIVITAS Section -->
             <div class="space-y-4">
-                <h2 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-alt-48 text-gray-900 font-semibold">RINGKASAN AKTIVITAS</h2>
+                <h2 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-48 text-gray-900 font-semibold">RINGKASAN AKTIVITAS</h2>
                 
                 <!-- Summary Cards Layout -->
                 <div class="space-y-4 sm:space-y-5">
@@ -119,7 +119,7 @@
 
             <!-- MOBIL YANG DIPUNYA Section -->
             <div class="space-y-4">
-                <h2 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-alt-48 text-gray-900">MOBIL YANG DIPUNYA</h2>
+                <h2 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-48 text-gray-900">MOBIL YANG DIPUNYA</h2>
                 
                 <!-- Cars Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-5">

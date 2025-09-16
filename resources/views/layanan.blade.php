@@ -37,7 +37,7 @@
 
             <div class="relative p-5 sm:p-8 md:p-10 pt-20 sm:pt-24 md:pt-28 min-h-[420px] md:min-h-[480px] lg:min-h-[560px] flex flex-col h-full justify-start gap-4 defparagraf">
               <div class="flex-1 flex flex-col justify-center">
-                <h3 class="mt-2 text-[40px] sm:text-[48px] font-extrabold tracking-wide font-montserrat-alt-48 uppercase">{{ $s['title'] }}</h3>
+                <h3 class="mt-2 text-[40px] sm:text-[48px] font-extrabold tracking-wide font-montserrat-48 uppercase">{{ $s['title'] }}</h3>
                 <p class="mt-2 text-base sm:text-lg defparagraf leading-relaxed max-w-prose">{{ $s['desc'] }}</p>
               </div>
               <div class="mt-auto">
@@ -55,8 +55,8 @@
           <div class="relative p-3 sm:p-5 md:p-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 defparagraf">
               <div>
-                <div class="font-montserrat-alt-48 tracking-tight text-white/95">07</div>
-                <h3 class="mt-2 text-[28px] font-montserrat-alt-48 tracking-wide uppercase">Penggantian Spare Part AC Mobil</h3>
+                <div class="font-montserrat-48 tracking-tight text-white/95">07</div>
+                <h3 class="mt-2 text-[28px] font-montserrat-48 tracking-wide uppercase">Penggantian Spare Part AC Mobil</h3>
                 <p class="mt-2 text-white defparagraf">Kami siap mengganti komponen AC mobil Anda yang rusak atau aus, sesuai standar dan cocok untuk semua jenis kendaraan.</p>
                 <ul class="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 text-white defparagraf">
                   <li>Freon / Refrigerant</li>

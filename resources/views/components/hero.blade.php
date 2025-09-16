@@ -56,17 +56,17 @@
        style="padding-top: calc(var(--header-height) + 24px); padding-bottom: 3rem; min-height: {{ $minHeight }};">
     <div class="py-24 sm:py-32">
       <div class="max-w-5xl lg:max-w-6xl text-left">
-        <div class="inline-flex items-center px-5 py-2 bg-[#787A91] h-[40px] rounded-full backdrop-blur-sm text-white mb-6 bigparagraf">
+        {{-- <div class="inline-flex items-center px-5 py-2 bg-[#787A91] h-[40px] rounded-full backdrop-blur-sm text-white mb-6 bigparagraf">
           <span>
             Selamat Datang di <span class="text-[#0F044C]">Dwi AC Mobil</span>
           </span>          
-        </div>
+        </div> --}}
 
         <h1 class="font-montserrat-64 text-white leading-tight uppercase">
           {{ $computedHeading }}
         </h1>
 
-        <p class="mt-6 text-white/80 text-lg defparagrah">
+        <p class="mt-6 text-white/80 bighpparagraf">
           {!! nl2br(e($computedSubtitle)) !!}
         </p>
 

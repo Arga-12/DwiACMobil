@@ -3,7 +3,7 @@
     <div class="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
             <!-- Header -->
             <div class="mb-2 sm:mb-4">
-                <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-alt-48 text-gray-900">NOTIFIKASI</h1>
+                <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-48 text-gray-900">NOTIFIKASI</h1>
                 <p class="text-gray-600 defparagraf">Semua pemberitahuan dan update layanan Anda.</p>
             </div>
 
@@ -32,10 +32,10 @@
 
             <!-- TERBARU Section -->
             <div class="space-y-6">
-                <h2 class="text-2xl font-montserrat-alt-48 text-gray-900 tracking-wide">TERBARU</h2>
+                <h2 class="text-2xl font-montserrat-48 text-gray-900 tracking-wide">TERBARU</h2>
                 
                 @foreach($notifikasi['terbaru'] as $item)
-                <div class="bg-white border border-gray-800 shadow-sm">
+                <div class="bg-white border-2 border-gray-800 shadow-sm">
                     <div class="px-4 sm:px-5 py-4">
                         <div class="flex items-stretch justify-between gap-6">
                             <!-- Left Content -->
@@ -61,10 +61,10 @@
 
             <!-- LAMPAU Section -->
             <div class="space-y-6 mt-10">
-                <h2 class="text-2xl font-montserrat-alt-48 text-gray-900 tracking-wide">LAMPAU</h2>
+                <h2 class="text-2xl font-montserrat-48 text-gray-900 tracking-wide">LAMPAU</h2>
                 
                 @foreach($notifikasi['lampau'] as $item)
-                <div class="bg-white border border-gray-800 shadow-sm">
+                <div class="bg-white border-2 border-gray-800 shadow-sm">
                     <div class="px-4 sm:px-5 py-4">
                         <div class="flex items-stretch justify-between gap-6">
                             <!-- Left Content -->

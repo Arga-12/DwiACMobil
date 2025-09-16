@@ -29,13 +29,58 @@
     
     <!-- Daftar Akun & User Icon -->
     <div class="flex items-center space-x-4">
+      @guest
       <a href="/register" class="hidden lg:inline-block bg-white/20 text-white text-lg font-medium px-6 py-2 rounded-xl shadow hover:bg-white/30 transition">Daftar Akun</a>
-      <span class="inline-flex items-center justify-center h-10 w-10 rounded-full border-2 border-white">
+      <a href="/login" aria-label="Masuk" class="inline-flex items-center justify-center h-10 w-10 rounded-full border-2 border-white hover:bg-white/10 transition">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" class="h-7 w-7">
           <circle cx="12" cy="8" r="4" stroke-width="2"/>
           <path stroke-width="2" d="M4 20c0-4 16-4 16 0"/>
         </svg>
-      </span>
+      </a>
+      @endguest
+
+      @auth
+      @php
+        $user = Auth::user();
+        // Prefer 'nama' as per Pelanggan schema, then fallback
+        $displayName = $user->nama ?? ($user->name ?? ($user->username ?? ($user->email ?? '')));
+        $initial = $displayName !== '' ? mb_strtoupper(mb_substr($displayName, 0, 1, 'UTF-8'), 'UTF-8') : 'U';
+
+        // Build avatar URL like in ProfileController: profile_photo is a public path, e.g., images/user/profiles/...
+        $avatarUrl = null;
+        if (!empty($user->profile_photo)) {
+          $path = $user->profile_photo;
+          if (\Illuminate\Support\Str::startsWith($path, ['http://','https://'])) {
+            $avatarUrl = $path;
+          } else {
+            // Validate file exists in public path, then use asset()
+            if (\Illuminate\Support\Facades\File::exists(public_path($path))) {
+              $avatarUrl = asset($path);
+            }
+          }
+        }
+      @endphp
+      <div class="relative group">
+        <button type="button" aria-haspopup="true" aria-expanded="false" class="inline-flex items-center justify-center h-11 w-11 rounded-full border-2 border-white bg-white/10 hover:bg-white/20 transition overflow-hidden">
+          @if ($avatarUrl)
+            <img src="{{ $avatarUrl }}" alt="Avatar" class="h-full w-full object-cover" />
+          @else
+            <span class="text-white font-semibold">{{ $initial }}</span>
+          @endif
+        </button>
+        <div class="absolute right-0 mt-3 w-52 rounded-lg bg-white shadow-lg ring-1 ring-black/5 invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0 transition">
+          <!-- Hover bridge to prevent accidental close when moving cursor from button to menu -->
+          <div class="absolute -top-3 right-0 h-3 w-full"></div>
+          <div class="py-2">
+            <a href="/profile" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
+            <form method="POST" action="{{ url('/logout') }}">
+              @csrf
+              <button type="submit" class="w-full text-left block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100">Keluar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      @endauth
     </div>
   </nav>
   <script>

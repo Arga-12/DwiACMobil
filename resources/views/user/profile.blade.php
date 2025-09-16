@@ -13,7 +13,7 @@
             
             <!-- PENGATURAN PROFIL Section -->
             <div class="space-y-6">
-                <h1 class="sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-alt-48 text-gray-900 mb-8">PENGATURAN PROFIL</h1>
+                <h1 class="sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-48 text-gray-900 mb-8">PENGATURAN PROFIL</h1>
                 
                 <!-- Profile Photo and Basic Info -->
                 <div class="flex flex-col lg:flex-row gap-8">
@@ -101,7 +101,7 @@
 
             <!-- DETAIL MENGENAI PROFIL ANDA Section -->
             <div class="space-y-6 mt-8">
-                <h2 class="sm:text-xl md:text-xl lg:text-2xl font-montserrat-alt-48 text-gray-900">DETAIL MENGENAI PROFIL ANDA</h2>
+                <h2 class="sm:text-xl md:text-xl lg:text-2xl font-montserrat-48 text-gray-900">DETAIL MENGENAI PROFIL ANDA</h2>
                 
                 <div class="space-y-6">
                     <!-- WhatsApp Number Field -->

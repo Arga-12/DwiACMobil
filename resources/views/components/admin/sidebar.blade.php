@@ -1,13 +1,13 @@
 <!-- Admin Sidebar Component -->
 <aside class="w-[300px] lg:w-[300px] md:w-[280px] sm:w-[280px] bg-[#EEEEEE] border-r border-[#0F044C] min-h-screen fixed left-0 top-0 z-40 transition-all duration-300 ease-in-out transform lg:translate-x-0 md:translate-x-0 sm:-translate-x-full">
-    <div class="p-3 sm:p-4 md:p-5 lg:p-6">
+    <div class="p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col min-h-screen">
         <!-- Admin Profile -->
         <div class="text-center mb-4 sm:mb-5 md:mb-6 lg:mb-8">
             <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 mt-[70px] bg-gray-300 rounded-full mx-auto mb-2 sm:mb-3 md:mb-3 lg:mb-4 overflow-hidden">
                 <img src="{{ asset('images/admin/admin1.jpg') }}" 
                      alt="Admin Icon"
                      class="w-full h-full object-cover" />
-            </div>                        
+            </div>
             <h3 class="text-gray-900 bigparagraf text-xs sm:text-sm md:text-sm lg:text-base">Admin - Brian O'Connor</h3>
             <p class="text-gray-600 defparagraf text-xs sm:text-xs md:text-xs lg:text-sm whitespace-nowrap">Bergabung pada 01 September 2025</p>
         </div>
@@ -51,14 +51,16 @@
         </nav>
 
         <!-- Logout Button -->
-        <div class="mt-auto pt-4 sm:pt-5 md:pt-6 lg:pt-8">
+        <div class="mt-auto pt-4 space-y-2">
+            <!-- Divider -->
+            <div class="-mx-3 sm:-mx-4 md:-mx-5 lg:-mx-6 h-px bg-[#0F044C]" aria-hidden="true"></div>
             <form action="{{ route('logout') }}" method="POST" class="w-full">
                 @csrf
-                <button type="submit" class="w-full flex items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-2 sm:px-3 md:px-3 lg:px-4 py-2 lg:py-3 text-red-600 bg-[#EEEEEE] border-2 border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 transition-colors">
-                    <svg class="w-4 h-4 sm:w-4 sm:h-4 md:w-4 md:h-4 lg:w-5 lg:h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/>
+                <button type="submit" class="flex items-center space-x-2 w-full px-4 py-2 text-black bg-[#EEEEEE]">
+                    <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path fill="none" stroke="currentColor" stroke-linecap="square" stroke-width="2" d="M15.5 16.5L20 12l-4.5-4.5m3.25 4.5H9m0 8.5H4v-17h5"/>
                     </svg>
-                    <span class="bigparagraf text-xs sm:text-sm md:text-sm lg:text-base">Logout</span>
+                    <span class="bigparagraf text-sm sm:text-base">Logout</span>
                 </button>
             </form>
         </div>

@@ -25,7 +25,7 @@
         </div>
 
         <!-- Main heading -->
-        <h1 class="font-montserrat-alt-48 text-white leading-tight uppercase">
+        <h1 class="font-montserrat-48 text-white leading-tight uppercase">
           {{ $heading }}
         </h1>
 

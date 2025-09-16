@@ -4,7 +4,7 @@
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="text-left">
                 <div class="montserrat-regular-10 mb-2">Layanan Kami</div>
-                <h2 class="font-montserrat-alt-48 text-black mb-6 md:mb-8">KAMI HADIR DENGAN LAYANAN SERVIS AC MOBIL TERBAIK</h2>
+                <h2 class="font-montserrat-48 text-black mb-6 md:mb-8">KAMI HADIR DENGAN LAYANAN SERVIS AC MOBIL TERBAIK</h2>
                 @php
                     $services = [
                         ['title' => 'Isi Freon', 'desc' => 'Mengisi ulang freon pada sistem AC mobil yang kurang atau habis agar AC kembali dingin dan bekerja optimal.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
@@ -24,7 +24,7 @@
                             <article class="w-[500px] h-[300px] max-w-full bg-white overflow-hidden grid grid-cols-[232px_268px] shrink-0 border border-black/15">
                                 <img src="{{ $service['img'] }}" alt="{{ $service['title'] }}" class="w-[232px] h-[300px] object-cover" />
                                 <div class="w-[268px] h-[300px] p-6 flex flex-col">
-                                    <h3 class="font-montserrat-alt-36 mb-3">{{ $service['title'] }}</h3>
+                                    <h3 class="font-montserrat-36 mb-3">{{ $service['title'] }}</h3>
                                     <p class="defparagraf text-black/80">{{ $service['desc'] }}</p>
                                     <div class="mt-auto">
                                         <a href="#" class="defparagraf uppercase font-bold inline-flex items-center gap-2">Selengkapnya <span aria-hidden="true">→</span></a>
@@ -100,22 +100,39 @@
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="text-left">
                 <div class="montserrat-regular-10 mb-2">Daftar Antrian</div>
-                <h2 class="font-montserrat-alt-48 text-black mb-6 md:mb-8">BOOKING ANTRIAN</h2>
+                <h2 class="font-montserrat-48 text-black mb-6 md:mb-8">BOOKING ANTRIAN</h2>
                 
                 <!-- Calendar Container -->
                 <div class="w-[1187px] max-w-full bg-white border border-gray-300 overflow-hidden">
                     <!-- Calendar Header with Days -->
                     <div class="w-[1185px] max-w-full px-8 py-6">
+                        @php
+                            $monthParam = request('month');
+                            $current = $monthParam ? \Carbon\Carbon::createFromFormat('Y-m', $monthParam)->startOfMonth() : \Carbon\Carbon::now()->startOfMonth();
+                            $prev = $current->copy()->subMonth();
+                            $next = $current->copy()->addMonth();
+                            $monthNames = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+                            $monthLabel = strtoupper($monthNames[$current->month]).' '.$current->year;
+
+                            // Konfigurasi status tanggal
+                            $holidays = []; // contoh: [1, 17]
+                            $booked = [];   // contoh: [12, 20]
+
+                            $firstDay = $current->copy();
+                            $lastDay = $current->copy()->endOfMonth();
+                            // 1=Senin .. 7=Minggu; kita skip Minggu, jadi leading blanks hitung dari Senin
+                            $leadingBlanks = $firstDay->isSunday() ? 0 : ($firstDay->dayOfWeekIso - 1);
+                        @endphp
                         <!-- Month and Navigation -->
                         <div class="flex items-center justify-between mb-8">
-                            <h3 class="font-montserrat-alt-36 text-black">SEPTEMBER 2025</h3>
+                            <h3 class="font-montserrat-36 text-black">{{ $monthLabel }}</h3>
                             <div class="flex items-center gap-4">
-                                <button type="button" class="w-10 h-10 rounded-full bg-gray-300 hover:bg-gray-400 transition flex items-center justify-center">
+                                <a href="{{ route('beranda', ['month' => $prev->format('Y-m')]) }}#antrian" class="w-10 h-10 rounded-full bg-gray-300 hover:bg-gray-400 transition flex items-center justify-center" aria-label="Sebelumnya">
                                     <img src="/images/arrows_button/panahkiri.svg" alt="Sebelumnya" class="w-5 h-5" />
-                                </button>
-                                <button type="button" class="w-10 h-10 rounded-full bg-gray-300 hover:bg-gray-400 transition flex items-center justify-center">
+                                </a>
+                                <a href="{{ route('beranda', ['month' => $next->format('Y-m')]) }}#antrian" class="w-10 h-10 rounded-full bg-gray-300 hover:bg-gray-400 transition flex items-center justify-center" aria-label="Selanjutnya">
                                     <img src="/images/arrows_button/panahkanan.svg" alt="Selanjutnya" class="w-5 h-5" />
-                                </button>
+                                </a>
                             </div>
                         </div>
                         
@@ -133,45 +150,29 @@
                             <div class="h-12 bigparagraf flex items-center justify-center text-gray-700">Jumat</div>
                             <div class="h-12 bigparagraf flex items-center justify-center text-gray-700">Sabtu</div>
                             @php
-                                $dates = [
-                                    ['date' => 1, 'status' => 'available'],
-                                    ['date' => 2, 'status' => 'available'],
-                                    ['date' => 3, 'status' => 'available'],
-                                    ['date' => 4, 'status' => 'available'],
-                                    ['date' => 5, 'status' => 'holiday'],
-                                    ['date' => 6, 'status' => 'available'],
-                                    ['date' => 8, 'status' => 'available'],
-                                    ['date' => 9, 'status' => 'available'],
-                                    ['date' => 10, 'status' => 'available'],
-                                    ['date' => 11, 'status' => 'available'],
-                                    ['date' => 12, 'status' => 'booked'],
-                                    ['date' => 13, 'status' => 'available'],
-                                    ['date' => 15, 'status' => 'available'],
-                                    ['date' => 16, 'status' => 'available'],
-                                    ['date' => 17, 'status' => 'available'],
-                                    ['date' => 18, 'status' => 'available'],
-                                    ['date' => 19, 'status' => 'available'],
-                                    ['date' => 20, 'status' => 'booked'],
-                                    ['date' => 22, 'status' => 'available'],
-                                    ['date' => 23, 'status' => 'available'],
-                                    ['date' => 24, 'status' => 'available'],
-                                    ['date' => 25, 'status' => 'available'],
-                                    ['date' => 26, 'status' => 'available'],
-                                    ['date' => 27, 'status' => 'available'],
-                                    ['date' => 29, 'status' => 'holiday'],
-                                    ['date' => 30, 'status' => 'holiday'],
-                                ];
+                                // Sel kosong di awal bulan agar Senin rata kolom pertama (maks 5 karena grid 6 dan Minggu diskip)
+                                $blankCount = min($leadingBlanks, 5);
                             @endphp
+                            @for($i = 0; $i < $blankCount; $i++)
+                                <div class="h-24 bg-transparent border border-transparent"></div>
+                            @endfor
                             
-                            @foreach($dates as $dateInfo)
+                            @for($day = 1; $day <= $lastDay->day; $day++)
                                 @php
-                                    $bgColor = match($dateInfo['status']) {
+                                    $dateObj = $current->copy()->day($day);
+                                @endphp
+                                @if($dateObj->isSunday())
+                                    @continue
+                                @endif
+                                @php
+                                    $status = in_array($day, $booked) ? 'booked' : (in_array($day, $holidays) ? 'holiday' : 'available');
+                                    $bgColor = match($status) {
                                         'available' => 'bg-white border border-gray-300',
                                         'booked' => 'bg-gray-400 border border-gray-500',
                                         'holiday' => 'bg-red-200 border border-red-300',
                                         default => 'bg-white border border-gray-300'
                                     };
-                                    $textColor = match($dateInfo['status']) {
+                                    $textColor = match($status) {
                                         'available' => 'text-black',
                                         'booked' => 'text-gray-700',
                                         'holiday' => 'text-red-800',
@@ -179,9 +180,9 @@
                                     };
                                 @endphp
                                 <div class="h-24 {{ $bgColor }} flex items-start pt-2 justify-center cursor-pointer hover:opacity-80 transition">
-                                    <span class="text-lg bigparagraf {{ $textColor }}">{{ $dateInfo['date'] }}</span>
+                                    <span class="text-lg bigparagraf {{ $textColor }}">{{ $day }}</span>
                                 </div>
-                            @endforeach
+                            @endfor
                         </div>
                     </div>
                 </div>
@@ -231,7 +232,7 @@
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="text-left">
                 <div class="montserrat-regular-10 mb-2">Review Kami</div>
-                <h2 class="font-montserrat-alt-48 text-black mb-6 md:mb-8">
+                <h2 class="font-montserrat-48 text-black mb-6 md:mb-8">
                     APA KATA KLIEN KAMI TENTANG LAYANAN KAMI
                 </h2>
                 
@@ -392,7 +393,7 @@
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="text-left">
                 <div class="montserrat-regular-10 mb-2">Tim Kami</div>
-                <h2 class="font-montserrat-alt-48 text-black mb-6 md:mb-8 uppercase">TENAGA AHLI DI BALIK SERVIS TERBAIK</h2>
+                <h2 class="font-montserrat-48 text-black mb-6 md:mb-8 uppercase">TENAGA AHLI DI BALIK SERVIS TERBAIK</h2>
             </div>
 
             <!-- Person list generated via array loop -->
@@ -430,7 +431,7 @@
                             <img src="{{ $member['image'] }}" alt="{{ $member['name'] }}" class="w-[230px] h-[300px] object-cover border border-gray-300" />
                         </div>
                         <div>
-                            <h3 class="font-montserrat-alt-36 text-black uppercase mb-1">{{ $member['name'] }}</h3>
+                            <h3 class="font-montserrat-36 text-black uppercase mb-1">{{ $member['name'] }}</h3>
                             <div class="defparagraf text-black/70 mb-4 md:mb-6">{{ $member['role'] }}</div>
                             <p class="defparagraf text-black/80 leading-relaxed mb-4 md:mb-6">{{ $member['desc'] }}</p>
                             <div class="flex flex-wrap items-center gap-3 md:gap-4">
@@ -446,7 +447,7 @@
                         </div>
                     @else
                         <div>
-                            <h3 class="font-montserrat-alt-36 text-black uppercase mb-1">{{ $member['name'] }}</h3>
+                            <h3 class="font-montserrat-36 text-black uppercase mb-1">{{ $member['name'] }}</h3>
                             <div class="defparagraf text-black/70 mb-4 md:mb-6">{{ $member['role'] }}</div>
                             <p class="defparagraf text-black/80 leading-relaxed mb-4 md:mb-6">{{ $member['desc'] }}</p>
                             <div class="flex flex-wrap items-center gap-3 md:gap-4">
@@ -474,7 +475,7 @@
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="text-left">
                 <div class="montserrat-regular-10 mb-2">Galeri Kami</div>
-                <h2 class="font-montserrat-alt-48 text-black mb-6 md:mb-8 uppercase">POTRET KEGIATAN BENGKEL KAMI DALAM SETIAP LANGKAH PERBAIKAN</h2>
+                <h2 class="font-montserrat-48 text-black mb-6 md:mb-8 uppercase">POTRET KEGIATAN BENGKEL KAMI DALAM SETIAP LANGKAH PERBAIKAN</h2>
             </div>
 
             <!-- Grid: 3 images on top row, 2 images on bottom row -->

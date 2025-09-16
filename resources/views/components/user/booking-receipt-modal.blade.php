@@ -3,7 +3,7 @@
     <div class="bg-white border-2 border-[#0F044C] shadow-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
         <!-- Modal Header -->
         <div class="bg-[#0F044C] text-white p-4 text-center">
-            <h3 class="text-lg font-montserrat-alt-48" id="modalTitle">DETAIL STRUK</h3>
+            <h3 class="text-lg font-montserrat-48" id="modalTitle">DETAIL STRUK</h3>
             <p class="text-sm defparagraf mt-1" id="modalSubtitle">Struk Booking Antrian</p>
         </div>
 
@@ -12,7 +12,7 @@
             <!-- Booking ID -->
             <div class="text-center mb-6">
                 <h4 class="text-sm defparagraf text-[#787A91] mb-1">ID BOOKING</h4>
-                <p class="text-lg font-montserrat-alt-48 text-[#0F044C]" id="receiptBookingId">-</p>
+                <p class="text-lg font-montserrat-48 text-[#0F044C]" id="receiptBookingId">-</p>
             </div>
 
             <!-- Booking Details -->
@@ -43,7 +43,7 @@
 
                 <!-- Address -->
                 <div class="border-t border-[#EEEEEE] pt-3" id="receiptAddressSection">
-                    <p class="defparagraf text-[#787A91] mb-1">Alamat Pickup/Delivery:</p>
+                    <p class="defparagraf text-[#787A91] mb-1">Alamat pickup/Delivery:</p>
                     <p class="defparagraf text-[#0F044C] text-sm" id="receiptBookingAddress">-</p>
                 </div>
 

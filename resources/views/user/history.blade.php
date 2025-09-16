@@ -3,7 +3,7 @@
     <div class="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
             <!-- Header -->
             <div class="mb-2 sm:mb-4">
-                <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-alt-48 text-gray-900">RIWAYAT LAYANAN</h1>
+                <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-48 text-gray-900">RIWAYAT LAYANAN</h1>
                 <p class="text-gray-600 defparagraf">Semua transaksi dan layanan Anda.</p>
             </div>
 
