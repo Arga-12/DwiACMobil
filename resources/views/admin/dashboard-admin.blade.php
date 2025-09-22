@@ -67,7 +67,7 @@
             <!-- Main Content Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
                 <!-- Queue Management -->
-                <div class="bg-white border-2 border-[#0F044C] shadow-sm p-4">
+                <div class="">
                     <h3 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-48 text-gray-900 font-semibold mb-4 uppercase">Antrian Hari Ini</h3>
                         
                     <!-- Service Cards -->
@@ -133,7 +133,7 @@
                 </div>
 
                 <!-- Calendar Widget -->
-                <div class="bg-white border-2 border-[#0F044C] shadow-sm p-4">
+                <div class="bg-white border-2 border-[#0F044C] p-4">
                     <!-- Header: Month and Navigation (styling aligned with beranda) -->
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-48 text-gray-900 font-semibold uppercase">SEPTEMBER 2025</h3>

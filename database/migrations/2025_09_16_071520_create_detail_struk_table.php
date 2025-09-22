@@ -9,13 +9,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('detail_struk', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('id_detail_struk');
-            $table->foreignId('id_antri_struk')
-                ->constrained('antri_struk', 'id_antri_struk')
+
+            // Use explicit column + FK to avoid strict MySQL FK formation issues
+            $table->unsignedBigInteger('id_antri_struk');
+            $table->foreign('id_antri_struk', 'fk_detail_struk_antri')
+                ->references('id_antri_struk')->on('antri_struk')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            // New: one-to-many from layanan -> detail_struk (nullable if item is sparepart/other)
+            // One-to-many from layanan -> detail_struk (requires layanan table exists already)
             $table->foreignId('id_layanan')
                 ->nullable()
                 ->constrained('layanan', 'id_layanan')

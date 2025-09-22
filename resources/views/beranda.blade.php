@@ -3,15 +3,15 @@
     <section class="py-12 md:py-16 bg-white">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="text-left">
-                <div class="montserrat-regular-10 mb-2">Layanan Kami</div>
+                {{-- <div class="montserrat-regular-10 mb-2">Layanan Kami</div> --}}
                 <h2 class="font-montserrat-48 text-black mb-6 md:mb-8">KAMI HADIR DENGAN LAYANAN SERVIS AC MOBIL TERBAIK</h2>
                 @php
                     $services = [
-                        ['title' => 'Isi Freon', 'desc' => 'Mengisi ulang freon pada sistem AC mobil yang kurang atau habis agar AC kembali dingin dan bekerja optimal.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
-                        ['title' => 'Cuci Evaporator', 'desc' => 'Membersihkan evaporator dari kotoran dan jamur agar udara lebih bersih dan dingin.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
-                        ['title' => 'Ganti Filter', 'desc' => 'Penggantian filter kabin AC untuk menjaga kualitas sirkulasi udara dan kenyamanan.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
-                        ['title' => 'Cek Kebocoran', 'desc' => 'Pemeriksaan menyeluruh untuk mendeteksi kebocoran sistem AC mobil.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
-                        ['title' => 'Service Berkala', 'desc' => 'Perawatan rutin untuk menjaga performa AC tetap optimal.', 'img' => asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop')],
+                        ['title' => 'Isi Freon', 'desc' => 'Mengisi ulang freon pada sistem AC mobil yang kurang atau habis agar AC kembali dingin dan bekerja optimal.', 'img' => asset('images/layanan/isi-freon.png')],
+                        ['title' => 'Cuci Evaporator', 'desc' => 'Membersihkan evaporator dari kotoran dan jamur agar udara lebih bersih dan dingin.', 'img' => asset('images/layanan/cuci-evap.png')],
+                        ['title' => 'Flushing Sistem AC', 'desc' => 'Pembersihan menyeluruh sistem AC mobil untuk menghilangkan kotoran dan endapan yang mengganggu kinerja pendinginan.', 'img' => asset('images/layanan/flushing-ac.png')],
+                        ['title' => 'Ganti Oli Kompresor', 'desc' => 'Penggantian oli kompresor AC mobil untuk menjaga pelumasan dan kinerja optimal kompresor sistem pendingin.', 'img' => asset('images/layanan/ganti-oli.png')],
+                        ['title' => 'Ganti Dryer', 'desc' => 'Penggantian filter dryer/receiver untuk menyaring kelembaban dan kotoran dalam sistem AC mobil.', 'img' => asset('images/layanan/ganti-dryer.png')],
                     ];
                 @endphp
 
@@ -27,7 +27,7 @@
                                     <h3 class="font-montserrat-36 mb-3">{{ $service['title'] }}</h3>
                                     <p class="defparagraf text-black/80">{{ $service['desc'] }}</p>
                                     <div class="mt-auto">
-                                        <a href="#" class="defparagraf uppercase font-bold inline-flex items-center gap-2">Selengkapnya <span aria-hidden="true">→</span></a>
+                                        <a href="{{ route('layanan.detail') }}" class="defparagraf uppercase font-bold inline-flex items-center gap-2">Selengkapnya <span aria-hidden="true">→</span></a>
                                     </div>
                                 </div>
                             </article>
@@ -99,7 +99,7 @@
     <section id="antrian" class="py-12 md:py-16 bg-white">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="text-left">
-                <div class="montserrat-regular-10 mb-2">Daftar Antrian</div>
+                {{-- <div class="montserrat-regular-10 mb-2">Daftar Antrian</div> --}}
                 <h2 class="font-montserrat-48 text-black mb-6 md:mb-8">BOOKING ANTRIAN</h2>
                 
                 <!-- Calendar Container -->
@@ -115,8 +115,8 @@
                             $monthLabel = strtoupper($monthNames[$current->month]).' '.$current->year;
 
                             // Konfigurasi status tanggal
-                            $holidays = []; // contoh: [1, 17]
-                            $booked = [];   // contoh: [12, 20]
+                            $holidays = [1, 17]; // contoh: tanggal 1 dan 17 sebagai hari libur
+                            $booked = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24];   // contoh: tanggal 12 dan 20 sudah terbooking
 
                             $firstDay = $current->copy();
                             $lastDay = $current->copy()->endOfMonth();
@@ -210,7 +210,7 @@
                             @auth
                                 Antrikan mobil Anda dengan mengambil tanggal yang tersedia pada kalender di sebelah kanan.
                             @else
-                                Silakan <a href="{{ route('login') }}" class="text-[#0F044C] font-semibold hover:underline">login</a> atau <a href="{{ route('register') }}" class="text-[#0F044C] font-semibold hover:underline">daftar</a> untuk melakukan booking antrian.
+                                Silahkan <a href="{{ route('login') }}" class="text-[#0F044C] font-semibold hover:underline">login</a> atau <a href="{{ route('register') }}" class="text-[#0F044C] font-semibold hover:underline">daftar</a> untuk melakukan booking antrian.
                             @endauth
                         </p>
                     </div>
@@ -231,8 +231,8 @@
     <section id="review" class="py-12 md:py-16 bg-white">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="text-left">
-                <div class="montserrat-regular-10 mb-2">Review Kami</div>
-                <h2 class="font-montserrat-48 text-black mb-6 md:mb-8">
+                {{-- <div class="montserrat-regular-10 mb-2">Review Kami</div> --}}
+                <h2 class="font-montserrat-48 text-black">
                     APA KATA KLIEN KAMI TENTANG LAYANAN KAMI
                 </h2>
                 
@@ -241,38 +241,38 @@
                         [
                             'name' => 'Hirasawa Yui',
                             'rating' => 5,
-                            'text' => 'Pelayanan di sini benar-benar luar biasa! Prosesnya cepat, stafnya ramah dan sangat profesional. Saya datang dengan masalah AC mobil, dan hanya dalam waktu singkat semuanya sudah beres. Hasil servis rapi dan penjelasan teknisinya juga mudah dimengerti. Sangat direkomendasikan untuk siapa pun yang ingin servis dengan kualitas terbaik!',
+                            'text' => 'Pelayanan di sini benar-benar luar biasa! Prosesnya cepat, stafnya ramah dan sangat profesional. Saya datang dengan masalah AC mobil yang tidak dingin, dan hanya dalam waktu 2 jam semuanya sudah beres. Hasil servis rapi dan penjelasan teknisinya juga mudah dimengerti. Sangat direkomendasikan untuk siapa pun yang ingin servis dengan kualitas terbaik!',
                             'image' => asset('images/review/example.jpg')
                         ],
                         [
                             'name' => 'Tainaka Ritsu',
                             'rating' => 5,
-                            'text' => 'Pelayanan di sini benar-benar luar biasa! Prosesnya cepat, stafnya ramah dan sangat profesional. Saya datang dengan masalah AC mobil, dan hanya dalam waktu singkat semuanya sudah beres. Hasil servis rapi dan penjelasan teknisinya juga mudah dimengerti. Sangat direkomendasikan untuk siapa pun yang ingin servis dengan kualitas terbaik!',
+                            'text' => 'AC mobil saya sudah lama bermasalah, bau tidak sedap dan tidak dingin. Setelah servis di sini, AC jadi seperti baru lagi! Teknisinya sangat ahli dan menjelaskan dengan detail masalah yang ada. Harga juga sangat terjangkau untuk kualitas servis yang diberikan. Pasti akan kembali lagi!',
                             'image' => asset('images/review/example1.jpg')
                         ],
                         [
                             'name' => 'Akiyama Mio',
-                            'rating' => 5,
-                            'text' => 'Pelayanan di sini benar-benar luar biasa! Prosesnya cepat, stafnya ramah dan sangat profesional. Saya datang dengan masalah AC mobil, dan hanya dalam waktu singkat semuanya sudah beres. Hasil servis rapi dan penjelasan teknisinya juga mudah dimengerti. Sangat direkomendasikan untuk siapa pun yang ingin servis dengan kualitas terbaik!',
+                            'rating' => 4,
+                            'text' => 'Servis AC mobil di sini cukup memuaskan. Teknisinya profesional dan ramah. AC yang tadinya bocor freon sekarang sudah normal kembali. Waktu pengerjaan juga tidak terlalu lama, sekitar 3 jam sudah selesai. Tempat juga bersih dan nyaman untuk menunggu.',
                             'image' => asset('images/review/example2.jpg')
                         ],
                         [
                             'name' => 'Kotobuki Tsumugi',
-                            'rating' => 4,
-                            'text' => 'Sangat puas! Pelayanan cepat dan hasilnya memuaskan. Suhu AC kembali dingin dan nyaman. Timnya ramah dan komunikatif, jadi prosesnya terasa menyenangkan.',
+                            'rating' => 5,
+                            'text' => 'Sangat puas dengan pelayanan Dwi AC Mobil! Evaporator mobil saya yang kotor dan berjamur dibersihkan dengan sempurna. Sekarang udara yang keluar dari AC segar dan tidak berbau. Teknisinya juga memberikan tips perawatan yang berguna. Recommended banget!',
                             'image' => asset('images/review/example3.jpg')
                         ],
                         [
                             'name' => 'Nakano Azusa',
-                            'rating' => 5,
-                            'text' => 'Teknisi sangat teliti dan profesional. Penjelasannya jelas, dan pengerjaan rapi. Sekarang AC mobil jadi lebih sejuk dan tidak bau. Recommended!',
+                            'rating' => 4,
+                            'text' => 'Teknisi sangat teliti dan profesional dalam mengerjakan servis AC mobil. Penjelasannya jelas tentang masalah yang ada dan solusinya. Sekarang AC mobil jadi lebih sejuk dan tidak berisik lagi. Harga sesuai dengan kualitas yang diberikan.',
                             'image' => asset('images/review/example4.jpg')
                         ]
                     ];
                 @endphp
                 
                 <!-- Review Carousel Container dengan overflow visible -->
-                <div class="relative overflow-visible pt-4 md:pt-6 pb-0">
+                <div class="relative overflow-visible pt-4 pb-0">
                     <!-- Scroller dengan padding top untuk profile images -->
                     <div
                         id="review-scroller"
@@ -300,7 +300,7 @@
                                     <div class="flex items-center justify-center gap-1 mb-2">
                                         @for($i = 1; $i <= 5; $i++)
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                            <path fill="#fff042" fill-rule="evenodd" d="M12.908 1.581a1 1 0 0 0-1.816 0l-2.87 6.22l-6.801.807a1 1 0 0 0-.562 1.727l5.03 4.65l-1.335 6.72a1 1 0 0 0 1.469 1.067L12 19.426l5.977 3.346a1 1 0 0 0 1.47-1.068l-1.335-6.718l5.029-4.651a1 1 0 0 0-.562-1.727L15.777 7.8z" clip-rule="evenodd"/>
+                                            <path fill="{{ $i <= $review['rating'] ? '#fff042' : '#e5e7eb' }}" fill-rule="evenodd" d="M12.908 1.581a1 1 0 0 0-1.816 0l-2.87 6.22l-6.801.807a1 1 0 0 0-.562 1.727l5.03 4.65l-1.335 6.72a1 1 0 0 0 1.469 1.067L12 19.426l5.977 3.346a1 1 0 0 0 1.47-1.068l-1.335-6.718l5.029-4.651a1 1 0 0 0-.562-1.727L15.777 7.8z" clip-rule="evenodd"/>
                                         </svg>
                                         @endfor
                                     </div>
@@ -392,7 +392,7 @@
     <section id="kontak" class="py-12 md:py-16 bg-white">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="text-left">
-                <div class="montserrat-regular-10 mb-2">Tim Kami</div>
+                {{-- <div class="montserrat-regular-10 mb-2">Tim Kami</div> --}}
                 <h2 class="font-montserrat-48 text-black mb-6 md:mb-8 uppercase">TENAGA AHLI DI BALIK SERVIS TERBAIK</h2>
             </div>
 
@@ -400,22 +400,22 @@
             @php
                 $teamMembers = [
                     [
-                        'name' => 'ROBERT LOX',
-                        'role' => 'Owner',
-                        'desc' => 'Dengan pengalaman lebih dari 7 tahun di bidang perbaikan dan perawatan sistem AC mobil, dikenal sebagai teknisi yang teliti dan berdedikasi. Menguasai berbagai jenis kendaraan, terbiasa menangani pengisian freon, pembersihan evaporator, hingga penggantian komponen penting seperti kompresor dan kondensor. Komitmen terhadap kualitas dan kepuasan pelanggan menjadikannya salah satu aset terbaik dalam tim bengkel kami.',
+                        'name' => 'DWI MUJIONO',
+                        'role' => 'Owner Teknisi',
+                        'desc' => 'Dengan pengalaman lebih dari 15 tahun di bidang perbaikan dan perawatan sistem AC mobil, dikenal sebagai teknisi yang teliti dan berdedikasi. Menguasai berbagai jenis kendaraan dari sedan hingga SUV, terbiasa menangani pengisian freon, pembersihan evaporator, hingga penggantian komponen penting seperti kompresor dan kondensor. Komitmen terhadap kualitas dan kepuasan pelanggan menjadikannya salah satu aset terbaik dalam tim bengkel kami.',
                         'image' => asset('images/team/team.jpg'),
-                        'wa_number' => '6281234567891',
-                        'wa_display' => '0812 3456 7891',
-                        'fb_label' => 'Timbul Dwi Ac Mobil',
+                        'wa_number' => '6281234567890',
+                        'wa_display' => '0812 3456 7890',
+                        'fb_label' => 'Dwi AC Mobil',
                     ],
                     [
-                        'name' => 'MICHAEL KORS',
-                        'role' => 'Karyawan',
-                        'desc' => 'Dengan pengalaman lebih dari 7 tahun di bidang perbaikan dan perawatan sistem AC mobil, menguasai beragam pekerjaan seperti pengisian freon, pembersihan evaporator, serta pemeriksaan kebocoran. Keahliannya memastikan sistem pendingin kabin kembali dingin dan nyaman.',
+                        'name' => 'AGUS WIJAYA',
+                        'role' => 'Karyawan Teknisi',
+                        'desc' => 'Dengan pengalaman lebih dari 10 tahun di bidang perbaikan dan perawatan sistem AC mobil, menguasai beragam pekerjaan seperti pengisian freon, pembersihan evaporator, serta pemeriksaan kebocoran sistem. Keahliannya dalam diagnosa masalah AC mobil memastikan sistem pendingin kabin kembali dingin dan nyaman. Selalu mengutamakan kualitas kerja dan kepuasan pelanggan.',
                         'image' => asset('images/team/team1.jpg'),
                         'wa_number' => '6281234567891',
                         'wa_display' => '0812 3456 7891',
-                        'fb_label' => '0812 3456 7891',
+                        'fb_label' => 'Agus Wijaya',
                     ],
                 ];
             @endphp
@@ -474,27 +474,27 @@
     <section id="galeri" class="py-12 md:py-16 bg-white">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="text-left">
-                <div class="montserrat-regular-10 mb-2">Galeri Kami</div>
+                {{-- <div class="montserrat-regular-10 mb-2">Galeri Kami</div> --}}
                 <h2 class="font-montserrat-48 text-black mb-6 md:mb-8 uppercase">POTRET KEGIATAN BENGKEL KAMI DALAM SETIAP LANGKAH PERBAIKAN</h2>
             </div>
 
             <!-- Grid: 3 images on top row, 2 images on bottom row -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div class="md:col-span-4">
-                    <img src="{{ asset('images/review/example.jpg') }}" alt="Proses perakitan dashboard dan sistem AC" class="w-full h-[240px] sm:h-[260px] md:h-[300px] object-cover" />
+                    <img src="{{ asset('images/galeri/1.jpeg') }}" alt="Proses perakitan dashboard dan sistem AC" class="w-full h-[240px] sm:h-[260px] md:h-[300px] object-cover" />
                 </div>
                 <div class="md:col-span-4">
-                    <img src="{{ asset('images/review/example1.jpg') }}" alt="Pencucian komponen evaporator AC" class="w-full h-[240px] sm:h-[260px] md:h-[300px] object-cover" />
+                    <img src="{{ asset('images/galeri/2.jpeg') }}" alt="Pencucian komponen evaporator AC" class="w-full h-[240px] sm:h-[260px] md:h-[300px] object-cover" />
                 </div>
                 <div class="md:col-span-4">
-                    <img src="{{ asset('images/review/example2.jpg') }}" alt="Pemeriksaan bawah mobil oleh teknisi" class="w-full h-[240px] sm:h-[260px] md:h-[300px] object-cover" />
+                    <img src="{{ asset('images/galeri/3.jpeg') }}" alt="Pemeriksaan bawah mobil oleh teknisi" class="w-full h-[240px] sm:h-[260px] md:h-[300px] object-cover" />
                 </div>
 
                 <div class="md:col-span-6">
-                    <img src="{{ asset('images/review/example3.jpg') }}" alt="Pengukuran tekanan freon pada sistem AC" class="w-full h-[240px] sm:h-[280px] md:h-[360px] object-cover" />
+                    <img src="{{ asset('images/galeri/4.jpeg') }}" alt="Pengukuran tekanan freon pada sistem AC" class="w-full h-[240px] sm:h-[280px] md:h-[360px] object-cover" />
                 </div>
                 <div class="md:col-span-6">
-                    <img src="{{ asset('images/review/example4.jpg') }}" alt="Penggantian filter kabin AC mobil" class="w-full h-[240px] sm:h-[280px] md:h-[360px] object-cover" />
+                    <img src="{{ asset('images/galeri/5.jpeg') }}" alt="Penggantian filter kabin AC mobil" class="w-full h-[240px] sm:h-[280px] md:h-[360px] object-cover" />
                 </div>
             </div>
         </div>

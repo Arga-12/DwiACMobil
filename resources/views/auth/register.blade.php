@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Register - Dwi AC Mobil</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/custom-fonts.css">
 </head>
@@ -19,7 +20,7 @@
             <!-- Content -->
             <div class="relative z-10 flex flex-col justify-center items-center text-center px-8 sm:px-12 lg:px-16 xl:px-24 py-16 text-white mx-auto">
                 <h1 class="font-montserrat-64 text-white mb-6">SELAMAT DATANG</h1>
-                <h2 class="font-montserrat-alt-48 text-white mb-8">DI DWI AC MOBIL</h2>
+                <h2 class="font-montserrat-48 text-white mb-8">DI DWI AC MOBIL</h2>
                 <p class="text-lg opacity-90 leading-relaxed">Booking antrian lebih mudah, pelayanan lebih pasti. Jadwalkan servis Anda sekarang.</p>
             </div>
         </div>

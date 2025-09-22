@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Kalau foldermu ada di resources/views/user/components
         $this->loadViewComponentsAs('user', [
-            \app\view\Components\User\DashboardLayout::class,
+            \App\View\Components\User\DashboardLayout::class,
         ]);
 
         // Define admin gate untuk montir

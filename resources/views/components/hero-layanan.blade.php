@@ -19,10 +19,6 @@
   <div class="relative mx-auto max-w-7xl px-6 lg:px-8" style="padding-top: {{ $innerPadTop }}; padding-bottom: 3rem; min-height: {{ $minHeight }};">
     <div class="py-24 sm:py-32 flex items-center">
       <div class="max-w-4xl lg:max-w-5xl mx-auto text-center">
-        <!-- Optional badge -->
-        <div class="inline-flex items-center px-5 py-2 bg-[#787A91] h-[40px] rounded-full backdrop-blur-sm text-white mb-6 bigparagraf">
-          <span>{{ $badge }}</span>
-        </div>
 
         <!-- Main heading -->
         <h1 class="font-montserrat-48 text-white leading-tight uppercase">

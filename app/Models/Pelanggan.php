@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Mobil;
+use App\Models\AntriStruk;
 
 class Pelanggan extends Authenticatable
 {
@@ -32,4 +34,14 @@ class Pelanggan extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function mobils()
+    {
+        return $this->hasMany(Mobil::class, 'id_pelanggan', 'id_pelanggan');
+    }
+
+    public function antriStruks()
+    {
+        return $this->hasMany(AntriStruk::class, 'id_pelanggan', 'id_pelanggan');
+    }
 }

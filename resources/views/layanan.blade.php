@@ -11,12 +11,10 @@
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-12 relative -mt-16 md:-mt-24 lg:-mt-32 z-10">
       @php
         $services = [
-          ['num' => '01', 'title' => 'Isi Freon', 'desc' => 'Mengisi ulang freon pada sistem AC mobil yang kurang/ habis agar AC kembali dingin dan optimal.', 'img' => 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop', 'slug' => 'isi-freon'],
-          ['num' => '02', 'title' => 'Cuci Evaporator', 'desc' => 'Membersihkan evaporator dari kotoran dan jamur agar udara lebih bersih dan dingin.', 'img' => 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop', 'slug' => 'cuci-evaporator'],
-          ['num' => '03', 'title' => 'Flushing Sistem AC', 'desc' => 'Membersihkan seluruh saluran AC dari oli lama dan kotoran agar sistem bekerja lebih lancar.', 'img' => 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop', 'slug' => 'flushing-sistem-ac'],
-          ['num' => '04', 'title' => 'Ganti Dryer', 'desc' => 'Mengganti dryer agar sirkulasi freon kembali baik dan menjaga komponen lain.', 'img' => 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop', 'slug' => 'ganti-dryer'],
-          ['num' => '05', 'title' => 'Ganti Oli Kompresor', 'desc' => 'Meningkatkan performa kompresor dengan mengganti oli khusus agar tidak cepat aus atau macet.', 'img' => 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop', 'slug' => 'ganti-oli-kompresor'],
-          ['num' => '06', 'title' => 'Ganti Dryer', 'desc' => 'Mengembalikan performa pendinginan melalui penggantian dryer saat jenuh/ tersumbat.', 'img' => 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop', 'slug' => 'ganti-dryer-2'],
+          ['num' => '01', 'title' => 'Isi Freon', 'desc' => 'Mengisi ulang freon pada sistem AC mobil yang kurang/ habis agar AC kembali dingin dan optimal.', 'img' => 'layanan/isi-freon.png', 'slug' => 'isi-freon'],
+          ['num' => '02', 'title' => 'Cuci Evaporator', 'desc' => 'Membersihkan evaporator dari kotoran dan jamur agar udara lebih bersih dan dingin.', 'img' => 'layanan/cuci-evap.png', 'slug' => 'cuci-evaporator'],
+          ['num' => '03', 'title' => 'Flushing Sistem AC', 'desc' => 'Membersihkan seluruh saluran AC dari oli lama dan kotoran agar sistem bekerja lebih lancar.', 'img' => 'layanan/flushing-ac.png', 'slug' => 'flushing-sistem-ac'],
+          ['num' => '04', 'title' => 'Ganti Oli Kompresor & Dryer', 'desc' => 'Mengganti dryer agar sirkulasi freon kembali baik dan menjaga komponen lain.', 'img' => 'layanan/ganti-oli.png', 'slug' => 'ganti-dryer'],
         ];
       @endphp
 
@@ -25,8 +23,8 @@
           <article class="relative overflow-hidden text-white shadow-xl ring-1 ring-white/10">
             <!-- Foto background -->
             @if (!empty($s['img']))
-              <img src="{{ Str::startsWith($s['img'], 'http') ? $s['img'] : asset('images/' . $s['img']) }}" alt="{{ $s['title'] }}" class="absolute inset-0 h-full w-full object-cover" />
-              <div class="absolute inset-0 bg-gradient-to-t from-[#0F044C] via-transparent to-transparent"></div>
+              <img src="{{ asset('images/' . $s['img']) }}" alt="{{ $s['title'] }}" class="absolute inset-0 h-full w-full object-cover" />
+              <div class="absolute inset-0 bg-black/30 bg-gradient-to-t from-[#0F044C] via-transparent to-transparent"></div>
             @else
               <div class="absolute inset-0 bg-[#0F044C]"></div>
               <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0F044C]/70"></div>
@@ -41,7 +39,7 @@
                 <p class="mt-2 text-base sm:text-lg defparagraf leading-relaxed max-w-prose">{{ $s['desc'] }}</p>
               </div>
               <div class="mt-auto">
-                <a href="#" class="inline-flex items-center gap-2 border border-white/50 bg-white/10 px-5 py-3 bigparagraf text-white hover:bg-white/15">Selengkapnya</a>
+                <a href="{{ route('layanan.detail') }}" class="inline-flex items-center gap-2 border border-white/50 bg-white/10 px-5 py-3 bigparagraf text-white hover:bg-white/15">Selengkapnya</a>
               </div>
             </div>
           </article>
@@ -72,7 +70,7 @@
                 </ul>
               </div>
               <div class="flex flex-col justify-end">
-                <a href="#" class="inline-flex items-center gap-2 border border-white/50 bg-white/10 px-5 py-3 bigparagraf text-white hover:bg-white/15 self-end">Selengkapnya</a>
+                <a href="{{ route('layanan.detail') }}" class="inline-flex items-center gap-2 border border-white/50 bg-white/10 px-5 py-3 bigparagraf text-white hover:bg-white/15 self-end">Selengkapnya</a>
               </div>
             </div>
           </div>

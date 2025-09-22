@@ -9,6 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('antri_struk', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id('id_antri_struk');
 
             // Relations
@@ -25,7 +26,7 @@ return new class extends Migration
             // Metadata
             $table->string('nomor_booking')->unique();
             $table->text('catatan')->nullable();
-            $table->string('status', 30)->default('pending'); // pending, waiting_confirm, confirmed, in_progress, completed, canceled
+            $table->string('status', 30)->default('pending'); // pending, waiting_confirm, confirmed -> waiting_line, in_progress, completed, canceled
 
             // Timeline & duration
             $table->dateTime('tanggal_pesan')->useCurrent();

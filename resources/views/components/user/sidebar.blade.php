@@ -6,14 +6,27 @@
             <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 mt-[70px] bg-gray-300 rounded-full mx-auto mb-2 sm:mb-3 md:mb-3 lg:mb-4 overflow-hidden">
                 @php
                     $user = Auth::user();
-                    $profileImage = $user->profile_photo && file_exists(public_path($user->profile_photo)) 
-                        ? $user->profile_photo 
-                        : 'images/user/yui.jpg';
+                    $profileImage = $user->profile_photo && file_exists(public_path($user->profile_photo))
+                        ? asset($user->profile_photo)
+                        : null;
                 @endphp
-                <img src="{{ asset($profileImage) }}" 
-                     alt="User Icon"
-                     class="w-full h-full object-cover"
-                     onerror="this.src='{{ asset('images/user/yui.jpg') }}'" />
+                @if($profileImage)
+                    <img src="{{ $profileImage }}"
+                         alt="User Icon"
+                         class="w-full h-full object-cover"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <div class="w-full h-full hidden items-center justify-center">
+                        <svg class="w-10 h-10 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g>
+                        </svg>
+                    </div>
+                @else
+                    <div class="w-full h-full flex items-center justify-center">
+                        <svg class="w-10 h-10 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g>
+                        </svg>
+                    </div>
+                @endif
             </div>                        
             <h3 class="text-gray-900 bigparagraf text-xs sm:text-sm md:text-sm lg:text-base">{{ Auth::user()->nama }}</h3>
             <p class="text-gray-600 defparagraf text-xs sm:text-xs md:text-xs lg:text-sm whitespace-nowrap">Bergabung pada {{ Auth::user()->created_at->format('d F Y') }}</p>
@@ -42,11 +55,11 @@
                 <span class="bigparagraf text-xs sm:text-sm md:text-sm lg:text-base">Profil</span>
             </a>
             
-            <a href="{{ route('history') }}" class="flex items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-2 sm:px-3 md:px-3 lg:px-4 py-2 lg:py-3 {{ request()->routeIs('history*') ? 'text-[#EEEEEE] bg-[#787A91] border-2 border-[#787A91]' : 'text-black bg-[#EEEEEE] border-2 border-black hover:text-[#EEEEEE] hover:bg-[#787A91] hover:border-transparent' }} transition-colors">
+            <a href="{{ route('antrian') }}" class="flex items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-2 sm:px-3 md:px-3 lg:px-4 py-2 lg:py-3 {{ request()->routeIs('antrian*') ? 'text-[#EEEEEE] bg-[#787A91] border-2 border-[#787A91]' : 'text-black bg-[#EEEEEE] border-2 border-black hover:text-[#EEEEEE] hover:bg-[#787A91] hover:border-transparent' }} transition-colors">
                 <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M12 21q-3.45 0-6.012-2.287T3.05 13H5.1q.35 2.6 2.313 4.3T12 19q2.925 0 4.963-2.037T19 12t-2.037-4.962T12 5q-1.725 0-3.225.8T6.25 8H9v2H3V4h2v2.35q1.275-1.6 3.113-2.475T12 3q1.875 0 3.513.713t2.85 1.924t1.925 2.85T21 12t-.712 3.513t-1.925 2.85t-2.85 1.925T12 21m2.8-4.8L11 12.4V7h2v4.6l3.2 3.2z"/>
                 </svg>
-                <span class="bigparagraf text-xs sm:text-sm md:text-sm lg:text-base">Histori Antrian</span>
+                <span class="bigparagraf text-xs sm:text-sm md:text-sm lg:text-base">Manajemen Antrian</span>
             </a>
             
             <a href="{{ route('notifications') }}" class="flex items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-2 sm:px-3 md:px-3 lg:px-4 py-2 lg:py-3 {{ request()->routeIs('notifications*') ? 'text-[#EEEEEE] bg-[#787A91] border-2 border-[#787A91]' : 'text-black bg-[#EEEEEE] border-2 border-black hover:text-[#EEEEEE] hover:bg-[#787A91] hover:border-transparent' }} transition-colors relative">

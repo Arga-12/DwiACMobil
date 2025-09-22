@@ -8,7 +8,7 @@
         
         <!-- Welcome Message - centered -->
         <div class="absolute left-1/2 transform -translate-x-1/2 text-center">
-            <p class="bigparagraf text-xs sm:text-sm md:text-base lg:text-lg">Selamat Datang Admin, Brian O'Connor!</p>
+            <p class="bigparagraf text-xs sm:text-sm md:text-base lg:text-lg">Selamat Datang Admin, {{ auth()->user()->nama }}!</p>
         </div>
         
         <!-- Spacer untuk balance layout -->
