@@ -97,7 +97,6 @@ class UserBookingController extends Controller
                 'id_antri_struk' => $booking->id_antri_struk,
                 'id_layanan' => $layananId,
                 'tipe' => 'layanan',
-                'id_ref' => null,
                 'deskripsi' => $layanan->nama ?? 'Layanan',
                 'qty' => 1,
                 'harga_satuan' => $price,

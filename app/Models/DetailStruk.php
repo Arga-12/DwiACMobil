@@ -18,7 +18,6 @@ class DetailStruk extends Model
         'id_antri_struk',
         'id_layanan',
         'tipe',
-        'id_ref',
         'deskripsi',
         'qty',
         'harga_satuan',

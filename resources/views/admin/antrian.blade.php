@@ -7,7 +7,7 @@
                     <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-48 text-gray-900 uppercase mb-2">Manajemen Antrian</h1>
                     <p class="text-gray-600 defparagraf">Pantau antrian, konfirmasi harga, dan servis yang sudah selesai.</p>
                 </div>
-                <button onclick="openCreateModal()" class="bg-[#141E61] hover:bg-[#0F044C] text-white px-6 py-3 defparagraf font-medium flex items-center space-x-2 transition-colors rounded-sm">
+                <button onclick="openCreateModal()" class="bg-[#0F044C] hover:bg-[#141E61] text-white px-6 py-3 defparagraf font-medium flex items-center space-x-2 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
