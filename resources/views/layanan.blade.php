@@ -7,74 +7,95 @@
     subtitle="Servis & Perawatan AC Mobil Anda di Tangan yang Tepat"
      />
 
-    <!-- Grid Kartu --> 
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-12 relative -mt-16 md:-mt-24 lg:-mt-32 z-10">
       @php
         $services = [
-          ['num' => '01', 'title' => 'Isi Freon', 'desc' => 'Mengisi ulang freon pada sistem AC mobil yang kurang/ habis agar AC kembali dingin dan optimal.', 'img' => 'layanan/isi-freon.png', 'slug' => 'isi-freon'],
-          ['num' => '02', 'title' => 'Cuci Evaporator', 'desc' => 'Membersihkan evaporator dari kotoran dan jamur agar udara lebih bersih dan dingin.', 'img' => 'layanan/cuci-evap.png', 'slug' => 'cuci-evaporator'],
-          ['num' => '03', 'title' => 'Flushing Sistem AC', 'desc' => 'Membersihkan seluruh saluran AC dari oli lama dan kotoran agar sistem bekerja lebih lancar.', 'img' => 'layanan/flushing-ac.png', 'slug' => 'flushing-sistem-ac'],
-          ['num' => '04', 'title' => 'Ganti Oli Kompresor & Dryer', 'desc' => 'Mengganti dryer agar sirkulasi freon kembali baik dan menjaga komponen lain.', 'img' => 'layanan/ganti-oli.png', 'slug' => 'ganti-dryer'],
+          ['title' => 'Isi Freon', 'desc' => 'Mengisi ulang refrigerant sesuai spesifikasi pabrikan agar suhu kabin cepat kembali dingin.', 'img' => 'layanan/isi-freon.png', 'duration' => '30–60 menit', 'price_from' => '150.000', 'warranty' => '7 hari', 'updated' => '21 Nov'],
+          ['title' => 'Cuci Evaporator', 'desc' => 'Membersihkan evaporator dari jamur/debu agar aliran udara lancar dan bebas bau.', 'img' => 'layanan/cuci-evap.png', 'duration' => '1–2 jam', 'price_from' => '250.000', 'warranty' => '7 hari', 'updated' => '14 Nov'],
+          ['title' => 'Flushing Sistem AC', 'desc' => 'Menguras oli lama dan kotoran pada jalur AC untuk memulihkan performa pendinginan.', 'img' => 'layanan/flushing-ac.png', 'duration' => '2–3 jam', 'price_from' => '450.000', 'warranty' => '14 hari', 'updated' => '05 Nov'],
+          ['title' => 'Ganti Oli Kompresor & Dryer', 'desc' => 'Menjaga pelumasan kompresor dan menyaring kelembapan agar sistem awet.', 'img' => 'layanan/ganti-oli.png', 'duration' => '1–2 jam', 'price_from' => '350.000', 'warranty' => '14 hari', 'updated' => '28 Okt'],
+        ];
+        $categories = [
+          ['name' => 'Perawatan Berkala'],
+          ['name' => 'Pembersihan & Higienis'],
+          ['name' => 'Perbaikan & Diagnostik'],
+          ['name' => 'Spare Part & Komponen'],
+          ['name' => 'Upgrade & Modifikasi'],
         ];
       @endphp
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        @foreach ($services as $s)
-          <article class="relative overflow-hidden text-white shadow-xl ring-1 ring-white/10">
-            <!-- Foto background -->
-            @if (!empty($s['img']))
-              <img src="{{ asset('images/' . $s['img']) }}" alt="{{ $s['title'] }}" class="absolute inset-0 h-full w-full object-cover" />
-              <div class="absolute inset-0 bg-black/30 bg-gradient-to-t from-[#0F044C] via-transparent to-transparent"></div>
-            @else
-              <div class="absolute inset-0 bg-[#0F044C]"></div>
-              <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0F044C]/70"></div>
-              <div class="absolute inset-0 bg-gradient-to-r from-black/20 via-[#0F044C]/30 to-transparent"></div>
-            @endif
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-8 space-y-8">
+          @foreach($services as $i => $s)
+            <article class="bg-white border border-[#EEEEEE] rounded-xl overflow-hidden">
+              <img src="{{ asset('images/' . $s['img']) }}" alt="{{ $s['title'] }}" class="w-full h-[320px] object-cover" />
 
-            <div class="absolute top-4 left-4 sm:top-5 sm:left-5 md:top-6 md:left-6 z-10 text-white font-montserrat-64 tracking-tight text-[44px] sm:text-[52px]">{{ $s['num'] }}</div>
+              <div class="border-b border-[#EEEEEE] flex items-center justify-between px-4 sm:px-6 py-3">
+                <div class="flex items-center gap-6 text-sm text-[#787A91] defparagraf">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#0F044C]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                    <span>Durasi: {{ $s['duration'] }}</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#0F044C]" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><g opacity="0.2"><path d="M8.397 5.7c-.551.413-.8.908-.8 1.37s.249.958.8 1.372c.552.414 1.36.7 2.295.7a1 1 0 1 1 0 2c-1.326 0-2.565-.402-3.495-1.1s-1.6-1.738-1.6-2.971s.67-2.274 1.6-2.972C8.127 3.402 9.367 3 10.692 3c2.053 0 3.994.983 4.766 2.62a1 1 0 0 1-1.81.853C13.298 5.726 12.206 5 10.693 5c-.935 0-1.743.286-2.295.7"/><path d="M12.657 14.583c.551-.413.799-.908.799-1.37s-.248-.959-.8-1.372c-.551-.414-1.36-.7-2.295-.7a1 1 0 0 1 0-2c1.327 0 2.566.402 3.496 1.1s1.599 1.738 1.599 2.971s-.669 2.274-1.6 2.971c-.93.698-2.168 1.1-3.495 1.1c-2.052 0-3.994-.983-4.765-2.621a1 1 0 0 1 1.809-.853c.352.748 1.444 1.474 2.956 1.474c.936 0 1.744-.286 2.296-.7M10.5 1a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1"/><path d="M10.5 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1"/></g><path d="M7.097 5.3c-.646.484-1 1.115-1 1.77c0 .656.354 1.287 1 1.772s1.562.8 2.595.8a.5.5 0 0 1 0 1c-1.228 0-2.36-.373-3.195-1c-.836-.627-1.4-1.53-1.4-2.571c0-1.04.564-1.945 1.4-2.572c.836-.626 1.967-.999 3.195-.999c1.918 0 3.647.919 4.314 2.334a.5.5 0 0 1-.905.426c-.457-.97-1.761-1.76-3.409-1.76c-1.033 0-1.949.315-2.595.8"/><path d="M11.957 14.983c.646-.484.999-1.116.999-1.77c0-.656-.353-1.287-1-1.772c-.646-.485-1.562-.8-2.594-.8a.5.5 0 1 1 0-1c1.228 0 2.36.373 3.195 1s1.399 1.53 1.399 2.571c0 1.04-.564 1.945-1.4 2.571c-.835.627-1.966 1-3.194 1c-1.918 0-3.647-.919-4.314-2.334a.5.5 0 0 1 .905-.426c.457.97 1.76 1.76 3.409 1.76c1.032 0 1.948-.315 2.595-.8M9 1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 9 1"/><path d="M9 16a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 9 16"/></g></svg>
+                    <span>Mulai dari: Rp {{ $s['price_from'] }}</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#0F044C]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4-8-10V5l8-3 8 3v7c0 6-8 10-8 10Z"/></svg>
+                    <span>Garansi: {{ $s['warranty'] }}</span>
+                  </div>
+                </div>
+                <div class="bg-[#141E61] text-white px-4 py-1.5 rounded-md font-semibold text-sm">{{ $s['updated'] }}</div>
+              </div>
 
-            <div class="relative p-5 sm:p-8 md:p-10 pt-20 sm:pt-24 md:pt-28 min-h-[420px] md:min-h-[480px] lg:min-h-[560px] flex flex-col h-full justify-start gap-4 defparagraf">
-              <div class="flex-1 flex flex-col justify-center">
-                <h3 class="mt-2 text-[40px] sm:text-[48px] font-extrabold tracking-wide font-montserrat-48 uppercase">{{ $s['title'] }}</h3>
-                <p class="mt-2 text-base sm:text-lg defparagraf leading-relaxed max-w-prose">{{ $s['desc'] }}</p>
+              <div class="px-4 sm:px-6 py-6">
+                <h3 class="font-montserrat-48 uppercase text-lg sm:text-xl text-[#0F044C]">{{ $s['title'] }}</h3>
+                <p class="defparagraf text-[#141E61] mt-2 leading-relaxed">{{ $s['desc'] }}</p>
+                <div class="defparagraf text-xs text-[#787A91] mt-2">Harga bersifat estimasi dan tergantung model/tipe mobil serta kondisi unit.</div>
+                <div class="mt-5 flex items-center gap-3 flex-wrap">
+                  <a href="{{ route('layanan.detail') }}" class="inline-flex items-center gap-2 bg-[#0F044C] hover:bg-[#141E61] text-white px-5 py-2 rounded-md defparagraf">Lihat Detail Layanan</a>
+                  <a href="{{ url('/booking') }}" class="inline-flex items-center gap-2 border border-[#0F044C] text-[#0F044C] hover:bg-[#0F044C] hover:text-white px-5 py-2 rounded-md defparagraf">Booking Sekarang</a>
+                  <a href="https://wa.me/6281234567890?text={{ urlencode('Halo Dwi AC Mobil, saya ingin tanya estimasi harga layanan ' . $s['title'] . ' sesuai model mobil saya') }}" target="_blank" class="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-md defparagraf">Tanya Harga</a>
+                </div>
               </div>
-              <div class="mt-auto">
-                <a href="{{ route('layanan.detail') }}" class="inline-flex items-center gap-2 border border-white/50 bg-white/10 px-5 py-3 bigparagraf text-white hover:bg-white/15">Selengkapnya</a>
-              </div>
-            </div>
-          </article>
-        @endforeach
+            </article>
+          @endforeach
+        </div>
 
-        <!-- Kartu lebar (07) -->
-        <article class="md:col-span-2 relative overflow-hidden text-white shadow-xl">
-          <img src="{{ asset('https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop') }}" alt="Diagram AC Mobil" class="absolute inset-0 h-full w-full object-cover" />
-          <div class="absolute inset-0 bg-gradient-to-t from-[#0F044C] via-transparent to-transparent"></div>
+        <aside class="lg:col-span-4 space-y-8">
+          <div class="bg-white border border-[#EEEEEE] rounded-xl p-5">
+            <h4 class="font-montserrat-36 uppercase text-[#0F044C]">Kategori Layanan</h4>
+            <div class="w-16 h-0.5 bg-[#141E61] mt-2 mb-4"></div>
+            <ul class="divide-y divide-gray-200">
+              @foreach($categories as $c)
+                <li class="py-3 defparagraf flex items-center justify-between">
+                  <span>{{ $c['name'] }}</span>
+                  <svg class="w-4 h-4 text-[#787A91]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                </li>
+              @endforeach
+            </ul>
+          </div>
 
-          <div class="relative p-3 sm:p-5 md:p-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 defparagraf">
-              <div>
-                <div class="font-montserrat-48 tracking-tight text-white/95">07</div>
-                <h3 class="mt-2 text-[28px] font-montserrat-48 tracking-wide uppercase">Penggantian Spare Part AC Mobil</h3>
-                <p class="mt-2 text-white defparagraf">Kami siap mengganti komponen AC mobil Anda yang rusak atau aus, sesuai standar dan cocok untuk semua jenis kendaraan.</p>
-                <ul class="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 text-white defparagraf">
-                  <li>Freon / Refrigerant</li>
-                  <li>Magnetic Clutch</li>
-                  <li>Kondensor</li>
-                  <li>Cooling Fan</li>
-                  <li>Evaporator</li>
-                  <li>Blower</li>
-                  <li>Dryer / Filter</li>
-                  <li>Relay</li>
-                  <li>Pressure Switch</li>
-                  <li>Selang AC</li>
-                </ul>
-              </div>
-              <div class="flex flex-col justify-end">
-                <a href="{{ route('layanan.detail') }}" class="inline-flex items-center gap-2 border border-white/50 bg-white/10 px-5 py-3 bigparagraf text-white hover:bg-white/15 self-end">Selengkapnya</a>
-              </div>
+          <div class="bg-white border border-[#EEEEEE] rounded-xl p-5">
+            <h4 class="font-montserrat-36 uppercase text-[#0F044C]">Jam Operasional</h4>
+            <div class="w-16 h-0.5 bg-[#0F044C] mt-2 mb-4"></div>
+            <ul class="space-y-1 defparagraf text-[#787A91]">
+              <li>Senin–Jumat: 08.00 – 17.00</li>
+              <li>Sabtu: 08.00 – 15.00</li>
+              <li>Minggu/Libur: Tutup</li>
+            </ul>
+          </div>
+
+          <div class="bg-white border border-gray-200 rounded-xl p-5">
+            <h4 class="font-montserrat-36 uppercase text-gray-900">Kontak Cepat</h4>
+            <div class="w-16 h-0.5 bg-[#0F044C] mt-2 mb-4"></div>
+            <div class="space-y-3">
+              <a href="https://wa.me/6281234567890" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md defparagraf">WhatsApp</a>
+              <a href="tel:+6281234567890" class="w-full inline-flex items-center justify-center gap-2 border border-[#0F044C] text-[#0F044C] hover:bg-[#0F044C] hover:text-white px-4 py-2 rounded-md defparagraf">Telepon</a>
+              <div class="defparagraf text-gray-600">Jl. Contoh Alamat No. 123, Kota Anda</div>
             </div>
           </div>
-        </article>
+        </aside>
       </div>
     </div>
 </x-layout>

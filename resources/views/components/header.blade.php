@@ -1,6 +1,7 @@
-{{-- Header component: stripped HTML skeleton to avoid duplication with layout --}}
-<header class="fixed inset-x-0 top-0 z-50 bg-gradient-to-b from-[#0F044C] to-[#FFFFFF00]">
-  <nav class="relative flex items-center justify-between px-8 lg:px-6 xl:px-10 py-5">
+{{-- Header component: transparent at top, solid on scroll --}}
+@props(['solidAtTop' => false])
+<header id="main-header" class="fixed inset-x-0 top-0 z-50 px-16 sm:px-20 lg:px-24 pt-4 transition-all duration-300">
+  <nav id="main-nav" class="relative flex items-center justify-between px-6 lg:px-8 xl:px-12 py-4 {{ $solidAtTop ? 'bg-[#0F044C] shadow-xl backdrop-blur-sm' : 'bg-transparent' }} rounded-xl transition-all duration-300" data-solid-at-top="{{ $solidAtTop ? '1' : '0' }}">
     <!-- Logo -->
     <div class="flex items-center">
       <a href="/" class="flex items-center space-x-2">
@@ -175,6 +176,30 @@
 
       window.addEventListener('hashchange', initFromLocation);
       initFromLocation();
+    })();
+
+    // Scroll effect for header
+    (function() {
+      var header = document.getElementById('main-header');
+      var nav = document.getElementById('main-nav');
+      if (!header || !nav) return;
+
+      function updateHeaderOnScroll() {
+        var scrolled = window.scrollY > 50 || (nav.getAttribute('data-solid-at-top') === '1');
+        
+        if (scrolled) {
+          // Scrolled state: solid background with shadow
+          nav.classList.remove('bg-transparent');
+          nav.classList.add('bg-[#0F044C]', 'shadow-xl', 'backdrop-blur-sm');
+        } else {
+          // Top state: transparent
+          nav.classList.add('bg-transparent');
+          nav.classList.remove('bg-[#0F044C]', 'shadow-xl', 'backdrop-blur-sm');
+        }
+      }
+
+      window.addEventListener('scroll', updateHeaderOnScroll, { passive: true });
+      updateHeaderOnScroll(); // Initial check
     })();
   </script>
   <!-- Mobile Menu -->

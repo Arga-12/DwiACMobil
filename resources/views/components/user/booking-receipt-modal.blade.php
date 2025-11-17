@@ -187,33 +187,61 @@
                             </p>
                         </div>
                     </div>
-                @elseif(in_array($status, ['dalam_antrian', 'dalam_servisan', 'confirmed']))
+                @elseif($status === 'dalam_antrian')
                     <div class="mt-6 border-t-2 border-[#EEEEEE] pt-4">
                         <div class="bg-green-50 border-2 border-green-500 p-4">
                             <div class="flex items-center mb-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="text-green-800 mr-2">
-                                    <path fill="currentColor" d="M6.12 20.75c-.76 0-1.48-.3-2.03-.84a2.86 2.86 0 0 1 0-4.05l5.51-5.51c-.5-1.94.04-4.03 1.46-5.45a5.67 5.67 0 0 1 5.48-1.46c.26.07.46.27.53.53s0 .53-.19.72l-2.45 2.45l.52 1.91l1.91.52l2.45-2.45c.19-.19.47-.26.72-.19c.26.07.46.27.53.53c.53 1.95-.02 4.05-1.46 5.48c-1.42 1.42-3.51 1.96-5.45 1.46l-5.51 5.51c-.54.54-1.26.84-2.02.84m8.56-15.98c-.96.08-1.87.5-2.57 1.2c-1.14 1.14-1.51 2.81-.96 4.35c.1.27.03.58-.18.78l-5.83 5.83c-.53.53-.53 1.4 0 1.93c.26.26.6.4.97.4c.36 0 .71-.14.96-.4l5.83-5.83c.21-.21.51-.27.78-.18c1.54.54 3.21.18 4.35-.96c.7-.7 1.11-1.61 1.2-2.57l-1.63 1.63c-.19.19-.47.26-.73.19l-2.74-.75a.75.75 0 0 1-.53-.53l-.75-2.74c-.07-.26 0-.54.19-.73l1.63-1.63Z"/>
+                                    <path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
                                 </svg>
-                                <h4 class="text-sm font-medium defparagraf text-green-800">Booking Dikonfirmasi</h4>
+                                <h4 class="text-sm font-medium defparagraf text-green-800">Dalam Antrian</h4>
                             </div>
                             <p class="text-xs defparagraf text-green-700 leading-relaxed">
+                                Booking Anda sudah masuk antrian. Mohon menunggu giliran untuk diproses oleh teknisi kami.
+                            </p>
+                        </div>
+                    </div>
+                @elseif($status === 'dalam_servisan')
+                    <div class="mt-6 border-t-2 border-[#EEEEEE] pt-4">
+                        <div class="bg-purple-50 border-2 border-purple-500 p-4">
+                            <div class="flex items-center mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="text-purple-800 mr-2">
+                                    <path fill="currentColor" d="M6.12 20.75c-.76 0-1.48-.3-2.03-.84a2.86 2.86 0 0 1 0-4.05l5.51-5.51c-.5-1.94.04-4.03 1.46-5.45a5.67 5.67 0 0 1 5.48-1.46c.26.07.46.27.53.53s0 .53-.19.72l-2.45 2.45l.52 1.91l1.91.52l2.45-2.45c.19-.19.47-.26.72-.19c.26.07.46.27.53.53c.53 1.95-.02 4.05-1.46 5.48c-1.42 1.42-3.51 1.96-5.45 1.46l-5.51 5.51c-.54.54-1.26.84-2.02.84m8.56-15.98c-.96.08-1.87.5-2.57 1.2c-1.14 1.14-1.51 2.81-.96 4.35c.1.27.03.58-.18.78l-5.83 5.83c-.53.53-.53 1.4 0 1.93c.26.26.6.4.97.4c.36 0 .71-.14.96-.4l5.83-5.83c.21-.21.51-.27.78-.18c1.54.54 3.21.18 4.35-.96c.7-.7 1.11-1.61 1.2-2.57l-1.63 1.63c-.19.19-.47.26-.73.19l-2.74-.75a.75.75 0 0 1-.53-.53l-.75-2.74c-.07-.26 0-.54.19-.73l1.63-1.63Z"/>
+                                </svg>
+                                <h4 class="text-sm font-medium defparagraf text-purple-800">Sedang Dikerjakan</h4>
+                            </div>
+                            <p class="text-xs defparagraf text-purple-700 leading-relaxed">
+                                Mobil Anda sedang dalam proses pengerjaan oleh teknisi kami. Kami akan memberitahu jika sudah selesai.
+                            </p>
+                        </div>
+                    </div>
+                @elseif($status === 'confirmed')
+                    <div class="mt-6 border-t-2 border-[#EEEEEE] pt-4">
+                        <div class="bg-cyan-50 border-2 border-cyan-500 p-4">
+                            <div class="flex items-center mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="text-cyan-800 mr-2">
+                                    <path fill="currentColor" d="m10.6 16.6l7.05-7.05l-1.4-1.4l-5.65 5.65l-2.85-2.85l-1.4 1.4zM12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"/>
+                                </svg>
+                                <h4 class="text-sm font-medium defparagraf text-cyan-800">Booking Dikonfirmasi</h4>
+                            </div>
+                            <p class="text-xs defparagraf text-cyan-700 leading-relaxed">
                                 Booking telah dikonfirmasi. Admin akan memproses pesanan sesuai jadwal yang ditentukan.
                             </p>
                         </div>
                     </div>
                 @elseif(in_array($status, ['selesai', 'completed']))
                     <div class="mt-6 border-t-2 border-[#EEEEEE] pt-4">
-                        <div class="bg-blue-50 border-2 border-blue-500 p-4">
+                        <div class="bg-emerald-50 border-2 border-emerald-600 p-4">
                             <div class="flex items-center mb-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="text-blue-800 mr-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="text-emerald-800 mr-2">
                                     <g fill="currentColor">
                                         <path d="M10.243 16.314L6 12.07l1.414-1.414l2.829 2.828l5.656-5.657l1.415 1.415z"/>
                                         <path fill-rule="evenodd" d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11s-4.925 11-11 11S1 18.075 1 12m11 9a9 9 0 1 1 0-18a9 9 0 0 1 0 18" clip-rule="evenodd"/>
                                     </g>
                                 </svg>
-                                <h4 class="text-sm font-medium defparagraf text-blue-800">Layanan Selesai</h4>
+                                <h4 class="text-sm font-medium defparagraf text-emerald-800">Layanan Selesai</h4>
                             </div>
-                            <p class="text-xs defparagraf text-blue-700 leading-relaxed">
+                            <p class="text-xs defparagraf text-emerald-700 leading-relaxed">
                                 Layanan telah selesai dikerjakan. Terima kasih telah menggunakan layanan DwiACMobil.
                             </p>
                         </div>

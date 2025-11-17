@@ -1,5 +1,10 @@
+@props([
+    'solidHeaderAtTop' => false,
+    'showHeader' => false,
+    'showHero' => false,
+])
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-100">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +14,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
     <link rel="stylesheet" href="/css/custom-fonts.css">
+    @vite('resources/js/app.js')
 </head>
-<body class="{{ (isset($showHeader) && $showHeader && (!isset($showHero) || !$showHero)) ? 'pt-24' : '' }}">
+<body>
 <!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
 
-@if(isset($showHeader) && $showHeader)
-    <x-header />
+@if($showHeader)
+    <x-header :solidAtTop="$solidHeaderAtTop" />
 @endif
 
 @if(isset($showHero) && $showHero)

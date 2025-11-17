@@ -1,5 +1,5 @@
 <footer class="bg-[#0F044C] text-white">
-	<div class="mx-auto max-w-7xl px-6 lg:px-8 py-12 md:py-16">
+	<div class="mx-auto py-16 px-16 sm:px-20 lg:px-24">
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
 			<!-- Column 1: Brand + Address -->
 			<div>

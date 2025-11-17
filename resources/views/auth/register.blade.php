@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="h-screen overflow-hidden">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,115 +9,89 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/custom-fonts.css">
 </head>
-<body class="h-full">
-    <div class="flex h-full">
-        <!-- Panel Kiri - Background Image dengan Gradient Overlay -->
-        <div class="hidden lg:flex lg:w-1/2 relative">
-            <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/ac-backgrounddaf.png') }}');"></div>
-            <!-- Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-l from-[#0F044C]/15 to-[#0F044C]"></div>
-            <!-- Content -->
-            <div class="relative z-10 flex flex-col justify-center items-center text-center px-8 sm:px-12 lg:px-16 xl:px-24 py-16 text-white mx-auto">
-                <h1 class="font-montserrat-64 text-white mb-6">SELAMAT DATANG</h1>
-                <h2 class="font-montserrat-48 text-white mb-8">DI DWI AC MOBIL</h2>
-                <p class="text-lg opacity-90 leading-relaxed">Booking antrian lebih mudah, pelayanan lebih pasti. Jadwalkan servis Anda sekarang.</p>
+<body class="h-screen overflow-hidden">
+    <div class="flex h-screen">
+        <!-- Panel Kiri - Gambar dengan margin atas/kiri/bawah, tanpa margin kanan -->
+        <div class="hidden lg:flex lg:w-1/2 h-full">
+            <div class="relative m-2 mr-0 h-full w-full rounded-3xl overflow-hidden ring-4 ring-white shadow-lg">
+                <!-- Background Image -->
+                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/ac-backgrounddaf.png') }}');"></div>
+                <!-- Gradient Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-l from-[#0F044C]/15 to-[#0F044C]"></div>
+                <!-- Content -->
+                <div class="relative z-10 flex flex-col justify-center items-center text-center px-8 sm:px-12 lg:px-16 xl:px-24 py-16 text-white mx-auto h-full">
+                    <h1 class="font-montserrat-64 text-white mb-6">SELAMAT DATANG</h1>
+                    <h2 class="font-montserrat-48 text-white mb-8">DI DWI AC MOBIL</h2>
+                    <p class="text-lg opacity-90 leading-relaxed">Booking antrian lebih mudah, pelayanan lebih pasti. Jadwalkan servis Anda sekarang.</p>
+                </div>
             </div>
         </div>
 
-        <!-- Panel Kanan - Form Register -->
+        <!-- Panel Kanan - Form Register mengikuti lebar kolom -->
         <div class="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24">
-            <!-- Back Button -->
-            <div class="mb-8">
-                <a href="/" class="inline-flex items-center text-gray-600 hover:text-gray-900">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                    Kembali
-                </a>
+                <!-- Header: Title kiri, Logo kanan -->
+            <div class="flex items-start justify-between mb-2">
+                <h1 class="font-montserrat-48 text-[#0F044C]">DAFTAR</h1>
+                <div class="bg-[#0F044C] rounded-xl px-3 py-2">
+                    <img src="{{ asset('images/logo.png') }}" alt="Dwi AC Mobil" class="h-7 sm:h-9">
+                </div>
             </div>
-
-            <!-- Title -->
-            <div class="mb-8 text-center">
-                <h1 class="font-montserrat-64 text-gray-900">DAFTAR</h1>
-            </div>
+            <p class="defparagraf text-[#787A91] mb-6">Buat akun untuk booking cepat, pantau status servis, dan riwayat perawatan.</p>
 
             <!-- Form -->
-            <form class="space-y-6" action="{{ route('register.post') }}" method="POST">
-                @csrf
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                        Nama Anda
-                    </label>
-                    <input id="name" name="name" type="text" required value="{{ old('name') }}"
-                        class="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
-                </div>
-
-                <div>
-                    <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-2">
-                        No. WA
-                    </label>
-                    <input id="whatsapp" name="whatsapp" type="tel" required value="{{ old('whatsapp') }}"
-                        class="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
-                </div>
-
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                        Email
-                    </label>
-                    <input id="email" name="email" type="email" required value="{{ old('email') }}"
-                        class="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
-                </div>
-
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                        Password
-                    </label>
-                    <input id="password" name="password" type="password" required
-                        class="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
-                </div>
-
-                <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">
-                        Konfirmasi Password
-                    </label>
-                    <input id="password_confirmation" name="password_confirmation" type="password" required
-                        class="w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
-                </div>
-                @if($errors->any())
-                <div class="text-red-600 text-sm">
-                    <ul>
-                    @foreach($errors->all() as $err)
-                        <li>{{ $err }}</li>
-                    @endforeach
-                    </ul>
-                </div>
-                @endif
-
-                <!-- Divider -->
-                <div class="relative my-8">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300"></div>
+                <form class="space-y-6" action="{{ route('register.post') }}" method="POST">
+                    @csrf
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nama Anda</label>
+                        <input id="name" name="name" type="text" required value="{{ old('name') }}" placeholder="Masukkan nama lengkap Anda"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
                     </div>
-                </div>
 
-                <!-- Bottom Section -->
-                <div class="flex space-x-4 items-end">
-                    <div class="flex-1 mt-3">
-                        <p class="text-gray-600 text-center">Sudah memiliki Akun?</p>
-                        <a href="/login" 
-                            class="w-full px-6 h-[70px] border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors flex items-center justify-center">
-                            Login
-                        </a>
+                    <div>
+                        <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-2">No. WA</label>
+                        <input id="whatsapp" name="whatsapp" type="tel" required value="{{ old('whatsapp') }}" placeholder="Masukkan nomor WhatsApp Anda"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
                     </div>
-                    <div class="flex-1">
-                        <button type="submit" 
-                            class="w-full px-6 h-[70px] bg-[#0F044C] text-white font-medium hover:bg-[#0F044C]/90 transition-colors flex items-center justify-center">
-                            Daftar
-                        </button>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input id="email" name="email" type="email" required value="{{ old('email') }}" placeholder="Masukkan email Anda"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
                     </div>
-                </div>
-            </form>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input id="password" name="password" type="password" required placeholder="Buat password"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
+                    </div>
+
+                    <div>
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Password</label>
+                        <input id="password_confirmation" name="password_confirmation" type="password" required placeholder="Ulangi password Anda"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
+                    </div>
+
+                    @if($errors->any())
+                    <div class="text-red-600 text-sm">
+                        <ul>
+                        @foreach($errors->all() as $err)
+                            <li>{{ $err }}</li>
+                        @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    <!-- Aksi -->
+                    <div class="flex space-x-4 items-end mt-8">
+                        <div class="flex-1 mt-3">
+                            <p class="text-gray-600 text-center">Sudah memiliki Akun?</p>
+                            <a href="/login" class="w-full px-6 h-[56px] border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors flex items-center justify-center">Login</a>
+                        </div>
+                        <div class="flex-1">
+                            <button type="submit" class="w-full px-6 h-[56px] bg-[#0F044C] rounded-xl text-white font-medium hover:bg-[#141E61] transition-colors flex items-center justify-center">Daftar</button>
+                        </div>
+                    </div>
+                </form>
         </div>
     </div>
 </body>

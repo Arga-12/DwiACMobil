@@ -39,7 +39,7 @@ Route::get('/layanan/detail-layanan', function () {
 })->name('layanan.detail');
 
 // Guest Routes (Only for non-authenticated users)
-Route::middleware('guest')->group(function () {
+Route::middleware('auth.middleware:guest,web')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -50,7 +50,7 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Authenticated User Routes
-Route::middleware('auth')->group(function () {
+Route::middleware('auth.middleware:auth,web')->group(function () {
     // User Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -86,7 +86,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // User Antrian actions (called from booking receipt modal)
-Route::middleware('auth')->prefix('user')->group(function () {
+Route::middleware('auth.middleware:auth,web')->prefix('user')->group(function () {
     Route::post('/antrian/{id}/confirm-price', [UserBookingController::class, 'confirmPrice'])
         ->name('user.antrian.confirm_price');
     Route::post('/antrian/{id}/cancel', [UserBookingController::class, 'cancel'])
@@ -94,7 +94,7 @@ Route::middleware('auth')->prefix('user')->group(function () {
 });
 
 // Admin Routes - separate middleware group
-Route::middleware('auth:montir')->prefix('admin')->group(function () {
+Route::middleware('auth.middleware:auth,montir')->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // Admin Antrian management

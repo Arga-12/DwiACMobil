@@ -9,7 +9,16 @@
 ])
 
 @php
-  $bgUrl = asset('images/hero-background.png');
+  // Array background images
+  $backgrounds = [
+    asset('images/hero-background1.png'),
+    asset('images/hero-background2.png'),
+    asset('images/hero-background3.png'),
+    asset('images/hero-background4.png'),
+  ];
+  
+  // Random background untuk initial load
+  $bgUrl = $backgrounds[array_rand($backgrounds)];
 
   // Array persuasif untuk heading
   $headings = [
@@ -39,53 +48,226 @@
   @media (max-width: 1024px) {
     :root { --header-height: {{ $headerHeightSm }}; }
   }
+  
+  /* Dissolve animation for hero background */
+  .hero-bg-layer {
+    transition: opacity 1.5s ease-in-out;
+  }
+  
+  .hero-bg-layer.active {
+    opacity: 1;
+  }
+  
+  .hero-bg-layer.inactive {
+    opacity: 0;
+  }
 </style>
 
 <section class="hero-layanan relative isolate overflow-hidden z-0"
-         style="margin-top: calc(-1 * var(--header-height));">
-  <!-- Background image -->
-  <div class="absolute inset-0 bg-cover bg-center brightness-90"
+         style="min-height: 100vh;">
+
+  <!-- Background Images with Dissolve Effect -->
+  <div class="absolute inset-0 bg-cover bg-center brightness-75 hero-bg-layer active" id="heroBg1"
        style="background-image: url('{{ $bgUrl }}');"></div>
+  <div class="absolute inset-0 bg-cover bg-center brightness-75 hero-bg-layer inactive" id="heroBg2"
+       style="background-image: url('{{ $bgUrl }}');"></div>
+  
+  <!-- Gradient Overlay Biru -->
+  <div class="absolute inset-0 bg-gradient-to-r from-[#0F044C]/90 via-[#141E61]/80 to-[#0F044C]/90"></div>
 
-  <!-- overlays -->
-  <div class="absolute inset-0 bg-black/40"></div>
-  <div class="absolute inset-0 bg-gradient-to-r from-[#0F044C] to-[#0F044C]/0"></div>
-
-  <!-- inner wrapper -->
-  <div class="hero-inner relative mx-auto max-w-7xl px-6 lg:px-8"
-       style="padding-top: calc(var(--header-height) + 24px); padding-bottom: 3rem; min-height: {{ $minHeight }};">
-    <div class="py-24 sm:py-32">
-      <div class="max-w-5xl lg:max-w-6xl text-left">
-        {{-- <div class="inline-flex items-center px-5 py-2 bg-[#787A91] h-[40px] rounded-full backdrop-blur-sm text-white mb-6 bigparagraf">
-          <span>
-            Selamat Datang di <span class="text-[#0F044C]">Dwi AC Mobil</span>
-          </span>          
-        </div> --}}
-
+  <!-- inner wrapper - complex layout -->
+  <div class="hero-inner relative mx-auto px-16 sm:px-20 lg:px-24 flex flex-col justify-center"
+       style="min-height: 100vh; padding-top: 6rem; padding-bottom: 3rem;">
+    
+    <!-- Top Section: Heading + Background Selector -->
+    <div class="flex items-center justify-between gap-8 mt-[150px]">
+      <!-- Left: Heading & Subtitle & Buttons -->
+      <div class="flex-1 max-w-4xl flex flex-col justify-center">
         <h1 class="font-montserrat-64 text-white leading-tight uppercase">
           {{ $computedHeading }}
         </h1>
 
-        <p class="mt-6 text-white/80 bighpparagraf">
+        <p class="mt-6 text-white/90 bighpparagraf">
           {!! nl2br(e($computedSubtitle)) !!}
         </p>
 
-        <div class="mt-10 flex flex-wrap items-center gap-3 sm:gap-4 md:gap-6">
+        <div class="mt-8 flex flex-wrap items-center gap-4">
           <a href="{{ auth()->check() ? route('booking') : route('login') }}"
-             class="w-full sm:w-[240px] md:w-[275px] h-12 sm:h-14 md:h-[70px]
-                    inline-flex items-center justify-center bg-[#0F044C] text-white
-                    font-semibold tracking-wide hover:bg-[#0F044C]/90 transition">
+             class="w-full sm:w-64 h-14 md:h-16 bg-white text-[#0F044C] font-semibold rounded-xl
+                    flex items-center justify-center hover:bg-white/90 transition shadow-lg">
             <span class="bigparagraf">Antri & Serviskan!</span>
-            <img src="/images/arrows_button/panah-miringkeatas.svg" alt="" class="ml-3 h-5 w-5" />
+            <img src="/images/arrows_button/panah-miringkeatas.svg" alt="" aria-hidden="true" class="ml-3 h-5 w-5 brightness-0" />
           </a>
           <a href="/layanan"
-             class="w-full sm:w-[240px] md:w-[275px] h-12 sm:h-14 md:h-[70px]
-                    inline-flex items-center justify-center border border-white/50 bg-white/20
-                    text-white font-semibold hover:bg-white/10 transition">
+             class="w-full sm:w-64 h-14 md:h-16 border-2 border-white text-white font-semibold rounded-xl
+                    flex items-center justify-center hover:bg-white/10 transition">
             <span class="bigparagraf">Jelajahi layanan kami</span>
           </a>
         </div>
       </div>
+
+      <!-- Right: Background Selector (01-04) -->
+      <div class="flex flex-col justify-center gap-3 text-white/60">
+        <button onclick="changeHeroBg(1)" class="hero-bg-btn font-montserrat-36 hover:text-white transition" data-bg="1">01</button>
+        <button onclick="changeHeroBg(2)" class="hero-bg-btn font-montserrat-36 hover:text-white transition" data-bg="2">02</button>
+        <button onclick="changeHeroBg(3)" class="hero-bg-btn font-montserrat-36 hover:text-white transition" data-bg="3">03</button>
+        <button onclick="changeHeroBg(4)" class="hero-bg-btn font-montserrat-36 hover:text-white transition" data-bg="4">04</button>
+      </div>
     </div>
+
+    <!-- Bottom Section: Users + Rating -->
+    <div class="flex items-center justify-between mt-auto pt-20">
+      <!-- Left: Overlapping User Icons -->
+      <div class="flex items-center gap-4">
+        <div class="flex -space-x-4">
+          <img src="{{ asset('images/review/example.jpg') }}" alt="User" class="w-12 h-12 rounded-full border-2 border-white object-cover" />
+          <img src="{{ asset('images/review/example1.jpg') }}" alt="User" class="w-12 h-12 rounded-full border-2 border-white object-cover" />
+          <img src="{{ asset('images/review/example2.jpg') }}" alt="User" class="w-12 h-12 rounded-full border-2 border-white object-cover" />
+          <img src="{{ asset('images/review/example3.jpg') }}" alt="User" class="w-12 h-12 rounded-full border-2 border-white object-cover" />
+        </div>
+        <p class="text-white/90 bigparagraf">4000+ Users berpartisipasi dengan kami</p>
+      </div>
+
+      <!-- Right: Rating -->
+      <div class="flex items-center gap-4">
+        <p class="text-white/90 bigparagraf">Rata rata kepuasan : 4.5 / 5</p>
+        <div class="flex items-center gap-1">
+          @for($i = 1; $i <= 5; $i++)
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+            <path fill="{{ $i <= 4 ? '#fff042' : '#ffffff40' }}" fill-rule="evenodd" d="M12.908 1.581a1 1 0 0 0-1.816 0l-2.87 6.22l-6.801.807a1 1 0 0 0-.562 1.727l5.03 4.65l-1.335 6.72a1 1 0 0 0 1.469 1.067L12 19.426l5.977 3.346a1 1 0 0 0 1.47-1.068l-1.335-6.718l5.029-4.651a1 1 0 0 0-.562-1.727L15.777 7.8z" clip-rule="evenodd"/>
+          </svg>
+          @endfor
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
+
+<script>
+  let currentBg = 1;
+  let autoSlideInterval = null;
+  let currentLayer = 1; // Track which layer is currently active
+  let isTransitioning = false; // Prevent multiple transitions at once
+  
+  // Function to change hero background with dissolve effect
+  function changeHeroBg(bgNumber, isAuto = false) {
+    // Prevent multiple transitions at the same time
+    if (isTransitioning) return;
+    
+    const bg1 = document.getElementById('heroBg1');
+    const bg2 = document.getElementById('heroBg2');
+    const buttons = document.querySelectorAll('.hero-bg-btn');
+    
+    // Background images array
+    const backgrounds = [
+      '{{ asset('images/hero-background1.png') }}',
+      '{{ asset('images/hero-background2.png') }}',
+      '{{ asset('images/hero-background3.png') }}',
+      '{{ asset('images/hero-background4.png') }}'
+    ];
+    
+    if (!bg1 || !bg2 || !backgrounds[bgNumber - 1]) return;
+    
+    // Skip if already on this background
+    if (currentBg === bgNumber && !isAuto) return;
+    
+    isTransitioning = true;
+    
+    // Determine which layer to update
+    const activeLayer = currentLayer === 1 ? bg1 : bg2;
+    const inactiveLayer = currentLayer === 1 ? bg2 : bg1;
+    
+    // Set new image on inactive layer
+    inactiveLayer.style.backgroundImage = `url('${backgrounds[bgNumber - 1]}')`;
+    
+    // Dissolve effect: fade out active, fade in inactive
+    activeLayer.classList.remove('active');
+    activeLayer.classList.add('inactive');
+    inactiveLayer.classList.remove('inactive');
+    inactiveLayer.classList.add('active');
+    
+    // Switch current layer
+    currentLayer = currentLayer === 1 ? 2 : 1;
+    currentBg = bgNumber;
+    
+    // Allow transitions again after animation completes
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 1500); // Match transition duration
+    
+    // Update active button
+    buttons.forEach((btn, index) => {
+      if (index + 1 === bgNumber) {
+        btn.classList.remove('text-white/60');
+        btn.classList.add('text-white');
+      } else {
+        btn.classList.remove('text-white');
+        btn.classList.add('text-white/60');
+      }
+    });
+    
+    // Reset auto-slide timer if manually clicked
+    if (!isAuto) {
+      resetAutoSlide();
+    }
+  }
+  
+  // Auto slide function
+  function startAutoSlide() {
+    // Clear any existing interval first
+    if (autoSlideInterval) {
+      clearInterval(autoSlideInterval);
+      autoSlideInterval = null;
+    }
+    
+    autoSlideInterval = setInterval(() => {
+      let nextBg = currentBg + 1;
+      if (nextBg > 4) nextBg = 1;
+      changeHeroBg(nextBg, true);
+    }, 5000); // Change every 5 seconds
+  }
+  
+  // Reset auto slide
+  function resetAutoSlide() {
+    if (autoSlideInterval) {
+      clearInterval(autoSlideInterval);
+      autoSlideInterval = null;
+    }
+    startAutoSlide();
+  }
+  
+  // Stop auto slide (useful for cleanup)
+  function stopAutoSlide() {
+    if (autoSlideInterval) {
+      clearInterval(autoSlideInterval);
+      autoSlideInterval = null;
+    }
+  }
+  
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    // Clean up any existing intervals (in case of hot reload)
+    stopAutoSlide();
+    
+    // Set initial background
+    currentBg = 1;
+    currentLayer = 1;
+    isTransitioning = false;
+    
+    // Start auto slide
+    startAutoSlide();
+    
+    // Add click listeners to buttons
+    document.querySelectorAll('.hero-bg-btn').forEach((btn, index) => {
+      btn.addEventListener('click', () => {
+        changeHeroBg(index + 1, false);
+      });
+    });
+  });
+  
+  // Clean up on page unload
+  window.addEventListener('beforeunload', function() {
+    stopAutoSlide();
+  });
+</script>
