@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Pelanggan;
 use App\Models\Montir;
 use App\Models\ArtikelLayanan;
+use App\Models\AntriStruk;
+use App\Models\KalenderLibur;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 class AdminController extends Controller
 {
@@ -16,8 +19,9 @@ class AdminController extends Controller
     {
         // Get admin dashboard statistics
         $stats = $this->getDashboardStats();
+        $calendarContext = $this->buildCalendarContext();
         
-        return view('admin.dashboard-admin', compact('stats'));
+        return view('admin.dashboard-admin', compact('stats', 'calendarContext'));
     }
     
     public function galeri()
@@ -153,6 +157,88 @@ class AdminController extends Controller
             'pending_queue' => 5, // TODO: Get from AntriStruk::where('status', 'pending')->count()
             'total_services' => 42, // TODO: Get from ArtikelLayanan::count()
             'monthly_revenue' => 75000000 // TODO: Calculate from completed bookings this month
+        ];
+    }
+
+    private function buildCalendarContext(): array
+    {
+        $currentMonth = Carbon::now()->startOfMonth();
+        $start = $currentMonth->copy();
+        $end = $currentMonth->copy()->endOfMonth();
+
+        $bookings = AntriStruk::with([
+                'pelanggan:id_pelanggan,nama',
+                'mobil:id_mobil,nama_mobil,plat_nomor',
+            ])
+            ->whereBetween('tanggal_pesan', [$start->copy()->startOfDay(), $end->copy()->endOfDay()])
+            ->orderBy('tanggal_pesan')
+            ->get();
+
+        $holidays = KalenderLibur::betweenDates($start, $end)
+            ->orderBy('tanggal')
+            ->get();
+
+        $days = [];
+
+        foreach ($bookings as $booking) {
+            $dateKey = optional($booking->tanggal_pesan)?->toDateString();
+            if (!$dateKey) {
+                continue;
+            }
+
+            if (!isset($days[$dateKey])) {
+                $days[$dateKey] = [
+                    'bookings' => [],
+                    'booking_count' => 0,
+                    'statuses' => [],
+                ];
+            }
+
+            $days[$dateKey]['bookings'][] = [
+                'id' => $booking->id_antri_struk,
+                'nomor_booking' => $booking->nomor_booking,
+                'status' => $booking->status,
+                'pelanggan' => optional($booking->pelanggan)->nama,
+                'mobil' => optional($booking->mobil)->nama_mobil,
+                'plat_nomor' => optional($booking->mobil)->plat_nomor,
+                'waktu' => optional($booking->tanggal_pesan)?->format('H:i'),
+            ];
+        }
+
+        foreach ($days as $dateKey => &$info) {
+            $info['booking_count'] = count($info['bookings']);
+            $info['statuses'] = collect($info['bookings'])
+                ->groupBy('status')
+                ->map->count()
+                ->toArray();
+        }
+        unset($info);
+
+        foreach ($holidays as $holiday) {
+            $dateKey = $holiday->tanggal->toDateString();
+
+            if (!isset($days[$dateKey])) {
+                $days[$dateKey] = [
+                    'bookings' => [],
+                    'booking_count' => 0,
+                    'statuses' => [],
+                ];
+            }
+
+            $days[$dateKey]['holiday'] = [
+                'title' => $holiday->judul,
+                'note' => $holiday->keterangan,
+            ];
+        }
+
+        ksort($days);
+
+        return [
+            'month_start' => $start,
+            'month_name' => $currentMonth->locale('id')->translatedFormat('F Y'),
+            'days_in_month' => $currentMonth->daysInMonth,
+            'start_day_of_week' => (int) $currentMonth->copy()->day(1)->dayOfWeekIso,
+            'days' => $days,
         ];
     }
 }

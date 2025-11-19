@@ -16,7 +16,6 @@
                         <div class="mt-6 flex flex-col sm:flex-row gap-3">
                             <a href="{{ route('booking') }}" class="px-5 py-3 bg-white text-[#0F044C] rounded-xl font-semibold defparagraf text-center shadow-lg hover:shadow-xl transition-all duration-200">Buat Booking Baru</a>
                             <a href="{{ route('antrian') }}" class="px-5 py-3 border border-white/30 text-white rounded-xl font-semibold defparagraf text-center hover:bg-white/10 transition-all duration-200">Kelola Antrian</a>
-                            <a href="{{ route('user.mobil.create') }}" class="px-5 py-3 border border-white/30 text-white rounded-xl font-semibold defparagraf text-center hover:bg-white/10 transition-all duration-200">Kelola Mobil</a>
                             <a href="{{ route('profile') }}" class="px-5 py-3 border border-white/30 text-white rounded-xl font-semibold defparagraf text-center hover:bg-white/10 transition-all duration-200">Profil</a>
                         </div>
                     </div>
@@ -452,6 +451,77 @@
                         </div>
                     </a>
                 </div>
+            </div>
+
+            <!-- LIST MOBIL YANG DIPUNYA Section -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg sm:text-xl md:text-xl lg:text-2xl font-montserrat-48 text-gray-900 font-bold tracking-tight">Mobil yang Dipunya</h2>
+                    <a href="{{ route('user.mobil.create') }}" class="px-4 py-2 bg-gradient-to-r from-[#1D2C90] to-[#0F044C] text-white rounded-lg font-semibold defparagraf text-sm hover:from-[#0F044C] hover:to-[#1D2C90] transition-all duration-200 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"/></svg>
+                        <span>Tambah Mobil</span>
+                    </a>
+                </div>
+                
+                @if(!empty($userCars))
+                    <div class="bg-white border border-[#0F044C]/20 rounded-xl shadow-md overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="bg-gradient-to-r from-[#0F044C]/5 to-[#1D2C90]/5 border-b border-[#0F044C]/20">
+                                        <th class="px-6 py-4 text-left text-xs font-semibold defparagraf text-[#0F044C] uppercase tracking-wider">Mobil</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold defparagraf text-[#0F044C] uppercase tracking-wider">Jenis</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold defparagraf text-[#0F044C] uppercase tracking-wider">Plat Nomor</th>
+                                        <th class="px-6 py-4 text-right text-xs font-semibold defparagraf text-[#0F044C] uppercase tracking-wider">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    @foreach($userCars as $car)
+                                        <tr class="hover:bg-gray-50 transition-colors">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 bg-gradient-to-br from-[#1D2C90] to-[#0F044C] rounded-lg flex items-center justify-center flex-shrink-0">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24"><path fill="currentColor" d="M19 20H5v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V11l2.48-5.788A2 2 0 0 1 6.32 4h11.36a2 2 0 0 1 1.838 1.212L22 11v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm1-7H4v5h16zM4.176 11h15.648l-2.143-5H6.32zM6.5 17a1.5 1.5 0 1 1 0-3a1.5 1.5 0 0 1 0 3m11 0a1.5 1.5 0 1 1 0-3a1.5 1.5 0 0 1 0 3"/></svg>
+                                                    </div>
+                                                    <span class="font-semibold defparagraf text-[#0F044C]">{{ $car['nama'] }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="defparagraf text-gray-700">{{ $car['jenis_mobil'] ?? '—' }}</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="defparagraf text-gray-700 font-medium">{{ $car['plat_nomor'] }}</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right">
+                                                <div class="flex items-center justify-end gap-2">
+                                                    <a href="{{ route('booking', ['car_id' => $car['id'] ?? null]) }}" class="px-4 py-2 bg-white border border-[#0F044C] text-[#0F044C] defparagraf text-xs font-semibold rounded-lg hover:bg-[#0F044C] hover:text-white transition-all duration-200">
+                                                        Booking
+                                                    </a>
+                                                    @if(isset($car['id']))
+                                                        <a href="{{ route('user.mobil.edit', $car['id']) }}" class="px-4 py-2 bg-gradient-to-r from-[#1D2C90] to-[#0F044C] text-white defparagraf text-xs font-semibold rounded-lg hover:from-[#0F044C] hover:to-[#1D2C90] transition-all duration-200">
+                                                            Edit
+                                                        </a>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @else
+                    <div class="bg-white border border-[#0F044C]/20 border-dashed rounded-xl shadow-sm p-12 text-center">
+                        <div class="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-500" viewBox="0 0 24 24"><path fill="currentColor" d="M19 20H5v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V11l2.48-5.788A2 2 0 0 1 6.32 4h11.36a2 2 0 0 1 1.838 1.212L22 11v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm1-7H4v5h16zM4.176 11h15.648l-2.143-5H6.32zM6.5 17a1.5 1.5 0 1 1 0-3a1.5 1.5 0 0 1 0 3m11 0a1.5 1.5 0 1 1 0-3a1.5 1.5 0 0 1 0 3"/></svg>
+                        </div>
+                        <p class="text-sm defparagraf text-gray-600 font-medium mb-4">Belum ada mobil terdaftar</p>
+                        <a href="{{ route('user.mobil.create') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#1D2C90] to-[#0F044C] text-white rounded-lg font-semibold defparagraf hover:from-[#0F044C] hover:to-[#1D2C90] transition-all duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"/></svg>
+                            <span>Tambah Mobil Pertama</span>
+                        </a>
+                    </div>
+                @endif
             </div>
     </div>
 

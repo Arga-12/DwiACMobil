@@ -1,4 +1,14 @@
 <!-- Admin Sidebar Component -->
+@vite('resources/js/admin/sidebar-transisi.js')
+<style>
+    .sidebar-mode-section {
+        transition: opacity 300ms ease-in-out, max-height 300ms ease-in-out;
+        overflow: hidden;
+    }
+    .sidebar-mode-section.hidden {
+        display: none;
+    }
+</style>
 <aside class="sidebar w-[300px] lg:w-[300px] md:w-[280px] sm:w-[280px] bg-[#F5F5F5] border-r border-gray-200 min-h-screen fixed left-0 top-0 z-40 transform transition-[width,transform] duration-500 ease-[cubic-bezier(0.22,0.61,0.36,1)] will-change-[width,transform] lg:translate-x-0 md:translate-x-0 sm:-translate-x-full">
     <div class="p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col min-h-screen">
         <!-- Admin Profile -->
@@ -58,7 +68,7 @@
                 </svg>
                 <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Dashboard</span>
             </a>
-            <a href="{{ route('admin.profil-admin') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.profile*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
+            <a href="{{ route('admin.profil-admin') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.profil-admin') || request()->routeIs('admin.profile*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
                 <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="8" r="5"/>
                     <path d="M20 21a8 8 0 0 0-16 0"/>
@@ -66,24 +76,10 @@
                 <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Profil</span>
             </a>
             
-            @php
-              $mgActive = request()->routeIs('admin.antrian*') || request()->routeIs('admin.layanan*');
-              $webActive = request()->routeIs('admin.galeri*') || request()->routeIs('admin.montir*') || request()->routeIs('admin.artikel*');
-            @endphp
-            <div class="rounded-lg {{ $mgActive ? 'bg-[#1D2C90] text-white border-none' : 'bg-white text-black border border-black' }}">
-              <button type="button" onclick="toggleSidebarSection('mg-section', 'mg-chevron')" class="w-full flex items-center justify-between space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-2 sm:px-3 md:px-3 lg:px-4 py-2 lg:py-3  transition-colors">
-                <span class="flex items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3">
-                  <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M6 1a1.75 1.75 0 0 0-1.75 1.75V4H3a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.25V2.75A1.75 1.75 0 0 0 10 1zm4.25 3V2.75A.25.25 0 0 0 10 2.5H6a.25.25 0 0 0-.25.25V4zM3 5.5h10a.5.5 0 0 1 .5.5v1h-11V6a.5.5 0 0 1 .5-.5m-.5 3V13a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8.5H9V10H7V8.5z" clip-rule="evenodd"/></svg>
-                  <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Bengkel</span>
-                </span>
-                <svg id="mg-chevron" class="w-6 h-6 shrink-0 transform transition-transform duration-300 ease-in-out rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" d="m488.832 344.32l-339.84 356.672a32 32 0 0 0 0 44.16l.384.384a29.44 29.44 0 0 0 42.688 0l320-335.872l319.872 335.872a29.44 29.44 0 0 0 42.688 0l.384-.384a32 32 0 0 0 0-44.16L535.168 344.32a32 32 0 0 0-46.336 0"/></svg>
-              </button>
-            </div>
-            
-            <!-- Dropdown Items as Full Buttons -->
-            <div id="mg-section" class="hidden overflow-hidden transition-all duration-500 ease-in-out space-y-2">
+            <!-- Bengkel Section (Mode-based) -->
+            <div id="sidebar-bengkel-section" class="sidebar-mode-section space-y-2">
               <a href="{{ route('admin.antrian') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.antrian*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
-                <svg class="w-6 h-6 shrink-0 transform transition-transform duration-300 ease-in-out" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="M928 224H768v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H548v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H328v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H96c-17.7 0-32 14.3-32 32v576c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V256c0-17.7-14.3-32-32-32m-40 568H136V296h120v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h148v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h148v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h120zM416 496H232c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8m0 136H232c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8m308.2-177.4L620.6 598.3l-52.8-73.1c-3-4.2-7.8-6.6-12.9-6.6H500c-6.5 0-10.3 7.4-6.5 12.7l114.1 158.2a15.9 15.9 0 0 0 25.8 0l165-228.7c3.8-5.3 0-12.7-6.5-12.7H737c-5-.1-9.8 2.4-12.8 6.5"/></svg>
+                <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="M928 224H768v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H548v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H328v-56c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v56H96c-17.7 0-32 14.3-32 32v576c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V256c0-17.7-14.3-32-32-32m-40 568H136V296h120v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h148v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h148v56c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-56h120zM416 496H232c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8m0 136H232c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8m308.2-177.4L620.6 598.3l-52.8-73.1c-3-4.2-7.8-6.6-12.9-6.6H500c-6.5 0-10.3 7.4-6.5 12.7l114.1 158.2a15.9 15.9 0 0 0 25.8 0l165-228.7c3.8-5.3 0-12.7-6.5-12.7H737c-5-.1-9.8 2.4-12.8 6.5"/></svg>
                 <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Antrian</span>
               </a>
               <a href="{{ route('admin.layanan') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.layanan*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
@@ -92,24 +88,8 @@
               </a>
             </div>
             
-            <!-- Website Dropdown -->
-            @php
-              // Determine active state based on Website-related routes
-              // Already set above, but keep this for clarity if block moves
-              $webActive = isset($webActive) ? $webActive : (request()->routeIs('admin.galeri*') || request()->routeIs('admin.montir*') || request()->routeIs('admin.artikel*'));
-            @endphp
-            <div class="rounded-lg {{ $webActive ? 'bg-[#1D2C90] text-white border-none' : 'bg-white text-black border border-black' }}">
-              <button type="button" onclick="toggleSidebarSection('web-section', 'web-chevron')" class="w-full flex items-center justify-between space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-2 sm:px-3 md:px-3 lg:px-4 py-2 lg:py-3  transition-colors">
-                <span class="flex items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3">
-                  <!-- Globe Icon for Website -->
-                  <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12a10 10 0 1 1-20.001 0A10 10 0 0 1 22 12Z"/><path d="M16 12c0 1.313-.104 2.614-.305 3.827c-.2 1.213-.495 2.315-.867 3.244c-.371.929-.812 1.665-1.297 2.168c-.486.502-1.006.761-1.531.761s-1.045-.259-1.53-.761c-.486-.503-.927-1.24-1.298-2.168c-.372-.929-.667-2.03-.868-3.244A23.6 23.6 0 0 1 8 12c0-1.313.103-2.614.304-3.827s.496-2.315.868-3.244c.371-.929.812-1.665 1.297-2.168C10.955 2.26 11.475 2 12 2s1.045.259 1.53.761c.486.503.927 1.24 1.298 2.168c.372.929.667 2.03.867 3.244C15.897 9.386 16 10.687 16 12Z"/><path stroke-linecap="round" d="M2 12h20"/></g></svg>
-                  <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Website</span>
-                </span>
-                <svg id="web-chevron" class="w-6 h-6 shrink-0 transform transition-transform duration-300 ease-in-out rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" d="m488.832 344.32l-339.84 356.672a32 32 0 0 0 0 44.16l.384.384a29.44 29.44 0 0 0 42.688 0l320-335.872l319.872 335.872a29.44 29.44 0 0 0 42.688 0l.384-.384a32 32 0 0 0 0-44.16L535.168 344.32a32 32 0 0 0-46.336 0"/></svg>
-              </button>
-            </div>
-            <!-- Website Dropdown Items -->
-            <div id="web-section" class="hidden overflow-hidden transition-all duration-500 ease-in-out space-y-2">
+            <!-- Website Section (Mode-based) -->
+            <div id="sidebar-website-section" class="sidebar-mode-section hidden opacity-0 space-y-2">
               <a href="{{ route('admin.artikel.index') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.artikel*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
                 <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14l4-4h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"/></svg>
                 <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Artikel</span>
@@ -247,46 +227,6 @@
     }
   }
   
-  // Initialize dropdown states on page load
-  document.addEventListener('DOMContentLoaded', function() {
-    var section = document.getElementById('mg-section');
-    var chevron = document.getElementById('mg-chevron');
-    if (!section || !chevron) return;
-
-    var isActive = {{ $mgActive ? 'true' : 'false' }};
-
-    if (isActive) {
-      // Start opened
-      section.classList.remove('hidden');
-      section.style.maxHeight = '';
-      section.style.opacity = '1';
-      chevron.classList.remove('rotate-180');
-    } else {
-      // Start closed
-      section.classList.add('hidden');
-      section.style.maxHeight = '';
-      section.style.opacity = '';
-      chevron.classList.add('rotate-180');
-    }
-
-    // Initialize Website dropdown
-    var sectionWeb = document.getElementById('web-section');
-    var chevronWeb = document.getElementById('web-chevron');
-    if (sectionWeb && chevronWeb) {
-      var isActiveWeb = {{ $webActive ? 'true' : 'false' }};
-      if (isActiveWeb) {
-        sectionWeb.classList.remove('hidden');
-        sectionWeb.style.maxHeight = '';
-        sectionWeb.style.opacity = '1';
-        chevronWeb.classList.remove('rotate-180');
-      } else {
-        sectionWeb.classList.add('hidden');
-        sectionWeb.style.maxHeight = '';
-        sectionWeb.style.opacity = '';
-        chevronWeb.classList.add('rotate-180');
-      }
-    }
-  });
 </script>
 
 <!-- Alpine.js (CDN) for dropdown animation -->

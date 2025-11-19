@@ -6,9 +6,12 @@ use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\UserBookingController;
 use App\Http\Controllers\User\UserMobilController;
+use App\Http\Controllers\User\KalenderBookingController as UserKalenderBookingController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminLayananController;
-use \App\Http\Controllers\Admin\AntrianController;
+use App\Http\Controllers\Admin\AntrianController;
+use App\Http\Controllers\Admin\KalenderBookingController as AdminKalenderBookingController;
+use App\Http\Controllers\Admin\KalenderLiburController;
 use App\Http\Controllers\Website\ArtikelLayanan as ArtikelLayananController;
 
 // Public Routes - Accessible by EVERYONE (guest & authenticated)
@@ -38,6 +41,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth.middleware:auth,web')->group(function () {
     // User Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/calendar/bookings', [UserKalenderBookingController::class, 'index'])->name('dashboard.calendar.bookings');
 
     // Booking Pelanggan
     Route::get('/booking', [UserBookingController::class, 'index'])->name('booking');
@@ -81,6 +85,11 @@ Route::middleware('auth.middleware:auth,web')->prefix('user')->group(function ()
 // Admin Routes - separate middleware group
 Route::middleware('auth.middleware:auth,montir')->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/kalender/bookings', [AdminKalenderBookingController::class, 'index'])->name('admin.calendar.bookings');
+    Route::get('/kalender/libur', [KalenderLiburController::class, 'index'])->name('admin.calendar.holidays.index');
+    Route::post('/kalender/libur', [KalenderLiburController::class, 'store'])->name('admin.calendar.holidays.store');
+    Route::put('/kalender/libur/{kalenderLibur}', [KalenderLiburController::class, 'update'])->name('admin.calendar.holidays.update');
+    Route::delete('/kalender/libur/{kalenderLibur}', [KalenderLiburController::class, 'destroy'])->name('admin.calendar.holidays.destroy');
 
     // Admin Antrian management
     Route::get('/antrian', [AntrianController::class, 'index'])->name('admin.antrian');

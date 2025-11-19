@@ -68,7 +68,8 @@
 
 <script>
     // Dashboard Mode Toggle Functionality
-    let currentMode = 'bengkel'; // 'bengkel' or 'website'
+    // Menggunakan sistem transisi dari dashboard-transition.js
+    let currentMode = localStorage.getItem('dashboardMode') || 'bengkel';
     
     function toggleDashboardMode() {
         const toggle = document.getElementById('modeToggle');
@@ -76,12 +77,12 @@
         const sliderIcon = document.getElementById('sliderIcon');
         const bengkelLabel = document.getElementById('bengkelLabel');
         const websiteLabel = document.getElementById('websiteLabel');
-        const bengkelContent = document.getElementById('bengkelDashboard');
-        const websiteContent = document.getElementById('websiteDashboard');
         
-        if (currentMode === 'bengkel') {
-            // Switch to Website Mode
-            currentMode = 'website';
+        // Toggle mode
+        currentMode = currentMode === 'bengkel' ? 'website' : 'bengkel';
+        
+        // Update toggle UI
+        if (currentMode === 'website') {
             toggle.setAttribute('aria-checked', 'true');
             slider.classList.remove('translate-x-1');
             slider.classList.add('translate-x-6', 'sm:translate-x-8');
@@ -90,19 +91,7 @@
             
             // Change slider icon to globe
             sliderIcon.innerHTML = '<path fill="currentColor" d="M22 12a10 10 0 1 1-20.001 0A10 10 0 0 1 22 12Z"/><path fill="currentColor" d="M16 12c0 1.313-.104 2.614-.305 3.827c-.2 1.213-.495 2.315-.867 3.244c-.371.929-.812 1.665-1.297 2.168c-.486.502-1.006.761-1.531.761s-1.045-.259-1.53-.761c-.486-.503-.927-1.24-1.298-2.168c-.372-.929-.667-2.03-.868-3.244A23.6 23.6 0 0 1 8 12c0-1.313.103-2.614.304-3.827s.496-2.315.868-3.244c.371-.929.812-1.665 1.297-2.168C10.955 2.26 11.475 2 12 2s1.045.259 1.53.761c.486.503.927 1.24 1.298 2.168c.372.929.667 2.03.867 3.244C15.897 9.386 16 10.687 16 12Z"/><path fill="currentColor" stroke-linecap="round" d="M2 12h20"/>';
-            
-            // Fade out bengkel, fade in website
-            if (bengkelContent && websiteContent) {
-                bengkelContent.classList.add('opacity-0');
-                setTimeout(() => {
-                    bengkelContent.classList.add('hidden');
-                    websiteContent.classList.remove('hidden');
-                    setTimeout(() => websiteContent.classList.remove('opacity-0'), 10);
-                }, 300);
-            }
         } else {
-            // Switch to Bengkel Mode
-            currentMode = 'bengkel';
             toggle.setAttribute('aria-checked', 'false');
             slider.classList.add('translate-x-1');
             slider.classList.remove('translate-x-6', 'sm:translate-x-8');
@@ -111,27 +100,39 @@
             
             // Change slider icon back to briefcase
             sliderIcon.innerHTML = '<path fill="currentColor" fill-rule="evenodd" d="M6 1a1.75 1.75 0 0 0-1.75 1.75V4H3a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.25V2.75A1.75 1.75 0 0 0 10 1zm4.25 3V2.75A.25.25 0 0 0 10 2.5H6a.25.25 0 0 0-.25.25V4zM3 5.5h10a.5.5 0 0 1 .5.5v1h-11V6a.5.5 0 0 1 .5-.5m-.5 3V13a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8.5H9V10H7V8.5z" clip-rule="evenodd"/>';
-            
-            // Fade out website, fade in bengkel
-            if (bengkelContent && websiteContent) {
-                websiteContent.classList.add('opacity-0');
-                setTimeout(() => {
-                    websiteContent.classList.add('hidden');
-                    bengkelContent.classList.remove('hidden');
-                    setTimeout(() => bengkelContent.classList.remove('opacity-0'), 10);
-                }, 300);
-            }
         }
         
-        // Save preference to localStorage
-        localStorage.setItem('dashboardMode', currentMode);
+        // Trigger dashboard transition using the new system
+        if (typeof window.switchDashboardMode === 'function') {
+            window.switchDashboardMode(currentMode);
+        } else {
+            // Fallback if transition script not loaded yet
+            const event = new CustomEvent('dashboardModeSwitch', {
+                detail: { mode: currentMode }
+            });
+            document.dispatchEvent(event);
+        }
     }
     
-    // Load saved preference on page load
+    // Initialize toggle state on page load
     document.addEventListener('DOMContentLoaded', function() {
-        const savedMode = localStorage.getItem('dashboardMode');
+        const savedMode = localStorage.getItem('dashboardMode') || 'bengkel';
+        currentMode = savedMode;
+        
+        const toggle = document.getElementById('modeToggle');
+        const slider = document.getElementById('toggleSlider');
+        const sliderIcon = document.getElementById('sliderIcon');
+        const bengkelLabel = document.getElementById('bengkelLabel');
+        const websiteLabel = document.getElementById('websiteLabel');
+        
         if (savedMode === 'website') {
-            toggleDashboardMode();
+            toggle.setAttribute('aria-checked', 'true');
+            slider.classList.remove('translate-x-1');
+            slider.classList.add('translate-x-6', 'sm:translate-x-8');
+            bengkelLabel.classList.add('opacity-50');
+            websiteLabel.classList.remove('opacity-50');
+            
+            sliderIcon.innerHTML = '<path fill="currentColor" d="M22 12a10 10 0 1 1-20.001 0A10 10 0 0 1 22 12Z"/><path fill="currentColor" d="M16 12c0 1.313-.104 2.614-.305 3.827c-.2 1.213-.495 2.315-.867 3.244c-.371.929-.812 1.665-1.297 2.168c-.486.502-1.006.761-1.531.761s-1.045-.259-1.53-.761c-.486-.503-.927-1.24-1.298-2.168c-.372-.929-.667-2.03-.868-3.244A23.6 23.6 0 0 1 8 12c0-1.313.103-2.614.304-3.827s.496-2.315.868-3.244c.371-.929.812-1.665 1.297-2.168C10.955 2.26 11.475 2 12 2s1.045.259 1.53.761c.486.503.927 1.24 1.298 2.168c.372.929.667 2.03.867 3.244C15.897 9.386 16 10.687 16 12Z"/><path fill="currentColor" stroke-linecap="round" d="M2 12h20"/>';
         }
     });
 </script>
