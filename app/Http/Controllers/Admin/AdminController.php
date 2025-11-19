@@ -42,6 +42,17 @@ class AdminController extends Controller
         $items = ArtikelLayanan::orderByDesc('updated_at')->paginate(10);
         return view('admin.artikel.index', compact('items'));
     }
+
+    public function artikelCreate()
+    {
+        return view('admin.artikel.create');
+    }
+
+    public function artikelEdit($id)
+    {
+        $item = ArtikelLayanan::findOrFail($id);
+        return view('admin.artikel.edit', compact('item'));
+    }
     
     /**
      * Show admin/montir profile page

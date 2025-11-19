@@ -12,8 +12,8 @@
 <body class="h-screen overflow-hidden">
     <div class="flex h-screen">
         <!-- Panel Kiri - Gambar dengan margin atas/kiri/bawah, tanpa margin kanan -->
-        <div class="hidden lg:flex lg:w-1/2 h-full">
-            <div class="relative m-2 mr-0 h-full w-full rounded-3xl overflow-hidden ring-4 ring-white shadow-lg">
+        <div class="hidden lg:flex lg:w-1/2 h-full p-2 pr-0">
+            <div class="relative m-0 h-full w-full rounded-3xl overflow-hidden ring-4 ring-white shadow-lg">
                 <!-- Background Image -->
                 <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/ac-background.png') }}');"></div>
                 <!-- Gradient Overlay -->

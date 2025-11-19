@@ -9,34 +9,19 @@ use App\Http\Controllers\User\UserMobilController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminLayananController;
 use \App\Http\Controllers\Admin\AntrianController;
-// use App\Http\Controllers\Website\WebsiteController;
+use App\Http\Controllers\Website\ArtikelLayanan as ArtikelLayananController;
 
-// Public Routes
-Route::get('/', function () {
-    return view('beranda');
-})->name('beranda');
-
-Route::get('/layanan', function () {
-    return view('layanan');
-})->name('layanan');
-
-// Halaman detail artikel layanan (sample UI) - path utama yang diminta
-Route::get('/layanan/detail-layanan', function () {
-    $service = [
-        'title' => 'Isi Freon',
-        'image' => asset('images/layanan/isi-freon.png'),
-        'quote' => 'Isi freon di Dwi AC Mobil dijamin aman, berkualitas, dan sesuai standar pabrik.',
-        'description' => 'Freon adalah komponen utama yang membuat AC mobil mengeluarkan udara dingin. Jika freon berkurang atau habis, AC tidak akan bekerja maksimal dan udara yang keluar menjadi panas. Oleh karena itu, isi ulang freon perlu dilakukan secara berkala. Pengisian freon harus sesuai dengan tekanan dan jenis yang direkomendasikan agar kinerja AC tetap optimal dan kompresor tidak cepat rusak. Dengan servis freon yang tepat, kenyamanan berkendara tetap terjaga, terutama di cuaca panas.',
-        'points' => [
-            'Setiap kali isi freon, sebaiknya dilakukan pengecekan tekanan dan kebocoran sistem AC agar freon tidak cepat habis.',
-            'Jenis freon harus disesuaikan dengan spesifikasi mobil Anda untuk hasil yang maksimal dan aman bagi sistem AC.',
-            'Pengisian freon sebaiknya dilakukan setiap 1 tahun atau saat AC mulai terasa kurang dingin.',
-            'Jika Anda mencium bau gas atau AC tiba-tiba tidak dingin, bisa jadi ada kebocoran pada sistem freon.',
-            'Mengemudi dengan AC yang kekurangan freon bisa membuat kompresor dan menyebabkan kerusakan pada sistem AC mobil Anda.',
-        ],
-    ];
-    return view('layanan-detail-contoh', compact('service'));
-})->name('layanan.detail');
+// Public Routes - Accessible by EVERYONE (guest & authenticated)
+Route::middleware(['web'])->group(function () {
+    Route::get('/', [ArtikelLayananController::class, 'home'])->name('beranda');
+    Route::get('/layanan', [ArtikelLayananController::class, 'index'])->name('layanan');
+    Route::get('/layanan/{slug}', [ArtikelLayananController::class, 'show'])->name('layanan.detail');
+    
+    // Likes endpoints - HARUS bisa diakses guest
+    Route::get('/layanan/{slug}/likes', [ArtikelLayananController::class, 'likesCount'])->name('layanan.likes');
+    Route::post('/layanan/{slug}/like', [ArtikelLayananController::class, 'like'])->name('layanan.like');
+    Route::post('/layanan/{slug}/unlike', [ArtikelLayananController::class, 'unlike'])->name('layanan.unlike');
+});
 
 // Guest Routes (Only for non-authenticated users)
 Route::middleware('auth.middleware:guest,web')->group(function () {
@@ -119,6 +104,11 @@ Route::middleware('auth.middleware:auth,montir')->prefix('admin')->group(functio
     Route::get('/montir', [AdminController::class, 'montir'])->name('admin.montir.index');
     // Artikel Layanan (Admin)
     Route::get('/artikel', [AdminController::class, 'artikelIndex'])->name('admin.artikel.index');
+    Route::get('/artikel/create', [AdminController::class, 'artikelCreate'])->name('admin.artikel.create');
+    Route::get('/artikel/{id}/edit', [AdminController::class, 'artikelEdit'])->name('admin.artikel.edit');
+    Route::post('/artikel', [ArtikelLayananController::class, 'store'])->name('admin.artikel.store');
+    Route::put('/artikel/{id}', [ArtikelLayananController::class, 'update'])->name('admin.artikel.update');
+    Route::delete('/artikel/{id}', [ArtikelLayananController::class, 'destroy'])->name('admin.artikel.destroy');
     // Admin Profile
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profil-admin');
     Route::put('/profile', [AdminController::class, 'updateProfile'])->name('admin.profile.update');

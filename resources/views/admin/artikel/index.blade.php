@@ -7,7 +7,7 @@
                     <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-48 text-gray-900 uppercase mb-2">Manajemen Artikel</h1>
                     <p class="text-gray-600 defparagraf">Kelola artikel layanan untuk edukasi pelanggan.</p>
                 </div>
-                <a href="#" class="bg-[#0F044C] hover:bg-[#141E61] text-white px-6 py-3 defparagraf font-medium flex items-center space-x-2 transition-colors">
+                <a href="{{ route('admin.artikel.create') }}" class="bg-[#0F044C] hover:bg-[#141E61] text-white px-6 py-3 defparagraf font-medium flex items-center space-x-2 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
@@ -15,6 +15,10 @@
                 </a>
             </div>
         </div>
+
+        @if(session('success'))
+            <div class="p-3 bg-green-100 border border-green-300 text-green-800 defparagraf">{{ session('success') }}</div>
+        @endif
 
         <!-- PENCARIAN Section -->
         <div class="space-y-4">
@@ -53,8 +57,8 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 text-sm">
                                         <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100">
-                                            @if($item->image)
-                                                <img src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                            @if($item->foto)
+                                                <img src="{{ asset($item->foto) }}" alt="{{ $item->title }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                                 <div class="hidden w-full h-full items-center justify-center text-xs text-gray-600">No Img</div>
                                             @else
                                                 <div class="w-full h-full flex items-center justify-center text-xs text-gray-600">No Img</div>
@@ -63,14 +67,14 @@
                                     </td>
                                     <td class="px-6 py-4 text-sm">
                                         <div class="text-gray-900 font-medium">{{ $item->title }}</div>
-                                        <div class="text-xs text-gray-500 defparagraf line-clamp-1">{{ Str::limit($item->quote ?? '', 80) }}</div>
+                                        <div class="text-xs text-gray-500 defparagraf line-clamp-1">{{ \Illuminate\Support\Str::limit($item->description ?? '', 80) }}</div>
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-700">{{ $item->slug }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-700">{{ $item->updated_at?->format('d M Y, H:i') }}</td>
                                     <td class="px-6 py-4 text-right text-sm">
                                         <div class="inline-flex items-center gap-2">
                                             <a href="#" class="px-3 py-1 border-2 border-[#0F044C] text-[#0F044C] hover:bg-[#0F044C] hover:text-white transition-colors cursor-not-allowed" title="Belum tersedia">Lihat</a>
-                                            <a href="#" class="px-3 py-1 border-2 border-[#0F044C] text-[#0F044C] hover:bg-[#0F044C] hover:text-white transition-colors cursor-not-allowed" title="Belum tersedia">Edit</a>
+                                            <a href="{{ route('admin.artikel.edit', $item->id) }}" class="px-3 py-1 border-2 border-[#0F044C] text-[#0F044C] hover:bg-[#0F044C] hover:text-white transition-colors">Edit</a>
                                             <button type="button" class="px-3 py-1 border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-colors cursor-not-allowed" title="Belum tersedia">Hapus</button>
                                         </div>
                                     </td>

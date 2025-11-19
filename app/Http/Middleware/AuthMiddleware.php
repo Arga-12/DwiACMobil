@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Middleware;
-
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,17 +26,14 @@ class AuthMiddleware
                 $redirect = $guard === 'montir' ? route('admin.dashboard') : route('dashboard');
                 return redirect()->to($redirect);
             }
-
-            return $next($request);
+        } else {
+            // Default mode: 'auth' (must be authenticated)
+            if (!Auth::guard($guard)->check()) {
+                // Not authenticated: redirect to login page
+                // If you later add a separate admin login, you can branch by $guard here
+                return redirect()->route('login');
+            }
         }
-
-        // Default mode: 'auth' (must be authenticated)
-        if (!Auth::guard($guard)->check()) {
-            // Not authenticated: redirect to login page
-            // If you later add a separate admin login, you can branch by $guard here
-            return redirect()->route('login');
-        }
-
         return $next($request);
     }
 }

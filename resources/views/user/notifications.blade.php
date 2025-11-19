@@ -2,9 +2,13 @@
     <!-- Notifications Content -->
     <div class="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
             <!-- Header -->
-            <div class="mb-2 sm:mb-4">
-                <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-48 text-gray-900">NOTIFIKASI</h1>
-                <p class="text-gray-600 defparagraf">Semua pemberitahuan dan update layanan Anda.</p>
+            <div class="mb-4 sm:mb-6 md:mb-8">
+                <h1 class="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-montserrat-48 uppercase text-gray-900 font-bold tracking-tight">
+                    NOTIFIKASI
+                </h1>
+                <p class="mt-1 text-gray-600 defparagraf text-sm sm:text-base">
+                    Semua pemberitahuan dan update layanan Anda.
+                </p>
             </div>
 
             @php
@@ -31,24 +35,43 @@
             @endphp
 
             <!-- TERBARU Section -->
-            <div class="space-y-6">
-                <h2 class="text-2xl font-montserrat-48 text-gray-900 tracking-wide">TERBARU</h2>
+            <div class="space-y-4 sm:space-y-5">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#1D2C90] to-[#0F044C] flex items-center justify-center text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-montserrat-48 text-gray-900 font-bold tracking-wide">TERBARU</h2>
+                </div>
                 
                 @foreach($notifikasi['terbaru'] as $item)
-                <div class="bg-white border-2 border-gray-800 shadow-sm">
-                    <div class="px-4 sm:px-5 py-4">
-                        <div class="flex items-stretch justify-between gap-6">
+                <div class="bg-white border border-[#0F044C]/20 shadow-md rounded-2xl overflow-hidden">
+                    <div class="px-4 sm:px-5 py-4 sm:py-5">
+                        <div class="flex flex-col md:flex-row items-stretch justify-between gap-4 sm:gap-6">
                             <!-- Left Content -->
-                            <div class="flex-1">
-                                <p class="font-bold bigparagraf text-gray-900 mb-1">{{ $item['judul'] }}</p>
-                                <p class="bigparagraf text-gray-700">{{ $item['tanggal'] }} · {{ $item['mobil'] }}</p>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-bold bigparagraf text-gray-900 text-sm sm:text-base md:text-lg mb-1">
+                                    {{ $item['judul'] }}
+                                </p>
+                                <p class="bigparagraf text-gray-700 text-xs sm:text-sm">
+                                    {{ $item['tanggal'] }} · {{ $item['mobil'] }}
+                                </p>
                             </div>
                             
                             <!-- Right Content -->
-                            <div class="flex flex-col items-center justify-between w-36 sm:w-40">
-                                <p class="bigparagraf text-gray-900 text-center">{{ $item['waktu'] }}</p>
-                                <div class="w-full h-px bg-gray-800 my-2"></div>
-                                <button onclick="showNotificationDetail('{{ $item['type'] }}', '{{ $loop->index }}')" class="px-4 py-1.5 bg-white border border-gray-800 defparagraf text-gray-700 hover:bg-gray-50 transition-colors w-full">
+                            <div class="flex flex-col items-stretch justify-between w-full md:w-40 lg:w-48">
+                                <div class="flex items-center justify-between md:block md:text-center mb-2 md:mb-3">
+                                    <span class="bigparagraf text-gray-900 text-sm sm:text-base font-semibold">
+                                        {{ $item['waktu'] }}
+                                    </span>
+                                </div>
+                                <button 
+                                    onclick="showNotificationDetail('{{ $item['type'] }}', '{{ $loop->index }}')" 
+                                    class="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-[#1D2C90] to-[#0F044C] hover:from-[#0F044C] hover:to-[#1D2C90] text-white defparagraf text-xs sm:text-sm font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+                                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
                                     Detail Struk
                                 </button>
                             </div>
@@ -60,24 +83,43 @@
 
 
             <!-- LAMPAU Section -->
-            <div class="space-y-6 mt-10">
-                <h2 class="text-2xl font-montserrat-48 text-gray-900 tracking-wide">LAMPAU</h2>
+            <div class="space-y-4 sm:space-y-5 mt-8 sm:mt-10">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                <h2 class="text-lg sm:text-xl md:text-2xl font-montserrat-48 text-gray-900 font-bold tracking-wide">LAMPAU</h2>
+                </div>
                 
                 @foreach($notifikasi['lampau'] as $item)
-                <div class="bg-white border-2 border-gray-800 shadow-sm">
-                    <div class="px-4 sm:px-5 py-4">
-                        <div class="flex items-stretch justify-between gap-6">
+                <div class="bg-white border border-[#0F044C]/15 shadow-md rounded-2xl overflow-hidden">
+                    <div class="px-4 sm:px-5 py-4 sm:py-5">
+                        <div class="flex flex-col md:flex-row items-stretch justify-between gap-4 sm:gap-6">
                             <!-- Left Content -->
-                            <div class="flex-1">
-                                <p class="font-bold bigparagraf text-gray-900 mb-1">{{ $item['judul'] }}</p>
-                                <p class="bigparagraf text-gray-700">{{ $item['tanggal'] }} · {{ $item['mobil'] }}</p>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-bold bigparagraf text-gray-900 text-sm sm:text-base md:text-lg mb-1">
+                                    {{ $item['judul'] }}
+                                </p>
+                                <p class="bigparagraf text-gray-700 text-xs sm:text-sm">
+                                    {{ $item['tanggal'] }} · {{ $item['mobil'] }}
+                                </p>
                             </div>
                             
                             <!-- Right Content -->
-                            <div class="flex flex-col items-center justify-between w-36 sm:w-40">
-                                <p class="bigparagraf text-gray-900 text-center">{{ $item['waktu'] }}</p>
-                                <div class="w-full h-px bg-gray-800 my-2"></div>
-                                <button onclick="showNotificationDetail('{{ $item['type'] }}', '{{ $loop->index }}')" class="px-4 py-1.5 bg-white border border-gray-800 defparagraf text-gray-700 hover:bg-gray-50 transition-colors w-full">
+                            <div class="flex flex-col items-stretch justify-between w-full md:w-40 lg:w-48">
+                                <div class="flex items-center justify-between md:block md:text-center mb-2 md:mb-3">
+                                    <span class="bigparagraf text-gray-900 text-sm sm:text-base font-semibold">
+                                        {{ $item['waktu'] }}
+                                    </span>
+                                </div>
+                                <button 
+                                    onclick="showNotificationDetail('{{ $item['type'] }}', '{{ $loop->index }}')" 
+                                    class="inline-flex items-center justify-center px-4 py-2 bg-white border border-[#0F044C]/40 text-[#0F044C] hover:bg-[#1D2C90] hover:text-white defparagraf text-xs sm:text-sm font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+                                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
                                     Detail Struk
                                 </button>
                             </div>

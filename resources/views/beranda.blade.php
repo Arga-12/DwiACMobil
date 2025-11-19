@@ -10,13 +10,27 @@
             </div>
 
             @php
-                $services = [
-                    ['title' => 'Isi Freon', 'desc' => 'Mengisi ulang freon pada sistem AC mobil yang kurang atau habis agar AC kembali dingin dan bekerja optimal.', 'img' => asset('images/layanan/isi-freon.png')],
-                    ['title' => 'Cuci Evaporator', 'desc' => 'Membersihkan evaporator dari kotoran dan jamur agar udara lebih bersih dan dingin.', 'img' => asset('images/layanan/cuci-evap.png')],
-                    ['title' => 'Flushing Sistem AC', 'desc' => 'Pembersihan menyeluruh sistem AC mobil untuk menghilangkan kotoran dan endapan yang mengganggu kinerja pendinginan.', 'img' => asset('images/layanan/flushing-ac.png')],
-                    ['title' => 'Ganti Oli Kompresor', 'desc' => 'Penggantian oli kompresor AC mobil untuk menjaga pelumasan dan kinerja optimal kompresor sistem pendingin.', 'img' => asset('images/layanan/ganti-oli.png')],
-                    ['title' => 'Ganti Dryer', 'desc' => 'Penggantian filter dryer/receiver untuk menyaring kelembaban dan kotoran dalam sistem AC mobil.', 'img' => asset('images/layanan/ganti-dryer.png')],
-                ];
+                if (isset($articles) && $articles instanceof \Illuminate\Support\Collection && $articles->count()) {
+                    $services = $articles->map(function($a){
+                        $img = $a->foto && function_exists('str_starts_with') && str_starts_with($a->foto, 'http') ? $a->foto : asset($a->foto ?? 'images/layanan/isi-freon.png');
+                        return [
+                            'title' => $a->title,
+                            'desc' => \Illuminate\Support\Str::limit((string)($a->description ?? ''), 150),
+                            'img' => $img,
+                            'slug' => $a->slug,
+                            'likes' => (int)($a->likes ?? 0),
+                            'id' => $a->id,
+                        ];
+                    })->all();
+                } else {
+                    $services = [
+                        ['title' => 'Isi Freon', 'desc' => 'Mengisi ulang freon pada sistem AC mobil yang kurang atau habis agar AC kembali dingin dan bekerja optimal.', 'img' => asset('images/layanan/isi-freon.png')],
+                        ['title' => 'Cuci Evaporator', 'desc' => 'Membersihkan evaporator dari kotoran dan jamur agar udara lebih bersih dan dingin.', 'img' => asset('images/layanan/cuci-evap.png')],
+                        ['title' => 'Flushing Sistem AC', 'desc' => 'Pembersihan menyeluruh sistem AC mobil untuk menghilangkan kotoran dan endapan yang mengganggu kinerja pendinginan.', 'img' => asset('images/layanan/flushing-ac.png')],
+                        ['title' => 'Ganti Oli Kompresor', 'desc' => 'Penggantian oli kompresor AC mobil untuk menjaga pelumasan dan kinerja optimal kompresor sistem pendingin.', 'img' => asset('images/layanan/ganti-oli.png')],
+                        ['title' => 'Ganti Dryer', 'desc' => 'Penggantian filter dryer/receiver untuk menyaring kelembaban dan kotoran dalam sistem AC mobil.', 'img' => asset('images/layanan/ganti-dryer.png')],
+                    ];
+                }
             @endphp
 
             <!-- Carousel Container -->
@@ -34,7 +48,7 @@
                                     
                                     <!-- Hover Overlay with Button -->
                                     <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                        <a href="{{ route('layanan.detail') }}" class="bg-white text-black px-6 py-3 rounded-xl font-semibold inline-flex items-center gap-2 hover:bg-gray-100 transition transform translate-y-4 group-hover:translate-y-0 duration-300">
+                                        <a href="{{ route('layanan.detail', $service['slug'] ?? \Illuminate\Support\Str::slug($service['title'])) }}" class="bg-white text-black px-6 py-3 rounded-xl font-semibold inline-flex items-center gap-2 hover:bg-gray-100 transition transform translate-y-4 group-hover:translate-y-0 duration-300">
                                             <span class="defparagraf">Selengkapnya</span>
                                             <span aria-hidden="true">→</span>
                                         </a>
@@ -48,16 +62,44 @@
                                 <div class="grid grid-cols-1 px-6 py-3 border-b border-[#0F044C]/10">
                                     <!-- Likes -->
                                     <div class="flex items-center gap-2">
-                                        @if(!($service['liked'] ?? false))
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48" class="text-[#0F044C]">
-                                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 8"/>
-                                        </svg>
-                                        @else
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48" class="text-[#0F044C]">
-                                            <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 8"/>
-                                        </svg>
-                                        @endif
-                                        <span class="defparagraf text-[#0F044C]">likes</span>
+                                        <button 
+                                            type="button"
+                                            class="like-btn group/like defparagraf {{ ($service['liked'] ?? false) ? 'text-[#0F044C]' : 'text-[#0F044C]' }} inline-flex items-center gap-2 hover:text-[#0F044C] transition-colors"
+                                            data-slug="{{ $service['slug'] }}"
+                                            data-id="{{ $service['id'] }}"
+                                        >
+                                            <span class="like-icon relative w-5 h-5">
+                                                <!-- Outline Heart (Default & Unliked) -->
+                                                <svg 
+                                                    class="outline-icon absolute inset-0 transition-all duration-300 {{ ($service['liked'] ?? false) ? 'opacity-0 scale-75' : 'opacity-100 scale-100 group-hover/like:opacity-0 group-hover/like:scale-75' }}"
+                                                    xmlns="http://www.w3.org/2000/svg" 
+                                                    width="20" 
+                                                    height="20"
+                                                    viewBox="0 0 48 48">
+                                                    <path fill="none" 
+                                                        stroke="currentColor" 
+                                                        stroke-linecap="round" 
+                                                        stroke-linejoin="round" 
+                                                        stroke-width="4" 
+                                                        d="M15 8C8.925 8 4 12.925 4 19c0 9 8 13 20 20.326C35.909 32 44 28 44 19c0-6.075-4.925-11-11-11c-4.5 0-8.417 2.71-10 6.612C21.417 10.71 17.5 8 15 8"/>
+                                                </svg>
+
+                                                <!-- Filled Heart (Liked State & Hover) -->
+                                                <svg 
+                                                    class="filled-icon absolute inset-0 transition-all duration-300 {{ ($service['liked'] ?? false) ? 'opacity-100 scale-100' : 'opacity-0 scale-75 group-hover/like:opacity-100 group-hover/like:scale-100' }}"
+                                                    xmlns="http://www.w3.org/2000/svg" 
+                                                    width="20" 
+                                                    height="20"
+                                                    viewBox="0 0 48 48">
+                                                    <path fill="currentColor" 
+                                                        d="M15 8C8.925 8 4 12.925 4 19c0 9 8 13 20 20.326C35.909 32 44 28 44 19c0-6.075-4.925-11-11-11c-4.5 0-8.417 2.71-10 6.612C21.417 10.71 17.5 8 15 8"/>
+                                                </svg>
+                                            </span>
+                                        </button>
+
+                                        <span class="likes-count defparagraf text-[#0F044C]">
+                                            {{ $service['likes'] }} likes
+                                        </span>
                                     </div>
                                 </div>
 
@@ -86,7 +128,6 @@
                     </button>
                 </div>
             </div>
-
 
                 <script>
                     (function(){
@@ -951,3 +992,4 @@
         });
     </script>
 </x-layout>
+
