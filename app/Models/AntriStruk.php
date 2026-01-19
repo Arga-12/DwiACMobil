@@ -45,16 +45,17 @@ class AntriStruk extends Model
         'status',
         'tanggal_pesan',
         'tanggal_selesai',
-        'durasi_hari',
-        'menginap',
         'harga_keseluruhan',
-        'price_status',
-    ]; 
+        'status_harga',
+        'estimasi_selesai',
+        'mulai_servis',
+    ];
 
     protected $casts = [
         'tanggal_pesan' => 'datetime',
         'tanggal_selesai' => 'datetime',
-        'menginap' => 'boolean',
+        'estimasi_selesai' => 'datetime',
+        'mulai_servis' => 'datetime',
     ];
 
     public function pelanggan()

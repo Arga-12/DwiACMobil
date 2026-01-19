@@ -13,7 +13,7 @@
     <div class="p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col min-h-screen">
         <!-- Admin Profile -->
         <div class="text-center mb-6 sm:mb-7 md:mb-8 lg:mb-10 pt-4">
-            <div class="avatar-lg w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 bg-gray-300 rounded-full mx-auto mb-3 sm:mb-4 md:mb-4 lg:mb-5 overflow-hidden shadow-sm">
+            <div class="avatar-lg w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full mx-auto mb-3 sm:mb-4 md:mb-4 lg:mb-5 overflow-hidden shadow-sm">
                 @php
                     $adminAuth = auth()->guard('montir')->user() ?? auth()->user();
                     $adminPhoto = ($adminAuth && !empty($adminAuth->foto) && file_exists(public_path($adminAuth->foto)))
@@ -25,19 +25,21 @@
                          alt="Admin Icon"
                          class="w-full h-full object-cover"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                    <div class="w-full h-full hidden items-center justify-center bg-gray-200">
-                        <svg class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g>
+                    <div class="w-full h-full hidden items-center justify-center bg-gradient-to-br from-gray-300 to-gray-400">
+                        <svg class="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
                         </svg>
                     </div>
                 @else
-                    <div class="w-full h-full flex items-center justify-center bg-gray-200">
-                        <svg class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g>
+                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-300 to-gray-400">
+                        <svg class="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
                         </svg>
                     </div>
                 @endif
-            </div>                        
+            </div>
             <h3 class="collapse-hide text-gray-900 bigparagraf text-sm sm:text-base md:text-base lg:text-lg font-bold lowercase mb-1">{{ $adminAuth ? strtolower(($adminAuth->peran ? ucfirst($adminAuth->peran).' - ' : '') . ($adminAuth->nama ?? 'Admin')) : 'admin' }}</h3>
             <p class="collapse-hide text-gray-600 defparagraf text-xs sm:text-sm md:text-sm lg:text-base px-2 break-words leading-tight">
                 @if($adminAuth && $adminAuth->created_at)
@@ -51,13 +53,19 @@
         <!-- Navigation Menu -->
         <nav class="space-y-2">
             <!-- Notifikasi (moved from header) -->
-            <a href="#" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg text-black bg-white border border-black transition-colors relative">
+            <a href="{{ route('admin.notifications') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.notifications*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors relative">
                 <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 19v-9a6 6 0 0 1 6-6v0a6 6 0 0 1 6 6v9M6 19h12M6 19H4m14 0h2m-9 3h2"/>
                     <circle cx="12" cy="3" r="1"/>
                 </svg>
                 <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Notifikasi</span>
-                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">1</span>
+                @php
+                    $adminAuth = auth()->guard('montir')->user() ?? auth()->user();
+                    $adminNotificationCount = $adminAuth ? $adminAuth->unreadNotifications()->count() : 0;
+                @endphp
+                @if($adminNotificationCount > 0)
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">{{ $adminNotificationCount }}</span>
+                @endif
             </a>
             <a href="{{ route('admin.dashboard') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
                 <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -75,7 +83,7 @@
                 </svg>
                 <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Profil</span>
             </a>
-            
+
             <!-- Bengkel Section (Mode-based) -->
             <div id="sidebar-bengkel-section" class="sidebar-mode-section space-y-2">
               <a href="{{ route('admin.antrian') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.antrian*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
@@ -87,19 +95,19 @@
                 <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Layanan</span>
               </a>
             </div>
-            
+
             <!-- Website Section (Mode-based) -->
             <div id="sidebar-website-section" class="sidebar-mode-section hidden opacity-0 space-y-2">
               <a href="{{ route('admin.artikel.index') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.artikel*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
-                <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14l4-4h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2"/></svg>
+                <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10c0-3.771 0-5.657 1.172-6.828S7.229 2 11 2h2c3.771 0 5.657 0 6.828 1.172S21 6.229 21 10v4c0 3.771 0 5.657-1.172 6.828S16.771 22 13 22h-2c-3.771 0-5.657 0-6.828-1.172S3 17.771 3 14z"/><path d="M6 12c0-1.414 0-2.121.44-2.56C6.878 9 7.585 9 9 9h6c1.414 0 2.121 0 2.56.44c.44.439.44 1.146.44 2.56v4c0 1.414 0 2.121-.44 2.56c-.439.44-1.146.44-2.56.44H9c-1.414 0-2.121 0-2.56-.44C6 18.122 6 17.415 6 16z"/><path stroke-linecap="round" d="M7 6h5"/></g></svg>
                 <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Artikel</span>
               </a>
-              <a href="#" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.montir*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
+              <a href="{{ route('admin.montir.index') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.montir*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
                 <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g></svg>
                 <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Montir</span>
               </a>
-              <a href="#" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.galeri*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
-                <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M4 3a2 2 0 0 0-2 2v14l4-4h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm12 12H4l4-8l3 6l2-4l3 6z"/></svg>
+              <a href="{{ route('admin.galeri.index') }}" class="flex nav-link items-center space-x-2 sm:space-x-2 md:space-x-3 lg:space-x-3 px-3 sm:px-3 md:px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg {{ request()->routeIs('admin.galeri*') ? 'text-white bg-[#1D2C90] border-none' : 'text-black bg-white border border-black' }} transition-colors">
+                <svg class="w-6 h-6 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 14c0-3.771 0-5.657 1.172-6.828S6.229 6 10 6h4c3.771 0 5.657 0 6.828 1.172S22 10.229 22 14s0 5.657-1.172 6.828S17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.172S2 17.771 2 14Z"/><path d="m4 7l-.012-1c.112-.931.347-1.574.837-2.063C5.765 3 7.279 3 10.307 3h3.211c3.028 0 4.541 0 5.482.937c.49.489.725 1.132.837 2.063v1"/><circle cx="17.5" cy="10.5" r="1.5"/><path stroke-linecap="round" d="m2 14.5l1.752-1.533a2.3 2.3 0 0 1 3.14.105l4.29 4.29a2 2 0 0 0 2.564.222l.299-.21a3 3 0 0 1 3.731.225L21 20.5"/></g></svg>
                 <span class="collapse-hide bigparagraf text-xs sm:text-sm md:text-sm lg:text-base font-medium">Galeri</span>
               </a>
             </div>
@@ -226,7 +234,7 @@
       }
     }
   }
-  
+
 </script>
 
 <!-- Alpine.js (CDN) for dropdown animation -->

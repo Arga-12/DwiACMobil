@@ -2,6 +2,7 @@
     'solidHeaderAtTop' => false,
     'showHeader' => false,
     'showHero' => false,
+    'heroData' => [],
 ])
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +28,7 @@
 @endif
 
 @if(isset($showHero) && $showHero)
-    <x-hero>
+    <x-hero :heroData="$heroData ?? []">
         @if(isset($heroHeading))
             <x-slot name="heading">{{ $heroHeading }}</x-slot>
         @endif

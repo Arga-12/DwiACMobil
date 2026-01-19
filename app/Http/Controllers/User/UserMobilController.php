@@ -7,6 +7,7 @@ use App\Models\Mobil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\QueryException;
 
 class UserMobilController extends Controller
 {
@@ -42,9 +43,7 @@ class UserMobilController extends Controller
                 'required',
                 'string',
                 'max:20',
-                Rule::unique('mobil', 'plat_nomor')->where(function ($query) use ($user) {
-                    return $query->where('id_pelanggan', $user->id_pelanggan);
-                })
+                Rule::unique('mobil', 'plat_nomor')
             ]
         ], [
             'nama_mobil.required' => 'Nama mobil harus diisi.',
@@ -53,12 +52,19 @@ class UserMobilController extends Controller
             'plat_nomor.unique' => 'Anda sudah memiliki mobil dengan plat nomor ini.'
         ]);
 
-        Mobil::create([
-            'nama_mobil' => $request->nama_mobil,
-            'jenis_mobil' => $request->jenis_mobil,
-            'plat_nomor' => strtoupper($request->plat_nomor),
-            'id_pelanggan' => $user->id_pelanggan
-        ]);
+        try {
+            Mobil::create([
+                'nama_mobil' => $request->nama_mobil,
+                'jenis_mobil' => $request->jenis_mobil,
+                'plat_nomor' => strtoupper($request->plat_nomor),
+                'id_pelanggan' => $user->id_pelanggan
+            ]);
+        } catch (QueryException $e) {
+            if ((string)$e->getCode() === '23000') {
+                return back()->withErrors(['plat_nomor' => 'Plat nomor sudah terdaftar.'])->withInput();
+            }
+            throw $e;
+        }
 
         return redirect()->route('dashboard')
                         ->with('success', 'Mobil berhasil ditambahkan!');
@@ -101,9 +107,6 @@ class UserMobilController extends Controller
                 'string',
                 'max:20',
                 Rule::unique('mobil', 'plat_nomor')
-                    ->where(function ($query) use ($user) {
-                        return $query->where('id_pelanggan', $user->id_pelanggan);
-                    })
                     ->ignore($mobil->id_mobil, 'id_mobil')
             ]
         ], [
@@ -113,11 +116,18 @@ class UserMobilController extends Controller
             'plat_nomor.unique' => 'Anda sudah memiliki mobil dengan plat nomor ini.'
         ]);
 
-        $mobil->update([
-            'nama_mobil' => $request->nama_mobil,
-            'jenis_mobil' => $request->jenis_mobil,
-            'plat_nomor' => strtoupper($request->plat_nomor)
-        ]);
+        try {
+            $mobil->update([
+                'nama_mobil' => $request->nama_mobil,
+                'jenis_mobil' => $request->jenis_mobil,
+                'plat_nomor' => strtoupper($request->plat_nomor)
+            ]);
+        } catch (QueryException $e) {
+            if ((string)$e->getCode() === '23000') {
+                return back()->withErrors(['plat_nomor' => 'Plat nomor sudah terdaftar.'])->withInput();
+            }
+            throw $e;
+        }
 
         return redirect()->route('dashboard')
                         ->with('success', 'Mobil berhasil diperbarui!');

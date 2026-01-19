@@ -65,18 +65,18 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required','string','max:150'],
-            'whatsapp' => ['nullable','string','max:30'],
+            'nama' => ['required','string','max:150'],
+            'no_wa' => ['nullable','string','max:30'],
             'email' => ['required','email','max:255','unique:pelanggan,email'],
             'password' => ['required','confirmed', Password::min(8)],
         ]);
 
         $pelanggan = Pelanggan::create([
-            'nama' => $validated['name'],
-            'no_wa' => $validated['whatsapp'] ?? null,
+            'nama' => $validated['nama'],
+            'no_wa' => $validated['no_wa'] ?? null,
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'is_active' => 1,
+            'aktif' => 1,
         ]);
 
         // login otomatis setelah registrasi

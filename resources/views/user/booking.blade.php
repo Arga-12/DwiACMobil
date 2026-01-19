@@ -33,6 +33,12 @@
         </div>
     @endif
 
+    <style>
+        input[type="date"].no-native-datepicker::-webkit-calendar-picker-indicator{opacity:0;display:none;}
+        input[type="date"].no-native-datepicker::-webkit-inner-spin-button,
+        input[type="date"].no-native-datepicker::-webkit-clear-button{display:none;}
+        input[type="date"].no-native-datepicker{-webkit-appearance:none;-moz-appearance:textfield;appearance:none;}
+    </style>
     <!-- Booking Form -->
     <div id="bookingForm">
         <div class="bg-white border border-[#0F044C]/20 shadow-md rounded-2xl p-6 sm:p-8 mb-6">
@@ -44,13 +50,15 @@
                     <div>
                         <label class="block text-sm font-semibold defparagraf text-[#0F044C] mb-2.5">Tanggal Booking</label>
                         <div class="relative">
-                            <input type="date" name="tanggal_booking" value="{{ old('tanggal_booking') }}" min="{{ date('Y-m-d') }}" 
-                                   class="w-full h-12 px-4 py-2 border border-[#0F044C]/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1D2C90]/30 focus:border-[#1D2C90] defparagraf transition-all duration-200" required>
-                            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                                <svg class="w-5 h-5 text-[#1D2C90]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            <input id="tanggalBookingInput" type="text" name="tanggal_booking" value="{{ old('tanggal_booking') }}" min="{{ date('Y-m-d') }}" data-blocked-dates='@json($blockedDates ?? [])' data-booked-dates='@json($partiallyBookedDates ?? [])' data-holidays='@json($holidays ?? [])' data-skip-sunday="1" placeholder="YYYY-MM-DD"
+                            class="w-full h-12 px-4 py-2 border border-[#0F044C]/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1D2C90]/30 focus:border-[#1D2C90] defparagraf transition-all duration-200 appearance-none pr-10 no-native-datepicker" required readonly inputmode="none" autocomplete="off">
+                            <button type="button" id="openDatePickerBtn" class="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md hover:bg-[#1D2C90]/10 focus:outline-none focus:ring-2 focus:ring-[#1D2C90]/30">
+                                <svg class="w-5 h-5 text-[#1D2C90]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 14a1 1 0 1 0-1-1a1 1 0 0 0 1 1m5 0a1 1 0 1 0-1-1a1 1 0 0 0 1 1m-5 4a1 1 0 1 0-1-1a1 1 0 0 0 1 1m5 0a1 1 0 1 0-1-1a1 1 0 0 0 1 1M7 14a1 1 0 1 0-1-1a1 1 0 0 0 1 1M19 4h-1V3a1 1 0 0 0-2 0v1H8V3a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3m1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9h16Zm0-11H4V7a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1ZM7 18a1 1 0 1 0-1-1a1 1 0 0 0 1 1"/>
                                 </svg>
-                            </div>
+                            </button>
+                            <p id="dateBlockedMsg" class="mt-1 text-xs text-red-600 hidden">Tanggal penuh. Silakan pilih tanggal lain.</p>
+                            <div id="bookingDatePopover" class="absolute right-0 top-[110%] z-50 hidden"></div>
                         </div>
                     </div>
                     
@@ -333,6 +341,43 @@
             if (deliveryCb && deliveryAddr) {
                 deliveryCb.addEventListener('change', function(){ toggleField(deliveryCb, deliveryAddr); });
                 toggleField(deliveryCb, deliveryAddr);
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            var blockedDates = @json($blockedDates ?? []);
+            var bookedDates = @json($partiallyBookedDates ?? []);
+            var holidays = @json($holidays ?? []);
+            var skipSunday = true;
+            var dateInput = document.getElementById('tanggalBookingInput');
+            var msg = document.getElementById('dateBlockedMsg');
+            function isSunday(dateStr){
+                var d = new Date(dateStr + 'T00:00:00');
+                return d.getDay() === 0;
+            }
+            function handleDate(){
+                if (!dateInput) return;
+                var v = dateInput.value;
+                if (!v) { if (msg) msg.classList.add('hidden'); return; }
+                var invalid = false;
+                if (blockedDates.indexOf(v) !== -1) invalid = true; // kuota penuh
+                if (bookedDates.indexOf(v) !== -1) invalid = true;   // sudah dibooking
+                if (holidays.indexOf(v) !== -1) invalid = true;      // libur
+                if (skipSunday && isSunday(v)) invalid = true;       // minggu
+                if (invalid) {
+                    if (msg) msg.classList.remove('hidden');
+                    dateInput.value = '';
+                    dateInput.classList.add('border-red-400','focus:ring-red-200','focus:border-red-400');
+                    dateInput.focus();
+                } else {
+                    if (msg) msg.classList.add('hidden');
+                    dateInput.classList.remove('border-red-400','focus:ring-red-200','focus:border-red-400');
+                }
+            }
+            if (dateInput) {
+                dateInput.addEventListener('change', handleDate);
+                dateInput.addEventListener('blur', handleDate);
             }
         });
     </script>

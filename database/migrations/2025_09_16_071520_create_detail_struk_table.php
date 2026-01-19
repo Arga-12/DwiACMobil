@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('tipe', 20)->default('layanan'); // layanan, sparepart, delivery, lainnya
             $table->unsignedBigInteger('id_ref')->nullable(); // optional ref to other table id if not layanan
             $table->string('deskripsi', 255);
-            $table->unsignedInteger('qty')->default(1);
+            $table->unsignedInteger('jumlah')->default(1);
             $table->unsignedBigInteger('harga_satuan')->default(0);
             $table->unsignedBigInteger('subtotal')->default(0);
 

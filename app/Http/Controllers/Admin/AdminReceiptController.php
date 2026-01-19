@@ -34,7 +34,7 @@ class AdminReceiptController extends Controller
             'details.*.id_detail_struk' => 'nullable|integer|exists:detail_struk,id_detail_struk',
             'details.*.tipe' => 'required|string|in:layanan,sparepart,delivery,lainnya',
             'details.*.deskripsi' => 'required|string|max:255',
-            'details.*.qty' => 'required|integer|min:1',
+            'details.*.jumlah' => 'required|integer|min:1',
             'details.*.harga_satuan' => 'required|integer|min:0',
         ]);
 
@@ -45,7 +45,7 @@ class AdminReceiptController extends Controller
             if (!empty($data['details'])) {
                 $idsToKeep = [];
                 foreach ($data['details'] as $d) {
-                    $subtotal = $d['qty'] * $d['harga_satuan'];
+                    $subtotal = $d['jumlah'] * $d['harga_satuan'];
                     if (!empty($d['id_detail_struk'])) {
                         $detail = DetailStruk::where('id_detail_struk', $d['id_detail_struk'])
                             ->where('id_antri_struk', $model->id_antri_struk)
@@ -53,7 +53,7 @@ class AdminReceiptController extends Controller
                         $detail->update([
                             'tipe' => $d['tipe'],
                             'deskripsi' => $d['deskripsi'],
-                            'qty' => $d['qty'],
+                            'jumlah' => $d['jumlah'],
                             'harga_satuan' => $d['harga_satuan'],
                             'subtotal' => $subtotal,
                         ]);
@@ -63,7 +63,7 @@ class AdminReceiptController extends Controller
                             'id_antri_struk' => $model->id_antri_struk,
                             'tipe' => $d['tipe'],
                             'deskripsi' => $d['deskripsi'],
-                            'qty' => $d['qty'],
+                            'jumlah' => $d['jumlah'],
                             'harga_satuan' => $d['harga_satuan'],
                             'subtotal' => $subtotal,
                         ]);
@@ -78,7 +78,9 @@ class AdminReceiptController extends Controller
 
             $model->admin_harga_total = $data['admin_harga_total'];
             $model->admin_harga_rincian = $data['admin_harga_rincian'] ?? null;
-            $model->status = 'waiting_confirm';
+            // reflect admin total to main total and set unified status
+            $model->harga_keseluruhan = $data['admin_harga_total'];
+            $model->status = AntriStruk::STATUS_HARGA_DARI_ADMIN;
             $model->save();
         });
 
@@ -89,13 +91,22 @@ class AdminReceiptController extends Controller
     {
         $data = $request->validate([
             'id_montir' => 'nullable|integer|exists:montir,id_montir',
-            'status' => 'nullable|string|in:pending,waiting_confirm,confirmed,in_progress,completed,canceled',
+            // accept both legacy and unified status strings
+            'status' => 'nullable|string|in:pending,harga_dari_admin,dalam_antrian,dalam_servisan,selesai,cancelled,waiting_confirm,confirmed,in_progress,completed,canceled',
         ]);
 
         $model = AntriStruk::findOrFail($id);
         $model->id_montir = $data['id_montir'] ?? null;
         if (!empty($data['status'])) {
-            $model->status = $data['status'];
+            $incoming = strtolower((string)$data['status']);
+            $map = [
+                'waiting_confirm' => AntriStruk::STATUS_HARGA_DARI_ADMIN,
+                'confirmed' => AntriStruk::STATUS_DALAM_ANTRIAN,
+                'in_progress' => AntriStruk::STATUS_DALAM_SERVISAN,
+                'completed' => AntriStruk::STATUS_SELESAI,
+                'canceled' => 'cancelled',
+            ];
+            $model->status = $map[$incoming] ?? $incoming;
         }
         $model->save();
 

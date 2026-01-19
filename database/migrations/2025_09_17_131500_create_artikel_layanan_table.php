@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('artikel_layanan', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('judul');
             $table->string('slug')->unique();
             $table->string('foto')->nullable();
-            $table->text('description')->nullable();
-            $table->json('points')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->json('poin')->nullable();
             // meta badges di UI
-            $table->unsignedSmallInteger('duration_min')->nullable();
-            $table->unsignedSmallInteger('duration_max')->nullable();
-            $table->unsignedInteger('price')->nullable(); // rupiah
-            $table->unsignedInteger('likes')->default(0); // total likes
-            $table->unsignedSmallInteger('guarantee_days')->nullable(); // hari
+            $table->unsignedSmallInteger('durasi_min')->nullable();
+            $table->unsignedSmallInteger('durasi_maks')->nullable();
+            $table->unsignedInteger('harga')->nullable(); // rupiah
+            $table->unsignedInteger('suka')->default(0); // total likes
+            $table->unsignedSmallInteger('garansi_hari')->nullable(); // hari
             // publikasi
-            $table->boolean('is_published')->default(true);
-            $table->timestamp('published_at')->nullable();
+            $table->boolean('dipublikasi')->default(true);
+            $table->timestamp('tanggal_publikasi')->nullable();
             $table->timestamps();
         });
     }

@@ -37,7 +37,7 @@ class UserReceiptController extends Controller
             'nomor_booking' => $nomor,
             'catatan' => $data['catatan'] ?? null,
             'status' => 'pending',
-            'price_status' => 'pending',
+            'status_harga' => 'pending',
         ]);
 
         return redirect()->back()->with('success', 'Permintaan antrian dibuat. Nomor: ' . $model->nomor_booking);
@@ -75,10 +75,10 @@ class UserReceiptController extends Controller
             ->where('id_pelanggan', $user->id_pelanggan)
             ->firstOrFail();
 
-        $model->price_status = $data['confirm'] === 'confirm' ? 'confirmed' : 'rejected';
-        $model->user_price_confirmed_at = now();
+        $model->status_harga = $data['confirm'] === 'confirm' ? 'confirmed' : 'rejected';
+        $model->tanggal_konfirmasi_harga = now();
         $model->save();
 
-        return back()->with('success', 'Status harga diperbarui: ' . $model->price_status);
+        return back()->with('success', 'Status harga diperbarui: ' . $model->status_harga);
     }
 }

@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Pelanggan;
 use App\Models\AntriStruk;
 use App\Models\Mobil;
+use App\Models\KalenderLibur;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
 {
@@ -29,8 +30,43 @@ class DashboardController extends Controller
         
         // Get user's cars from database
         $userCars = $this->getUserCars($user);
+
+        // Build simple calendar map for current month (GLOBAL bookings per day)
+        $calendarStart = Carbon::now()->copy()->startOfMonth();
+        $calendarEnd = $calendarStart->copy()->endOfMonth();
+        $bookingsMonth = AntriStruk::whereBetween('tanggal_pesan', [$calendarStart->toDateString(), $calendarEnd->toDateString()])
+            ->get();
+
+        $calendarGlobalDays = $bookingsMonth->groupBy(function($row) {
+                return Carbon::parse($row->tanggal_pesan)->toDateString();
+            })
+            ->map(function($group) {
+                return ['booking_count' => $group->count()];
+            })
+            ->toArray();
         
-        return view('user.dashboard', compact('currentBooking', 'activitySummary', 'userCars'));
+        // Load holidays set by admin within this month
+        $holidays = KalenderLibur::betweenDates($calendarStart, $calendarEnd)->get();
+        $calendarHolidays = [];
+        foreach ($holidays as $h) {
+            $dateKey = Carbon::parse($h->tanggal)->toDateString();
+            $calendarHolidays[$dateKey] = [
+                'judul' => $h->judul,
+                'keterangan' => $h->keterangan,
+            ];
+        }
+
+        // Session active duration (seconds) since first dashboard access/login
+        $sessionStartedAt = session('session_started_at');
+        if (!$sessionStartedAt) {
+            $sessionStartedAt = Carbon::now();
+            session(['session_started_at' => $sessionStartedAt->toDateTimeString()]);
+        } else {
+            $sessionStartedAt = Carbon::parse($sessionStartedAt);
+        }
+        $sessionDurationSeconds = Carbon::now()->diffInSeconds($sessionStartedAt, true);
+        
+        return view('user.dashboard', compact('currentBooking', 'activitySummary', 'userCars', 'calendarGlobalDays', 'calendarHolidays', 'sessionDurationSeconds'));
     }
     
     public function antrian()

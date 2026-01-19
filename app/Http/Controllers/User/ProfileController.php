@@ -33,9 +33,15 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         
-        $request->validate([
+        \Log::info('Profile update attempt', [
+            'user_id' => $user->id_pelanggan,
+            'request_data' => $request->except(['password', 'password_confirmation']),
+            'has_file' => $request->hasFile('profile_photo')
+        ]);
+        
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => ['required', 'email', Rule::unique('pelanggan')->ignore($user->id_pelanggan, 'id_pelanggan')],
+            'email' => ['required', 'email', Rule::unique('pelanggan', 'email')->ignore($user->id_pelanggan, 'id_pelanggan')],
             'no_wa' => 'nullable|string|max:20',
             'alamat' => 'nullable|string|max:500',
             'password' => 'nullable|min:8|confirmed',
@@ -43,18 +49,27 @@ class ProfileController extends Controller
         ]);
         
         $updateData = [
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'no_wa' => $request->no_wa,
-            'alamat' => $request->alamat,
+            'nama' => $validated['nama'],
+            'email' => $validated['email'],
+            'no_wa' => $validated['no_wa'] ?? null,
+            'alamat' => $validated['alamat'] ?? null,
         ];
         
         // Handle profile photo upload
         if ($request->hasFile('profile_photo')) {
             $photo = $request->file('profile_photo');
             $filename = 'profile_' . $user->id_pelanggan . '_' . time() . '.' . $photo->getClientOriginalExtension();
-            $photo->move(public_path('images/user/profiles'), $filename);
-            $updateData['profile_photo'] = 'images/user/profiles/' . $filename;
+            
+            // Create directory if not exists
+            $directory = public_path('images/user/profiles');
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+            
+            $photo->move($directory, $filename);
+            $updateData['foto_profil'] = 'images/user/profiles/' . $filename;
+            
+            \Log::info('Profile photo uploaded', ['filename' => $filename]);
         }
         
         // Only update password if provided
@@ -62,7 +77,11 @@ class ProfileController extends Controller
             $updateData['password'] = Hash::make($request->password);
         }
         
+        \Log::info('Updating user with data', ['update_data' => array_keys($updateData)]);
+        
         $user->update($updateData);
+        
+        \Log::info('Profile updated successfully');
         
         return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui!');
     }
@@ -87,8 +106,8 @@ class ProfileController extends Controller
     private function getProfileImage($user)
     {
         // Return user's uploaded photo if exists, otherwise use default
-        if ($user->profile_photo && file_exists(public_path($user->profile_photo))) {
-            return $user->profile_photo;
+        if ($user->foto_profil && file_exists(public_path($user->foto_profil))) {
+            return $user->foto_profil;
         }
         
         // Fallback to default images based on user ID

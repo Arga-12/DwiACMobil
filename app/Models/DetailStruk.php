@@ -19,7 +19,7 @@ class DetailStruk extends Model
         'id_layanan',
         'tipe',
         'deskripsi',
-        'qty',
+        'jumlah',
         'harga_satuan',
         'subtotal',
     ];

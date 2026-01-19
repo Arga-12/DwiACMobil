@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'peran' => 'admin',
             'foto' => null,
             'tgl_dibuat' => now(),
-            'is_active' => true,
+            'aktif' => true,
         ]);
 
         Montir::create([
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             'peran' => 'montir',
             'foto' => null,
             'tgl_dibuat' => now(),
-            'is_active' => true,
+            'aktif' => true,
         ]);
 
         Montir::create([
@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             'peran' => 'montir',
             'foto' => null,
             'tgl_dibuat' => now(),
-            'is_active' => true,
+            'aktif' => true,
         ]);
     }
 }

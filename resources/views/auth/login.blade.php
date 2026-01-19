@@ -53,16 +53,6 @@
                         class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
                 </div>
 
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="remember-me" name="remember" type="checkbox" class="h-4 w-4 text-[#0F044C] focus:ring-[#0F044C] border-gray-300 rounded">
-                        <label for="remember-me" class="ml-2 block text-sm text-gray-700">Ingat saya</label>
-                    </div>
-                    <div class="text-sm">
-                        <a href="#" class="text-[#0F044C] hover:text-[#0F044C]/80 font-medium">Lupa password?</a>
-                    </div>
-                </div>
-
                 @if($errors->any())
                 <div class="text-red-600 text-sm">{{ $errors->first() }}</div>
                 @endif

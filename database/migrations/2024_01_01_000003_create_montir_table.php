@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('keterangan')->nullable();
             $table->string('foto')->nullable(); // Kolom foto profile
             $table->datetime('tgl_dibuat')->default(now());
-            $table->boolean('is_active')->default(true);
+            $table->boolean('aktif')->default(true);
             $table->timestamps();
         });
     }

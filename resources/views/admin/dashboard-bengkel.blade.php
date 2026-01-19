@@ -67,7 +67,7 @@
             <div class="flex items-center gap-4">
                 <!-- Inner Box untuk Value -->
                 <div class="flex-1 bg-gradient-to-br from-[#1D2C90]/5 to-[#1D2C90]/10 border border-[#1D2C90]/20 rounded-lg p-4">
-                    <p class="font-montserrat-36 font-bold text-[#1D2C90]">200</p>
+                    <p class="font-montserrat-36 font-bold text-[#1D2C90]">{{ number_format($stats['total_customers'] ?? 0) }}</p>
                 </div>
                 <!-- SVG Icon -->
                 <div class="flex-shrink-0">
@@ -84,7 +84,7 @@
             <div class="flex items-center gap-4">
                 <!-- Inner Box untuk Value -->
                 <div class="flex-1 bg-gradient-to-br from-[#1D2C90]/5 to-[#1D2C90]/10 border border-[#1D2C90]/20 rounded-lg p-4">
-                    <p class="font-montserrat-36 font-bold text-[#1D2C90]">15</p>
+                    <p class="font-montserrat-36 font-bold text-[#1D2C90]">{{ $stats['services_today'] ?? 0 }}</p>
                 </div>
                 <!-- SVG Icon -->
                 <div class="flex-shrink-0">
@@ -101,7 +101,7 @@
             <div class="flex items-center gap-4">
                 <!-- Inner Box untuk Value -->
                 <div class="flex-1 bg-gradient-to-br from-[#1D2C90]/5 to-[#1D2C90]/10 border border-[#1D2C90]/20 rounded-lg p-4">
-                    <p class="font-montserrat-36 font-bold text-[#1D2C90]">8</p>
+                    <p class="font-montserrat-36 font-bold text-[#1D2C90]">{{ $stats['active_queue'] ?? 0 }}</p>
                 </div>
                 <!-- SVG Icon -->
                 <div class="flex-shrink-0">
@@ -114,11 +114,14 @@
 
         <!-- Rating -->
         <div class="bg-white border border-[#0F044C]/20 rounded-xl shadow-md p-6 min-h-full flex flex-col">
-            <p class="bigparafraf font-semibold text-black mb-4">Rating Bengkel</p>
+            <div class="flex items-center justify-between mb-4">
+                <p class="bigparafraf font-semibold text-black">Rating Bengkel</p>
+                <a href="{{ route('admin.dashboard') }}" class="text-sm text-[#0F044C] hover:underline">kelola rating</a>
+            </div>
             <div class="flex items-center gap-4">
                 <!-- Inner Box untuk Value -->
                 <div class="flex-1 bg-gradient-to-br from-[#1D2C90]/5 to-[#1D2C90]/10 border border-[#1D2C90]/20 rounded-lg p-4">
-                    <p class="font-montserrat-36 font-bold text-[#1D2C90]">4.5/5</p>
+                    <p class="font-montserrat-36 font-bold text-[#1D2C90]">{{ $stats['average_rating'] ?? '0' }}/5</p>
                 </div>
                 <!-- SVG Icon -->
                 <div class="flex-shrink-0">
@@ -139,8 +142,36 @@
                 <a href="{{ route('admin.antrian') }}" class="text-sm text-[#0F044C] hover:underline">lihat semua</a>
             </div>
             <div class="space-y-3">
-                <!-- Service Cards akan ditambahkan di sini -->
-                <div class="border border-dashed border-[#0F044C]/30 rounded-xl p-6 text-center text-sm text-gray-600">Belum ada antrian hari ini</div>
+                @if(isset($todayQueue) && $todayQueue->count() > 0)
+                    @foreach($todayQueue as $queue)
+                    @php
+                        $statusColor = match(strtolower($queue->status)) {
+                            'pending', 'harga_dari_admin' => 'bg-yellow-50 border-yellow-200 text-yellow-800',
+                            'dalam_antrian' => 'bg-blue-50 border-blue-200 text-blue-800',
+                            'dalam_servisan' => 'bg-orange-50 border-orange-200 text-orange-800',
+                            'selesai' => 'bg-green-50 border-green-200 text-green-800',
+                            default => 'bg-gray-50 border-gray-200 text-gray-800'
+                        };
+                    @endphp
+                    <div class="border border-[#0F044C]/10 rounded-xl p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-2">
+                            <div>
+                                <p class="font-semibold text-[#0F044C]">#{{ $queue->nomor_booking }}</p>
+                                <p class="text-sm text-gray-600">{{ optional($queue->pelanggan)->nama ?? '-' }}</p>
+                            </div>
+                            <span class="px-2 py-1 rounded-full text-xs font-medium border {{ $statusColor }}">
+                                {{ ucfirst(str_replace('_', ' ', $queue->status)) }}
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>{{ optional($queue->mobil)->nama_mobil ?? '-' }} ({{ optional($queue->mobil)->plat_nomor ?? '-' }})</span>
+                            <span>{{ optional($queue->tanggal_pesan)->format('H:i') ?? '-' }}</span>
+                        </div>
+                    </div>
+                    @endforeach
+                @else
+                    <div class="border border-dashed border-[#0F044C]/30 rounded-xl p-6 text-center text-sm text-gray-600">Belum ada antrian hari ini</div>
+                @endif
             </div>
         </div>
 
@@ -152,19 +183,34 @@
                 $monthNameCal = $calendar['month_name'] ?? $calendarStart->locale('id')->translatedFormat('F Y');
                 $daysInMonthCal = $calendar['days_in_month'] ?? $calendarStart->daysInMonth;
                 $startDowCal = $calendar['start_day_of_week'] ?? (int) $calendarStart->copy()->startOfMonth()->dayOfWeekIso;
+                $adjustedStartDow = $calendar['adjusted_start_day'] ?? ($startDowCal == 7 ? 6 : $startDowCal - 1);
                 $calendarDays = $calendar['days'] ?? [];
             @endphp
             <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between mb-4">
-                <div>
-                    <h3 class="font-montserrat-48 font-bold text-[#0F044C]">Kalender</h3>
-                    <span class="text-sm text-[#787A91]">{{ $monthNameCal }}</span>
+                <div class="flex items-center gap-4">
+                    <div>
+                        <h3 class="font-montserrat-48 font-bold text-[#0F044C]">Kalender</h3>
+                        <span class="text-sm text-[#787A91]" id="calendar-month-name">{{ $monthNameCal }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="navigateCalendar(-1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                            <svg class="w-5 h-5 text-[#0F044C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+                        <button type="button" onclick="navigateCalendar(1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                            <svg class="w-5 h-5 text-[#0F044C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="grid grid-cols-7 gap-2 text-xs select-none">
-                @foreach(['Sen','Sel','Rab','Kam','Jum','Sab','Min'] as $d)
+            <div id="calendar-grid" class="grid grid-cols-6 gap-2 text-xs select-none">
+                @foreach(['Sen','Sel','Rab','Kam','Jum','Sab'] as $d)
                     <div class="text-center font-semibold text-[#0F044C]">{{ $d }}</div>
                 @endforeach
-                @for($i = 1; $i < $startDowCal; $i++)
+                @for($i = 0; $i < $adjustedStartDow; $i++)
                     <div class="h-16"></div>
                 @endfor
                 @for($day = 1; $day <= $daysInMonthCal; $day++)
@@ -175,6 +221,11 @@
                         $isHoliday = $dayInfo && isset($dayInfo['holiday']);
                         $bookingCount = $dayInfo['booking_count'] ?? 0;
                         $dayTooltip = null;
+
+                        // Skip Sunday (dayOfWeek 0)
+                        if ($dateObj->dayOfWeek === 0) {
+                            continue;
+                        }
 
                         if ($dayInfo) {
                             $dayTooltip = [
@@ -221,20 +272,79 @@
             </div>
         </div>
     </div>
-    <div id="calendarTooltip" class="hidden pointer-events-none fixed z-50 w-64 bg-white border border-gray-200 rounded-xl shadow-xl px-4 py-3 text-xs text-gray-700"></div>
+    <div id="calendarTooltip" class="hidden pointer-events-none fixed z-[9999] w-72 max-w-sm bg-white border-2 border-gray-300 rounded-xl shadow-2xl px-4 py-3 text-xs text-gray-700"></div>
 
     <!-- Customer Data Table -->
     <div>
         <h2 class="text-lg sm:text-xl font-montserrat-48 text-gray-900 font-bold mb-4">ANTRIAN PELANGGAN</h2>
-        <div class="bg-white border border-[#0F044C]/20 rounded-xl shadow-md p-4 md:p-5">
-            <!-- Table content akan ditambahkan di sini -->
-            <div class="text-center text-sm text-gray-600 py-8">
-                Tabel data pelanggan akan ditambahkan di sini
+        <div class="bg-white border border-[#0F044C]/20 rounded-xl shadow-md overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-[#0F044C]/5 to-[#1D2C90]/5 border-b border-[#0F044C]/20">
+                            <th class="px-6 py-4 text-left text-xs font-semibold defparagraf text-[#0F044C] uppercase tracking-wider">Booking</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold defparagraf text-[#0F044C] uppercase tracking-wider">Pelanggan</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold defparagraf text-[#0F044C] uppercase tracking-wider">Kendaraan</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold defparagraf text-[#0F044C] uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold defparagraf text-[#0F044C] uppercase tracking-wider">Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @if(isset($recentCustomers) && $recentCustomers->count() > 0)
+                            @foreach($recentCustomers as $customer)
+                            @php
+                                $statusBadge = match(strtolower($customer->status)) {
+                                    'pending', 'harga_dari_admin' => 'bg-yellow-100 text-yellow-800',
+                                    'dalam_antrian' => 'bg-blue-100 text-blue-800',
+                                    'dalam_servisan' => 'bg-orange-100 text-orange-800',
+                                    'selesai' => 'bg-green-100 text-green-800',
+                                    'cancelled' => 'bg-red-100 text-red-800',
+                                    default => 'bg-gray-100 text-gray-800'
+                                };
+                            @endphp
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">#{{ $customer->nomor_booking }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ optional($customer->pelanggan)->nama ?? '-' }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">
+                                        {{ optional($customer->mobil)->nama_mobil ?? '-' }}
+                                        <span class="text-gray-500">({{ optional($customer->mobil)->plat_nomor ?? '-' }})</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $statusBadge }}">
+                                        {{ ucfirst(str_replace('_', ' ', $customer->status)) }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ optional($customer->tanggal_pesan)->format('d M Y') ?? '-' }}
+                                </td>
+                            </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5" class="px-6 py-8 text-center text-sm text-gray-500">
+                                    Belum ada data pelanggan
+                                </td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
     </div>
 <script>
+    let currentCalendarMonth = {{ $calendarStart->month }};
+    let currentCalendarYear = {{ $calendarStart->year }};
+
+    // Define calendar API URL using app URL
+    window.calendarApiUrl = '{{ config("app.url") }}/admin/dashboard/calendar-data';
+
     window.toggleHolidayModal = function (show) {
         const modal = document.getElementById('holidayModal');
         if (!modal) return;
@@ -247,6 +357,132 @@
         }
     };
 
+    window.navigateCalendar = function(direction) {
+        currentCalendarMonth += direction;
+
+        if (currentCalendarMonth > 12) {
+            currentCalendarMonth = 1;
+            currentCalendarYear++;
+        } else if (currentCalendarMonth < 1) {
+            currentCalendarMonth = 12;
+            currentCalendarYear--;
+        }
+
+        loadCalendarData();
+    };
+
+    function loadCalendarData() {
+        const url = `${window.calendarApiUrl}?month=${currentCalendarMonth}&year=${currentCalendarYear}`;
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                updateCalendarDisplay(data);
+            })
+            .catch(error => {
+                console.error('Error loading calendar data:', error);
+                // Fallback to page refresh if AJAX fails
+                window.location.href = `{{ route('admin.dashboard') }}?month=${currentCalendarMonth}&year=${currentCalendarYear}`;
+            });
+    }
+
+    function updateCalendarDisplay(calendarData) {
+        // Update month name
+        document.getElementById('calendar-month-name').textContent = calendarData.month_name;
+
+        // Clear and rebuild calendar grid
+        const calendarGrid = document.getElementById('calendar-grid');
+        calendarGrid.innerHTML = '';
+
+        // Add day headers (Monday to Saturday)
+        const dayHeaders = ['Sen','Sel','Rab','Kam','Jum','Sab'];
+        dayHeaders.forEach(day => {
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'text-center font-semibold text-[#0F044C]';
+            headerDiv.textContent = day;
+            calendarGrid.appendChild(headerDiv);
+        });
+
+        // Add empty cells for start of month
+        const adjustedStartDow = calendarData.adjusted_start_day || 0;
+
+        for (let i = 0; i < adjustedStartDow; i++) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'h-16';
+            calendarGrid.appendChild(emptyDiv);
+        }
+
+        // Add day cells
+        const monthStart = new Date(currentCalendarYear, currentCalendarMonth - 1, 1);
+        for (let day = 1; day <= calendarData.days_in_month; day++) {
+            const dateObj = new Date(currentCalendarYear, currentCalendarMonth - 1, day);
+
+            // Skip Sunday (day 0)
+            if (dateObj.getDay() === 0) continue;
+
+            const dateKey = `${currentCalendarYear}-${String(currentCalendarMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const dayInfo = calendarData.days[dateKey] || null;
+            const isHoliday = dayInfo && dayInfo.holiday;
+            const bookingCount = dayInfo ? dayInfo.booking_count : 0;
+
+            let dayClasses = 'calendar-day h-16 border rounded-xl flex flex-col items-center justify-center text-gray-700 transition relative';
+            if (isHoliday) {
+                dayClasses += ' bg-red-50 border-red-300 text-red-700';
+            } else if (bookingCount > 0) {
+                dayClasses += ' bg-[#1D2C90]/5 border-[#1D2C90]/40 text-[#0F044C]';
+            } else {
+                dayClasses += ' border-gray-200';
+            }
+
+            const dayDiv = document.createElement('div');
+            dayDiv.className = dayClasses;
+
+            if (dayInfo) {
+                dayDiv.setAttribute('data-day-info', JSON.stringify({
+                    date: dayInfo.date || `${day} ${calendarData.month_name.split(' ')[0]} ${currentCalendarYear}`,
+                    holiday: dayInfo.holiday || null,
+                    bookings: dayInfo.bookings || []
+                }));
+            }
+
+            const dayNumber = document.createElement('span');
+            dayNumber.className = 'text-base font-semibold';
+            dayNumber.textContent = day;
+            dayDiv.appendChild(dayNumber);
+
+            if (isHoliday) {
+                const holidayLabel = document.createElement('span');
+                holidayLabel.className = 'text-[10px] text-red-600 font-semibold mt-1';
+                holidayLabel.textContent = 'Libur';
+                dayDiv.appendChild(holidayLabel);
+            } else if (bookingCount > 0) {
+                const bookingLabel = document.createElement('span');
+                bookingLabel.className = 'text-[10px] text-[#1D2C90] font-medium mt-1';
+                bookingLabel.textContent = `${bookingCount} booking`;
+                dayDiv.appendChild(bookingLabel);
+            }
+
+            calendarGrid.appendChild(dayDiv);
+        }
+
+        // Reattach tooltips after calendar update
+        if (window.reattachCalendarTooltip) {
+            window.reattachCalendarTooltip();
+        }
+    }
+
     document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
             window.toggleHolidayModal(false);
@@ -254,4 +490,3 @@
     });
 </script>
 </div>
-

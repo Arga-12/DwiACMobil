@@ -42,14 +42,14 @@
                 <form class="space-y-6" action="{{ route('register.post') }}" method="POST">
                     @csrf
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nama Anda</label>
-                        <input id="name" name="name" type="text" required value="{{ old('name') }}" placeholder="Masukkan nama lengkap Anda"
+                        <label for="nama" class="block text-sm font-medium text-gray-700 mb-2">Nama Anda</label>
+                        <input id="nama" name="nama" type="text" required value="{{ old('nama') }}" placeholder="Masukkan nama lengkap Anda"
                             class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
                     </div>
 
                     <div>
-                        <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-2">No. WA</label>
-                        <input id="whatsapp" name="whatsapp" type="tel" required value="{{ old('whatsapp') }}" placeholder="Masukkan nomor WhatsApp Anda"
+                        <label for="no_wa" class="block text-sm font-medium text-gray-700 mb-2">No. WA</label>
+                        <input id="no_wa" name="no_wa" type="tel" required value="{{ old('no_wa') }}" placeholder="Masukkan nomor WhatsApp Anda"
                             class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] outline-none transition-colors">
                     </div>
 

@@ -37,8 +37,8 @@ return new class extends Migration
             $table->unsignedBigInteger('harga_keseluruhan')->nullable();
             $table->unsignedBigInteger('admin_harga_total')->nullable();
             $table->json('admin_harga_rincian')->nullable(); // { layanan: [...], sparepart: [...], delivery: ... }
-            $table->string('price_status', 20)->default('pending'); // pending, confirmed, rejected
-            $table->dateTime('user_price_confirmed_at')->nullable();
+            $table->string('status_harga', 20)->default('pending'); // pending, confirmed, rejected
+            $table->dateTime('tanggal_konfirmasi_harga')->nullable();
 
             // Files / assets
             $table->string('bukti_struk')->nullable(); // path under public/

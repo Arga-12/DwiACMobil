@@ -1,4 +1,4 @@
-<x-layout :showHeader="true" :showHero="false" :solidHeaderAtTop="true" title="{{ ($article->title ?? ($service['title'] ?? 'Isi Freon')) }} - Dwi AC Mobil">
+<x-layout :showHeader="true" :showHero="false" :solidHeaderAtTop="true" title="{{ ($article->judul ?? ($service['title'] ?? 'Isi Freon')) }} - Dwi AC Mobil">
     <!-- Gunakan font yang sudah tersedia secara lokal -->
     <link rel="stylesheet" href="{{ asset('css/custom-fonts.css') }}">
     <script>
@@ -17,22 +17,35 @@
     @php
         if (isset($article)) {
             $duration = '-';
-            if (!is_null($article->duration_min) && !is_null($article->duration_max)) {
-                $min = (int) $article->duration_min; $max = (int) $article->duration_max;
+            if (!is_null($article->durasi_min) && !is_null($article->durasi_maks)) {
+                $min = (int) $article->durasi_min; $max = (int) $article->durasi_maks;
                 $duration = ($min >= 60 || $max >= 60)
                     ? (ceil($min/60) . '–' . ceil($max/60) . ' jam')
                     : ($min . '–' . $max . ' menit');
             }
-            $image = $article->foto ? (preg_match('/^https?:\/\//', $article->foto) ? $article->foto : asset($article->foto)) : asset('images/layanan/isi-freon.png');
+            // Handle foto path with priority: uploaded > static > default
+            if (!empty($article->foto)) {
+                if (preg_match('/^https?:\/\//', $article->foto)) {
+                    $image = $article->foto;
+                } elseif (str_contains($article->foto, '/') && file_exists(storage_path('app/public/' . $article->foto))) {
+                    $image = asset('storage/' . $article->foto);
+                } elseif (file_exists(public_path($article->foto))) {
+                    $image = asset($article->foto);
+                } else {
+                    $image = asset('images/layanan/isi-freon.png');
+                }
+            } else {
+                $image = asset('images/layanan/isi-freon.png');
+            }
             $service = [
-                'title' => $article->title,
+                'title' => $article->judul,
                 'image' => $image,
                 'updated' => optional($article->updated_at)->format('d M'),
                 'duration' => $duration,
-                'price_from' => !is_null($article->price) ? number_format($article->price,0,',','.') : '-',
-                'warranty' => $article->guarantee_days ? ($article->guarantee_days . ' hari') : '-',
-                'description' => $article->description,
-                'points' => $article->points ?? [],
+                'price_from' => !is_null($article->harga) ? number_format($article->harga,0,',','.') : '-',
+                'warranty' => $article->garansi_hari ? ($article->garansi_hari . ' hari') : '-',
+                'description' => $article->deskripsi,
+                'points' => $article->poin ?? [],
             ];
         }
     @endphp
@@ -99,23 +112,22 @@
                                 </div>
                                 <div class="flex items-center gap-2 flex-wrap">
                                     @if(isset($article))
-                                        @php $liked = session()->has('liked_artikel_' . $article->id); $likes = (int)($article->likes ?? 0); @endphp
+                                        @php $liked = session()->has('liked_artikel_' . $article->id); $likes = (int)($article->suka ?? 0); @endphp
                                         <form method="POST" action="{{ $liked ? route('layanan.unlike', $article->slug) : route('layanan.like', $article->slug) }}">
                                             @csrf
-                                            <button type="submit" class="inline-flex items-center gap-2 border border-[#0F044C] text-[#0F044C] hover:bg-[#0F044C] hover:text-white px-4 py-2 rounded-md defparagraf">
+                                            <button type="submit" class="inline-flex items-center gap-2 border border-[#0F044C] {{ $liked ? 'bg-[#0F044C] text-white' : 'text-[#0F044C] hover:bg-[#0F044C] hover:text-white' }} px-4 py-2 rounded-md defparagraf transition-colors">
                                                 @if($liked)
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" class="text-current"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 8"/></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><path fill="currentColor" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 8"/></svg>
                                                     <span>Batalkan Like</span>
                                                 @else
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" class="text-current"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 8"/></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 8"/></svg>
                                                     <span>Like</span>
                                                 @endif
-                                                <span class="ml-1 text-xs bg-[#0F044C]/10 text-[#0F044C] px-2 py-0.5 rounded">{{ $likes }}</span>
+                                                <span class="ml-1 text-xs {{ $liked ? 'bg-white/20 text-white' : 'bg-[#0F044C]/10 text-[#0F044C]' }} px-2 py-0.5 rounded">{{ $likes }}</span>
                                             </button>
                                         </form>
                                     @endif
                                     <a href="{{ url('/booking') }}" class="inline-flex items-center gap-2 bg-[#0F044C] hover:bg-[#141E61] text-white px-5 py-2 rounded-md defparagraf">Booking Sekarang</a>
-                                    <a href="https://wa.me/6281234567890?text={{ urlencode('Halo Dwi AC Mobil, saya ingin tanya estimasi harga layanan ' . ($service['title'] ?? 'Isi Freon') . ' sesuai model mobil saya') }}" target="_blank" class="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-md defparagraf">Tanya Harga</a>
                                 </div>
                             </div>
                         </div>

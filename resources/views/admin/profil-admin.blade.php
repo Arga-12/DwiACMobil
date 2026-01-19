@@ -37,7 +37,15 @@
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" 
                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
 
-                                <
+                                <!-- Default Avatar (kalau img error) -->
+                                <div class="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center hidden">
+                                    <svg class="w-24 h-24 text-gray-600" xmlns="http://www.w3.org/2000/svg" 
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                </div>
+
                                 <!-- Hover Overlay with File Input -->
                                 <div class="absolute inset-0 bg-gradient-to-br from-[#1D2C90]/80 to-[#0F044C]/80 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-all duration-300 cursor-pointer rounded-full" onclick="document.getElementById('admin_profile_photo_input').click()">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white mb-2 drop-shadow-lg" viewBox="0 0 24 24">

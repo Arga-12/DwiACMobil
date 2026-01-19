@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="stylesheet" href="/css/custom-fonts.css">
     @vite(['resources/js/users/dashboard.js'])
+    @vite(['resources/js/users/pilih-tgl-booking.js'])
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">

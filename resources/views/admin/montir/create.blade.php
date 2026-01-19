@@ -1,140 +1,139 @@
 <x-admin.dashboard-layout title="Tambah Montir - Dwi AC Mobil">
-                <!-- Header -->
-                <div class="mb-8">
-                    <h1 class="text-3xl font-bold text-gray-900">Tambah Montir Baru</h1>
-                    <p class="text-gray-600">Masukkan informasi montir yang akan ditambahkan</p>
+    <!-- Dashboard Content -->
+    <div class="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
+        <!-- Header Section -->
+        <div class="mb-6 sm:mb-8 md:mb-10 lg:mb-12">
+            <div class="bg-gradient-to-br from-[#0F044C] via-[#1D2C90] to-[#192BC2] text-white rounded-2xl px-5 py-6 sm:px-7 sm:py-7 shadow-2xl relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10 pointer-events-none">
+                    <div class="w-40 h-40 bg-white/10 rounded-full blur-3xl absolute -right-16 top-0"></div>
+                    <div class="w-32 h-32 bg-white/5 rounded-full blur-3xl absolute -left-10 bottom-0"></div>
+                </div>
+                <div class="relative flex items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-montserrat-48 font-bold leading-tight uppercase">Tambah Montir Baru</h1>
+                        <p class="mt-1 text-sm sm:text-base text-white/85 defparagraf">Tambahkan data profil montir baru.</p>
+                    </div>
+                    <a href="{{ route('admin.montir.index') }}" class="px-5 py-3 bg-white/20 hover:bg-white/30 text-white rounded-xl font-semibold defparagraf inline-flex items-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        <span>Kembali</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="bg-white rounded-2xl border-2 border-[#0F044C]/20 shadow-lg p-6 sm:p-8">
+            <form action="{{ route('admin.montir.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                @csrf
+
+                <!-- Photo Upload -->
+                <div>
+                    <label for="foto" class="block text-sm font-bold text-[#0F044C] mb-2 defparagraf">Foto Profil</label>
+                    <input type="file" id="foto" name="foto" accept="image/*"
+                           class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] transition-colors defparagraf">
+                    <p class="mt-1 text-xs text-gray-500 defparagraf">PNG, JPG, JPEG hingga 2MB</p>
+                    @error('foto')
+                        <p class="mt-1 text-sm text-red-600 defparagraf">{{ $message }}</p>
+                    @enderror
+                    <!-- Preview -->
+                    <div id="preview-container" class="mt-4 hidden">
+                        <img id="preview-image" src="" alt="Preview" class="mx-auto h-32 w-32 object-cover rounded-full border-4 border-[#0F044C]">
+                    </div>
                 </div>
 
-                <!-- Form -->
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <form action="{{ route('admin.montir.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        
-                        <!-- Error Messages -->
-                        @if($errors->any())
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-                            <ul class="list-disc list-inside">
-                                @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Nama -->
+                    <div>
+                        <label for="nama" class="block text-sm font-bold text-[#0F044C] mb-2 defparagraf">Nama Lengkap *</label>
+                        <input type="text" id="nama" name="nama" value="{{ old('nama') }}" required
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] transition-colors defparagraf"
+                               placeholder="Masukkan nama lengkap">
+                        @error('nama')
+                            <p class="mt-1 text-sm text-red-600 defparagraf">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Nama -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Nama *</label>
-                                <input type="text" name="nama" value="{{ old('nama') }}" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            
-                            <!-- Email -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
-                                <input type="email" name="email" value="{{ old('email') }}" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            
-                            <!-- Telepon -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Telepon *</label>
-                                <input type="text" name="telepon" value="{{ old('telepon') }}" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            
-                            <!-- Spesialisasi -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Spesialisasi *</label>
-                                <select name="spesialisasi" required 
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="">Pilih Spesialisasi</option>
-                                    <option value="Mesin" {{ old('spesialisasi') == 'Mesin' ? 'selected' : '' }}>Mesin</option>
-                                    <option value="Transmisi" {{ old('spesialisasi') == 'Transmisi' ? 'selected' : '' }}>Transmisi</option>
-                                    <option value="Rem" {{ old('spesialisasi') == 'Rem' ? 'selected' : '' }}>Rem</option>
-                                    <option value="AC" {{ old('spesialisasi') == 'AC' ? 'selected' : '' }}>AC</option>
-                                    <option value="Kelistrikan" {{ old('spesialisasi') == 'Kelistrikan' ? 'selected' : '' }}>Kelistrikan</option>
-                                    <option value="Body" {{ old('spesialisasi') == 'Body' ? 'selected' : '' }}>Body</option>
-                                    <option value="Umum" {{ old('spesialisasi') == 'Umum' ? 'selected' : '' }}>Umum</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Pengalaman -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Pengalaman (tahun) *</label>
-                                <input type="number" name="pengalaman" value="{{ old('pengalaman') }}" min="0" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            
-                            <!-- Rating -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Rating (0-5)</label>
-                                <input type="number" name="rating" value="{{ old('rating', '0') }}" min="0" max="5" step="0.1" 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                        </div>
-                        
-                        <!-- Alamat -->
-                        <div class="mt-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Alamat</label>
-                            <textarea name="alamat" rows="3" 
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">{{ old('alamat') }}</textarea>
-                        </div>
-                        
-                        <!-- Foto -->
-                        <div class="mt-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Foto</label>
-                            <input type="file" name="foto" accept="image/*" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
-                                   onchange="previewImage(this)">
-                            <p class="text-sm text-gray-500 mt-1">Format: JPG, PNG, GIF. Maksimal 2MB.</p>
-                            
-                            <!-- Image Preview -->
-                            <div id="imagePreview" class="mt-4 hidden">
-                                <img id="preview" src="" alt="Preview" class="w-32 h-32 object-cover rounded-lg border">
-                            </div>
-                        </div>
-                        
-                        <!-- Status -->
-                        <div class="mt-6">
-                            <label class="flex items-center">
-                                <input type="checkbox" name="is_active" {{ old('is_active', true) ? 'checked' : '' }} 
-                                       class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <span class="ml-2 text-sm text-gray-700">Aktif</span>
-                            </label>
-                        </div>
-                        
-                        <!-- Submit Buttons -->
-                        <div class="flex justify-end space-x-3 mt-8">
-                            <a href="{{ route('admin.montir.index') }}" 
-                               class="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
-                                Batal
-                            </a>
-                            <button type="submit" 
-                                    class="px-6 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                Simpan
-                            </button>
-                        </div>
-                    </form>
+                    <!-- Peringkat -->
+                    <div>
+                        <label for="peringkat" class="block text-sm font-bold text-[#0F044C] mb-2 defparagraf">Peringkat/Jabatan *</label>
+                        <input type="text" id="peringkat" name="peringkat" value="{{ old('peringkat') }}" required
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] transition-colors defparagraf"
+                               placeholder="Contoh: Senior Technician, Owner">
+                        @error('peringkat')
+                            <p class="mt-1 text-sm text-red-600 defparagraf">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
-<script>
-function previewImage(input) {
-    const preview = document.getElementById('preview');
-    const previewContainer = document.getElementById('imagePreview');
-    
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            previewContainer.classList.remove('hidden');
-        };
-        
-        reader.readAsDataURL(input.files[0]);
-    } else {
-        previewContainer.classList.add('hidden');
-    }
-}
-</script>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-bold text-[#0F044C] mb-2 defparagraf">Email *</label>
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" required
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] transition-colors defparagraf"
+                               placeholder="contoh@email.com">
+                        @error('email')
+                            <p class="mt-1 text-sm text-red-600 defparagraf">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Nomor Telepon -->
+                    <div>
+                        <label for="nomor_telepon" class="block text-sm font-bold text-[#0F044C] mb-2 defparagraf">Nomor Telepon *</label>
+                        <input type="text" id="nomor_telepon" name="nomor_telepon" value="{{ old('nomor_telepon') }}" required
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] transition-colors defparagraf"
+                               placeholder="+62 812-3456-7890">
+                        @error('nomor_telepon')
+                            <p class="mt-1 text-sm text-red-600 defparagraf">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Kutipan -->
+                <div>
+                    <label for="kutipan" class="block text-sm font-bold text-[#0F044C] mb-2 defparagraf">Quotes/Motto *</label>
+                    <textarea id="kutipan" name="kutipan" rows="4" required
+                              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0F044C] focus:border-[#0F044C] transition-colors defparagraf resize-none"
+                              placeholder="Masukkan quotes atau motto yang menggambarkan dedikasi dalam bekerja">{{ old('kutipan') }}</textarea>
+                    @error('kutipan')
+                        <p class="mt-1 text-sm text-red-600 defparagraf">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-end space-x-3 mt-8 pt-6 border-t border-gray-200">
+                    <a href="{{ route('admin.montir.index') }}"
+                       class="px-6 py-3 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 transition-colors">
+                        Batal
+                    </a>
+                    <button type="submit"
+                            class="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-[#0F044C] to-[#1D2C90] rounded-lg hover:opacity-95 transition-all shadow-sm">
+                        Simpan Montir
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Preview uploaded image
+        document.getElementById('foto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const previewContainer = document.getElementById('preview-container');
+            const previewImage = document.getElementById('preview-image');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewContainer.classList.add('hidden');
+            }
+        });
+    </script>
 </x-admin.dashboard-layout>

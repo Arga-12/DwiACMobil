@@ -13,25 +13,25 @@ class ArtikelLayanan extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'title',
+        'judul',
         'slug',
         'foto',
-        'description',
-        'points',
-        'duration_min',
-        'duration_max',
-        'price',
-        'likes',
-        'guarantee_days',
-        'is_published',
-        'published_at',
+        'deskripsi',
+        'poin',
+        'durasi_min',
+        'durasi_maks',
+        'harga',
+        'suka',
+        'garansi_hari',
+        'dipublikasi',
+        'tanggal_publikasi',
     ];
 
     protected $casts = [
-        'points' => 'array',
-        'likes' => 'integer',
-        'is_published' => 'boolean',
-        'published_at' => 'datetime',
+        'poin' => 'array',
+        'suka' => 'integer',
+        'dipublikasi' => 'boolean',
+        'tanggal_publikasi' => 'datetime',
     ];
 
     protected $appends = ['liked'];

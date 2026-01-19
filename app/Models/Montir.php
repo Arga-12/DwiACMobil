@@ -25,7 +25,7 @@ class Montir extends Authenticatable
         'peran',
         'foto',
         'tgl_dibuat',
-        'is_active',
+        'aktif',
     ];
 
     /**
@@ -47,7 +47,7 @@ class Montir extends Authenticatable
     {
         return [
             'tgl_dibuat' => 'datetime',
-            'is_active' => 'boolean',
+            'aktif' => 'boolean',
             'password' => 'hashed',
         ];
     }

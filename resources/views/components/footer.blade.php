@@ -7,12 +7,12 @@
 				<img src="{{ asset('images/logo.png') }}" alt="Dwi AC Mobil" class="mb-5 h-10 w-auto sm:h-12 lg:h-14" />
 				</a>
 				<ul class="space-y-3 bigparagraf text-white/90">
-					<li>JL.In Aja Dulu No. 6, Malang</li>
-					<li>0812-3456-7891</li>
-					<li>info@dwiac.com</li>
+					<li>Jl. Raya Sengkaling No.254, Sengkaling, Mulyoagung, Kec. Dau, Kabupaten Malang, Jawa Timur 65151</li>
+					<li>0821-3258-8041</li>
+					<li>argamujiono@gmail.com</li>
 					<li class="pt-2">
 						<span class="block">jam oprasional:</span>
-						<span>senin-sabtu, 08.00-17.00</span>
+						<span>Senin - Sabtu, 08:00-17:00</span>
 					</li>
 				</ul>
 			</div>
@@ -36,7 +36,7 @@
 				<ul class="space-y-3 defparagraf">
 					<li>Facebook: <a href="https://facebook.com/dwiacmobil" target="_blank" class="hover:underline">facebook.com/dwiacmobil</a></li>
 					<li>Instagram: <a href="https://instagram.com/dwiacmobil" target="_blank" class="hover:underline">instagram.com/dwiacmobil</a></li>
-					<li>WhatsApp: <a href="https://wa.me/6281234567890" target="_blank" class="hover:underline">wa.me/6281234567890</a></li>
+					<li>WhatsApp: <a href="https://wa.me/6281234567890" target="_blank" class="hover:underline">wa.me/6282132588041</a></li>
 				</ul>
 			</div>
 		</div>

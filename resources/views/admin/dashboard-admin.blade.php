@@ -1,5 +1,9 @@
 <x-admin.dashboard-layout title="Admin Dashboard - Dwi AC Mobil">
-    @vite(['resources/js/admin/dashboard-transisi.js', 'resources/js/admin/kalender.js'])
+    @vite([
+        'resources/js/admin/dashboard-transisi.js',
+        'resources/js/admin/dashboard-waktu.js',
+        'resources/js/admin/kalender.js'
+    ])
     
     <style>
         .dashboard-mode {

@@ -9,14 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('layanan', function (Blueprint $table) {
-            $table->boolean('is_active')->default(true)->after('harga_default');
+            $table->boolean('aktif')->default(true)->after('harga_default');
         });
     }
 
     public function down(): void
     {
         Schema::table('layanan', function (Blueprint $table) {
-            $table->dropColumn('is_active');
+            $table->dropColumn('aktif');
         });
     }
 };

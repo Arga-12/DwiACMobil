@@ -29,18 +29,38 @@
           @if(isset($articles) && count($articles))
             @foreach($articles as $a)
               @php
-                $img = $a->foto && function_exists('str_starts_with') && str_starts_with($a->foto, 'http') ? $a->foto : asset($a->foto ?? 'images/layanan/isi-freon.png');
-                $dur = ($a->duration_min && $a->duration_max)
-                  ? (($a->duration_min >= 60 || $a->duration_max >= 60)
-                      ? (ceil($a->duration_min/60) . '–' . ceil($a->duration_max/60) . ' jam')
-                      : ($a->duration_min . '–' . $a->duration_max . ' menit'))
+                // Handle foto path with priority: uploaded > static > default
+                if (!empty($a->foto)) {
+                    // Check if it's a URL
+                    if (function_exists('str_starts_with') && str_starts_with($a->foto, 'http')) {
+                        $img = $a->foto;
+                    }
+                    // Check if it's uploaded file (in storage)
+                    elseif (str_contains($a->foto, '/') && file_exists(storage_path('app/public/' . $a->foto))) {
+                        $img = asset('storage/' . $a->foto);
+                    }
+                    // Check if it's in public/images
+                    elseif (file_exists(public_path($a->foto))) {
+                        $img = asset($a->foto);
+                    }
+                    // Fallback to default
+                    else {
+                        $img = asset('images/layanan/isi-freon.png');
+                    }
+                } else {
+                    $img = asset('images/layanan/isi-freon.png');
+                }
+                $dur = ($a->durasi_min && $a->durasi_maks)
+                  ? (($a->durasi_min >= 60 || $a->durasi_maks >= 60)
+                      ? (ceil($a->durasi_min/60) . '–' . ceil($a->durasi_maks/60) . ' jam')
+                      : ($a->durasi_min . '–' . $a->durasi_maks . ' menit'))
                   : '-';
-                $price = !is_null($a->price) ? number_format($a->price,0,',','.') : '-';
-                $warranty = $a->guarantee_days ? ($a->guarantee_days . ' hari') : '-';
+                $price = !is_null($a->harga) ? number_format($a->harga,0,',','.') : '-';
+                $warranty = $a->garansi_hari ? ($a->garansi_hari . ' hari') : '-';
                 $updated = $a->updated_at ? $a->updated_at->format('d M') : '';
               @endphp
               <article class="bg-white border border-[#EEEEEE] rounded-xl overflow-hidden">
-                <img src="{{ $img }}" alt="{{ $a->title }}" class="w-full h-[320px] object-cover" />
+                <img src="{{ $img }}" alt="{{ $a->judul }}" class="w-full h-[320px] object-cover" />
 
                 <div class="border-b border-[#EEEEEE] flex items-center justify-between px-4 sm:px-6 py-3">
                   <div class="flex items-center gap-6 text-sm text-[#787A91] defparagraf">
@@ -61,30 +81,29 @@
                 </div>
 
                 <div class="px-4 sm:px-6 py-6">
-                  <h3 class="font-montserrat-48 uppercase text-lg sm:text-xl text-[#0F044C]">{{ $a->title }}</h3>
-                  <p class="defparagraf text-[#141E61] mt-2 leading-relaxed">{{ \Illuminate\Support\Str::limit($a->description, 180) }}</p>
+                  <h3 class="font-montserrat-48 uppercase text-lg sm:text-xl text-[#0F044C]">{{ $a->judul }}</h3>
+                  <p class="defparagraf text-[#141E61] mt-2 leading-relaxed">{{ \Illuminate\Support\Str::limit($a->deskripsi, 180) }}</p>
                   <div class="defparagraf text-xs text-[#787A91] mt-2">Harga bersifat estimasi dan tergantung model/tipe mobil serta kondisi unit.</div>
                   @php
                     $liked = session()->has('liked_artikel_' . $a->id);
-                    $likes = (int)($a->likes ?? 0);
+                    $likes = (int)($a->suka ?? 0);
                   @endphp
                   <div class="mt-5 flex items-center gap-3 flex-wrap">
                     <form method="POST" action="{{ $liked ? route('layanan.unlike', $a->slug) : route('layanan.like', $a->slug) }}">
                       @csrf
-                      <button type="submit" class="inline-flex items-center gap-2 border border-[#0F044C] text-[#0F044C] hover:bg-[#0F044C] hover:text-white px-4 py-2 rounded-md defparagraf">
+                      <button type="submit" class="inline-flex items-center gap-2 border border-[#0F044C] {{ $liked ? 'bg-[#0F044C] text-white' : 'text-[#0F044C] hover:bg-[#0F044C] hover:text-white' }} px-4 py-2 rounded-md defparagraf transition-colors">
                         @if($liked)
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" class="text-current"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 8"/></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><path fill="currentColor" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 8"/></svg>
                           <span>Batalkan Like</span>
                         @else
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" class="text-current"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 8"/></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 8C8.925 8 4 12.925 4 19c0 11 13 21 20 23.326C31 40 44 30 44 19c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 8"/></svg>
                           <span>Like</span>
                         @endif
-                        <span class="ml-1 text-xs bg-[#0F044C]/10 text-[#0F044C] px-2 py-0.5 rounded">{{ $likes }}</span>
+                        <span class="ml-1 text-xs {{ $liked ? 'bg-white/20 text-white' : 'bg-[#0F044C]/10 text-[#0F044C]' }} px-2 py-0.5 rounded">{{ $likes }}</span>
                       </button>
                     </form>
                     <a href="{{ route('layanan.detail', $a->slug) }}" class="inline-flex items-center gap-2 bg-[#0F044C] hover:bg-[#141E61] text-white px-5 py-2 rounded-md defparagraf">Lihat Detail Layanan</a>
                     <a href="{{ url('/booking') }}" class="inline-flex items-center gap-2 border border-[#0F044C] text-[#0F044C] hover:bg-[#0F044C] hover:text-white px-5 py-2 rounded-md defparagraf">Booking Sekarang</a>
-                    <a href="https://wa.me/6281234567890?text={{ urlencode('Halo Dwi AC Mobil, saya ingin tanya estimasi harga layanan ' . $a->title . ' sesuai model mobil saya') }}" target="_blank" class="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-md defparagraf">Tanya Harga</a>
                   </div>
                 </div>
               </article>
@@ -119,7 +138,6 @@
                   <div class="mt-5 flex items-center gap-3 flex-wrap">
                     <a href="{{ route('layanan.detail', \Illuminate\Support\Str::slug($s['title'])) }}" class="inline-flex items-center gap-2 bg-[#0F044C] hover:bg-[#141E61] text-white px-5 py-2 rounded-md defparagraf">Lihat Detail Layanan</a>
                     <a href="{{ url('/booking') }}" class="inline-flex items-center gap-2 border border-[#0F044C] text-[#0F044C] hover:bg-[#0F044C] hover:text-white px-5 py-2 rounded-md defparagraf">Booking Sekarang</a>
-                    <a href="https://wa.me/6281234567890?text={{ urlencode('Halo Dwi AC Mobil, saya ingin tanya estimasi harga layanan ' . $s['title'] . ' sesuai model mobil saya') }}" target="_blank" class="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-md defparagraf">Tanya Harga</a>
                   </div>
                 </div>
               </article>

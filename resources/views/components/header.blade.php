@@ -47,10 +47,10 @@
         $displayName = $user->nama ?? ($user->name ?? ($user->username ?? ($user->email ?? '')));
         $initial = $displayName !== '' ? mb_strtoupper(mb_substr($displayName, 0, 1, 'UTF-8'), 'UTF-8') : 'U';
 
-        // Build avatar URL like in ProfileController: profile_photo is a public path, e.g., images/user/profiles/...
+        // Build avatar URL like in ProfileController: foto_profil is a public path, e.g., images/user/profiles/...
         $avatarUrl = null;
-        if (!empty($user->profile_photo)) {
-          $path = $user->profile_photo;
+        if (!empty($user->foto_profil)) {
+          $path = $user->foto_profil;
           if (\Illuminate\Support\Str::startsWith($path, ['http://','https://'])) {
             $avatarUrl = $path;
           } else {
